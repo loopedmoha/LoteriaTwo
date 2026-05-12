@@ -1,0 +1,357 @@
+<UserControl x:Class="LoteriaTwo.Views.LoteriayRotulosView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- COLUMN 0 — WEB + IMÁGENES              -->
+            <!-- ═══════════════════════════════════════ -->
+            <StackPanel Grid.Column="0" Width="200" Margin="0,0,5,0">
+
+                <!-- WEB -->
+                <GroupBox Header="WEB" Margin="0,0,0,5">
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Button Content="P"     Style="{StaticResource BtnPreview}"
+                                Grid.Row="0" Grid.Column="0" Margin="2" Click="WebPreview_Click"/>
+                        <Button Content="ENTRA" Style="{StaticResource BtnEntra}"
+                                Grid.Row="0" Grid.Column="1" Margin="2" Click="WebEntra_Click"/>
+                        <Button Content="SALE"  Style="{StaticResource BtnSale}"
+                                Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="2" Click="WebSale_Click"/>
+                    </Grid>
+                </GroupBox>
+
+                <!-- IMÁGENES -->
+                <GroupBox Header="IMÁGENES">
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="65"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="8"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- P spans rows 0-1 -->
+                        <Button Content="P" Style="{StaticResource BtnPreview}"
+                                Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                                Margin="0,2,4,2" Click="ImagenesPreview_Click"/>
+                        <RadioButton Content="Foto 1" GroupName="Imagenes"
+                                     Grid.Row="0" Grid.Column="1"
+                                     Margin="2,2,2,1" VerticalAlignment="Center"/>
+                        <RadioButton Content="Foto 2" GroupName="Imagenes"
+                                     Grid.Row="1" Grid.Column="1"
+                                     Margin="2,1,2,1" VerticalAlignment="Center"/>
+
+                        <!-- ENTRA spans rows 2-3 -->
+                        <Button Content="ENTRA" Style="{StaticResource BtnEntra}"
+                                Grid.Row="2" Grid.Column="0" Grid.RowSpan="2"
+                                Margin="0,2,4,2" Click="ImagenesEntra_Click"/>
+                        <RadioButton Content="Foto 3" GroupName="Imagenes"
+                                     Grid.Row="2" Grid.Column="1"
+                                     Margin="2,1,2,1" VerticalAlignment="Center"/>
+                        <RadioButton Content="Foto 4" GroupName="Imagenes"
+                                     Grid.Row="3" Grid.Column="1"
+                                     Margin="2,1,2,1" VerticalAlignment="Center"/>
+
+                        <!-- SALE spans rows 4-5 -->
+                        <Button Content="SALE" Style="{StaticResource BtnSale}"
+                                Grid.Row="4" Grid.Column="0" Grid.RowSpan="2"
+                                Margin="0,2,4,2" Click="ImagenesSale_Click"/>
+                        <RadioButton Content="Foto 5" GroupName="Imagenes"
+                                     Grid.Row="4" Grid.Column="1"
+                                     Margin="2,1,2,1" VerticalAlignment="Center"/>
+                        <RadioButton Content="Video vivo" GroupName="Imagenes"
+                                     Grid.Row="5" Grid.Column="1"
+                                     Margin="2,1,2,1" VerticalAlignment="Center"/>
+
+                        <!-- Spacer row 6 -->
+
+                        <!-- F1–F5 rows span both columns -->
+                        <Grid Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="44"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBox x:Name="TxtF1" Grid.Row="0" Grid.Column="0" Margin="0,2,3,2"/>
+                            <Button  Content="F1"   Grid.Row="0" Grid.Column="1" Margin="0,2"
+                                     Style="{StaticResource BtnBlue}" Click="F1_Click"/>
+
+                            <TextBox x:Name="TxtF2" Grid.Row="1" Grid.Column="0" Margin="0,2,3,2"/>
+                            <Button  Content="F2"   Grid.Row="1" Grid.Column="1" Margin="0,2"
+                                     Style="{StaticResource BtnBlue}" Click="F2_Click"/>
+
+                            <TextBox x:Name="TxtF3" Grid.Row="2" Grid.Column="0" Margin="0,2,3,2"/>
+                            <Button  Content="F3"   Grid.Row="2" Grid.Column="1" Margin="0,2"
+                                     Style="{StaticResource BtnBlue}" Click="F3_Click"/>
+
+                            <TextBox x:Name="TxtF4" Grid.Row="3" Grid.Column="0" Margin="0,2,3,2"/>
+                            <Button  Content="F4"   Grid.Row="3" Grid.Column="1" Margin="0,2"
+                                     Style="{StaticResource BtnBlue}" Click="F4_Click"/>
+
+                            <TextBox x:Name="TxtF5" Grid.Row="4" Grid.Column="0" Margin="0,2,3,2"/>
+                            <Button  Content="F5"   Grid.Row="4" Grid.Column="1" Margin="0,2"
+                                     Style="{StaticResource BtnBlue}" Click="F5_Click"/>
+                        </Grid>
+
+                    </Grid>
+                </GroupBox>
+
+            </StackPanel>
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- COLUMN 1 — RÓTULOS                     -->
+            <!-- ═══════════════════════════════════════ -->
+            <GroupBox Header="RÓTULOS" Grid.Column="1" Width="310" Margin="0,0,5,0"
+                      VerticalAlignment="Top">
+                <StackPanel Margin="8">
+
+                    <!-- Tipo -->
+                    <GroupBox Header="Tipo" Margin="0,0,0,8">
+                        <StackPanel Margin="6,4">
+                            <RadioButton Content="La Suerte"  GroupName="TipoRotulo" Margin="0,2"/>
+                            <RadioButton Content="LAE"        GroupName="TipoRotulo" Margin="0,2"/>
+                            <RadioButton Content="Caja doble" GroupName="TipoRotulo" Margin="0,2"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!-- Column headers -->
+                    <Grid Margin="0,0,0,3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Primera Línea" FontWeight="Bold" FontSize="11" Grid.Column="0"/>
+                        <TextBlock Text="Segunda Línea" FontWeight="Bold" FontSize="11" Grid.Column="1"/>
+                    </Grid>
+
+                    <!-- Presenter quick-fill -->
+                    <Button Content="Sandra Daviu"   Tag="Sandra Daviu"
+                            Style="{StaticResource BtnFlat}" Click="PresenterName_Click"/>
+                    <Button Content="Blanca Benlloch" Tag="Blanca Benlloch"
+                            Style="{StaticResource BtnFlat}" Click="PresenterName_Click"/>
+                    <Button Content="Lucia Vinaixe"  Tag="Lucia Vinaixe"
+                            Style="{StaticResource BtnFlat}" Click="PresenterName_Click"/>
+
+                    <!-- Línea 1 -->
+                    <Grid Margin="0,8,0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="48"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Línea 1" Grid.Column="0" VerticalAlignment="Center" FontSize="11"/>
+                        <TextBox x:Name="TxtLinea1Primera" Grid.Column="1" Margin="0,0,3,0"/>
+                        <TextBox x:Name="TxtLinea1Segunda" Grid.Column="2"/>
+                    </Grid>
+
+                    <!-- Línea 2 -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="48"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Línea 2" Grid.Column="0" VerticalAlignment="Center" FontSize="11"/>
+                        <TextBox x:Name="TxtLinea2" Grid.Column="1"/>
+                    </Grid>
+
+                    <!-- Action buttons -->
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="ENTRA ROTULO" Style="{StaticResource BtnEntra}"
+                                Margin="0,0,4,0" Click="EntrarRotulo_Click"/>
+                        <Button Content="SALE ROTULO"  Style="{StaticResource BtnSale}"
+                                Margin="0,0,4,0" Click="SaleRotulo_Click"/>
+                        <Button Content="P" Style="{StaticResource BtnPreview}"
+                                MinWidth="50" Click="PreviewRotulo_Click"/>
+                    </StackPanel>
+
+                </StackPanel>
+            </GroupBox>
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- COLUMN 2 — DÉCIMOS (sin crawl)         -->
+            <!-- ═══════════════════════════════════════ -->
+            <GroupBox Header="DECIMOS" Grid.Column="2" Width="160" Margin="0,0,5,0"
+                      VerticalAlignment="Top">
+                <StackPanel Margin="6">
+                    <Button Content="BUSCAR DECIMO"   Style="{StaticResource BtnBlue}"
+                            Margin="0,3" Click="BuscarDecimo_Click"/>
+                    <Button Content="POSICION JUEVES" Style="{StaticResource BtnBlue}"
+                            Margin="0,3" Click="PosicionJueves_Click"/>
+                    <Button Content="POSICION SABADO" Style="{StaticResource BtnBlue}"
+                            Margin="0,3" Click="PosicionSabado_Click"/>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- COLUMN 3 — CIUDADES                    -->
+            <!-- ═══════════════════════════════════════ -->
+            <GroupBox Header="CIUDADES" Grid.Column="3" VerticalAlignment="Top">
+                <Grid Margin="6">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- FECHA -->
+                    <Grid Grid.Row="0" Margin="0,0,0,6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="FECHA" Grid.Column="0" FontWeight="Bold" FontSize="11"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBox x:Name="TxtCiudadesFecha" Grid.Column="1"/>
+                    </Grid>
+
+                    <!-- Radio 1–4 -->
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,6">
+                        <RadioButton Content="1" GroupName="CiudadNum" Margin="0,0,18,0"/>
+                        <RadioButton Content="2" GroupName="CiudadNum" Margin="0,0,18,0"/>
+                        <RadioButton Content="3" GroupName="CiudadNum" Margin="0,0,18,0"/>
+                        <RadioButton Content="4" GroupName="CiudadNum"/>
+                    </StackPanel>
+
+                    <!-- Column headers -->
+                    <Grid Grid.Row="2" Margin="0,0,0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="CIUDADES"    FontWeight="Bold" FontSize="11" Grid.Column="0"/>
+                        <TextBlock Text="COMUNIDADES" FontWeight="Bold" FontSize="11" Grid.Column="1"/>
+                    </Grid>
+
+                    <!-- Ciudad/Comunidad rows -->
+                    <Grid Grid.Row="3" Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox  x:Name="TxtCiudad1"    Grid.Column="0" Margin="0,0,3,0"/>
+                        <ComboBox x:Name="CmbComunidad1" Grid.Column="1"/>
+                    </Grid>
+                    <Grid Grid.Row="4" Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox  x:Name="TxtCiudad2"    Grid.Column="0" Margin="0,0,3,0"/>
+                        <ComboBox x:Name="CmbComunidad2" Grid.Column="1"/>
+                    </Grid>
+                    <Grid Grid.Row="5" Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox  x:Name="TxtCiudad3"    Grid.Column="0" Margin="0,0,3,0"/>
+                        <ComboBox x:Name="CmbComunidad3" Grid.Column="1"/>
+                    </Grid>
+                    <Grid Grid.Row="6" Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox  x:Name="TxtCiudad4"    Grid.Column="0" Margin="0,0,3,0"/>
+                        <ComboBox x:Name="CmbComunidad4" Grid.Column="1"/>
+                    </Grid>
+                    <Grid Grid.Row="7" Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox  x:Name="TxtCiudad5"    Grid.Column="0" Margin="0,0,3,0"/>
+                        <ComboBox x:Name="CmbComunidad5" Grid.Column="1"/>
+                    </Grid>
+
+                    <!-- LOGO + TEXTO section -->
+                    <Grid Grid.Row="9" Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- LOGO column -->
+                        <StackPanel Grid.Column="0" Margin="0,0,6,0">
+                            <TextBlock Text="LOGO" FontWeight="Bold" FontSize="11" Margin="0,0,0,3"/>
+                            <Border Height="55" Background="#E0E0E0" BorderBrush="#AAAAAA"
+                                    BorderThickness="1" Margin="0,0,0,3">
+                                <Image x:Name="ImgLogo" Stretch="Uniform"/>
+                            </Border>
+                            <ListBox x:Name="LstLogos" Height="90"
+                                     SelectionChanged="LstLogos_SelectionChanged">
+                                <ListBoxItem Content="Bonoloto"/>
+                                <ListBoxItem Content="Primitiva"/>
+                                <ListBoxItem Content="El Gordo"/>
+                                <ListBoxItem Content="Euromillones"/>
+                                <ListBoxItem Content="Quiniela"/>
+                                <ListBoxItem Content="Lototurf"/>
+                            </ListBox>
+                            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                <Button Content="P"     Style="{StaticResource BtnPreview}"
+                                        MinWidth="38" Margin="0,0,3,0" Click="LogoPreview_Click"/>
+                                <Button Content="ENTRA" Style="{StaticResource BtnEntra}"
+                                        Margin="0,0,3,0" Click="LogoEntra_Click"/>
+                                <Button Content="SALE"  Style="{StaticResource BtnSale}"
+                                        Click="LogoSale_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- TEXTO column -->
+                        <StackPanel Grid.Column="1" VerticalAlignment="Top">
+                            <TextBlock Text="TEXTO 1" FontWeight="Bold" FontSize="11" Margin="0,0,0,3"/>
+                            <TextBox x:Name="TxtTexto1" Margin="0,0,0,10"/>
+                            <TextBlock Text="TEXTO 2" FontWeight="Bold" FontSize="11" Margin="0,0,0,3"/>
+                            <TextBox x:Name="TxtTexto2"/>
+                        </StackPanel>
+
+                    </Grid>
+
+                </Grid>
+            </GroupBox>
+
+        </Grid>
+    </ScrollViewer>
+</UserControl>
