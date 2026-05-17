@@ -3,57 +3,73 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:views="clr-namespace:LoteriaTwo.Views"
         Title="LoteriaTwo" Height="800" Width="1400"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BrushBg}"
+        Foreground="{StaticResource BrushTextPrimary}"
+        FontFamily="Segoe UI"
+        BorderBrush="{StaticResource BrushBorder}">
     <DockPanel>
 
         <!-- ── Menu bar ───────────────────────────────── -->
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File"/>
-            <MenuItem Header="Configuracion"/>
+            <MenuItem Header="Configuracion">
+                <MenuItem Header="Reconectar a IPF" Click="ReconectarIPF_Click"/>
+            </MenuItem>
         </Menu>
 
         <!-- ── GENERAL bar (bottom) ───────────────────── -->
         <GroupBox DockPanel.Dock="Bottom" Header="GENERAL" Margin="5,3,5,5">
-            <Grid Margin="5,4">
+            <Grid Margin="6,6">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>   <!-- SALE ULTIMO -->
+                    <ColumnDefinition Width="*"/>      <!-- indicador (centrado) -->
+                    <ColumnDefinition Width="Auto"/>   <!-- LIMPIAR + GUARDAR -->
+                    <ColumnDefinition Width="Auto"/>   <!-- FONDO -->
+                    <ColumnDefinition Width="Auto"/>   <!-- PLAYLIST + SYNC -->
+                    <ColumnDefinition Width="Auto"/>   <!-- RESET -->
                 </Grid.ColumnDefinitions>
 
                 <!-- SALE ULTIMO -->
                 <Button Content="SALE ULTIMO" Style="{StaticResource BtnSale}"
-                        Grid.Column="0" MinWidth="120" Click="SaleUltimo_Click"/>
+                        Grid.Column="0" MinWidth="130"
+                        Click="SaleUltimo_Click"/>
 
-                <!-- Center: LIMPIAR + GUARDAR + RECONECTAR -->
-                <StackPanel Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                        <Button Content="LIMPIAR FORMULARIO" Style="{StaticResource BtnBlue}"
-                                Margin="0,0,5,0" Click="LimpiarFormulario_Click"/>
-                        <Button Content="GUARDAR" Style="{StaticResource BtnBlue}"
-                                MinWidth="90" Click="Guardar_Click"/>
-                    </StackPanel>
-                    <Button Content="RECONECTAR CAMARAS" Style="{StaticResource BtnBlue}"
-                            Click="ReconectarCamaras_Click"/>
+                <!-- Indicador de conexión IPF -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal"
+                            VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Ellipse x:Name="EllipseConexion" Width="10" Height="10"
+                             Fill="#DC2626" Margin="0,0,6,0"/>
+                    <TextBlock x:Name="TxtConexion" Text="Sin conexión IPF"
+                               FontSize="10" FontFamily="Segoe UI"
+                               Foreground="{StaticResource BrushTextSecondary}"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- LIMPIAR + GUARDAR -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal"
+                            VerticalAlignment="Center" Margin="0,0,8,0">
+                    <Button Content="LIMPIAR FORMULARIO" Style="{StaticResource BtnBlue}"
+                            Margin="0,0,4,0" Click="LimpiarFormulario_Click"/>
+                    <Button Content="GUARDAR" Style="{StaticResource BtnBlue}"
+                            MinWidth="100" Click="Guardar_Click"/>
                 </StackPanel>
 
                 <!-- FONDO -->
-                <GroupBox Header="FONDO" Grid.Column="3" Margin="12,0" VerticalAlignment="Center">
-                    <StackPanel Margin="6,4">
+                <GroupBox Header="FONDO" Grid.Column="3"
+                          VerticalAlignment="Center" Margin="0,0,8,0">
+                    <StackPanel Orientation="Horizontal" Margin="6,4">
                         <Button Content="ENTRA FONDO" Style="{StaticResource BtnEntra}"
-                                Margin="0,0,0,3" Click="EntrarFondo_Click"/>
-                        <Button Content="SALE FONDO"  Style="{StaticResource BtnSale}"
+                                Margin="0,0,4,0" Click="EntrarFondo_Click"/>
+                        <Button Content="SALE FONDO" Style="{StaticResource BtnSale}"
                                 Click="SaleFondo_Click"/>
                     </StackPanel>
                 </GroupBox>
 
                 <!-- ABRIR PLAYLIST + SINCRONIZAR -->
-                <StackPanel Grid.Column="4" Margin="12,0" VerticalAlignment="Center">
+                <StackPanel Grid.Column="4" VerticalAlignment="Center" Margin="0,0,12,0">
                     <Button Content="ABRIR PLAYLIST" Style="{StaticResource BtnPreview}"
-                            Margin="0,0,0,8" Click="AbrirPlaylist_Click"/>
+                            Margin="0,0,0,6" Click="AbrirPlaylist_Click"/>
                     <CheckBox x:Name="ChkSincronizarLogos"
                               Content="SINCRONIZAR LOGOS CON ENTRA PREMIOS" FontSize="10"/>
                 </StackPanel>
@@ -74,17 +90,17 @@
             <TabItem Header="DÉCIMOS">
                 <TextBlock Text="Pestaña DÉCIMOS — próximamente"
                            HorizontalAlignment="Center" VerticalAlignment="Center"
-                           FontSize="16" Foreground="Gray"/>
+                           FontSize="16" Foreground="{StaticResource BrushTextSecondary}"/>
             </TabItem>
             <TabItem Header="QUINIELA">
                 <TextBlock Text="Pestaña QUINIELA — próximamente"
                            HorizontalAlignment="Center" VerticalAlignment="Center"
-                           FontSize="16" Foreground="Gray"/>
+                           FontSize="16" Foreground="{StaticResource BrushTextSecondary}"/>
             </TabItem>
             <TabItem Header="SORTEOS y BOTES">
                 <TextBlock Text="Pestaña SORTEOS y BOTES — próximamente"
                            HorizontalAlignment="Center" VerticalAlignment="Center"
-                           FontSize="16" Foreground="Gray"/>
+                           FontSize="16" Foreground="{StaticResource BrushTextSecondary}"/>
             </TabItem>
         </TabControl>
 
