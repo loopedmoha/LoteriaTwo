@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using LoteriaTwo.Models;
+using LoteriaTwo.Services;
 
 namespace LoteriaTwo.Views
 {
@@ -205,11 +206,34 @@ namespace LoteriaTwo.Views
                 _jugadoChecks[i].IsChecked  = p.Jugado;
             }
         }
+        public Elemento? UltimoElemento { get; private set; }
+
+        private void Previsualizar(Elemento el)
+        {
+            ElementoRepository.Instancia.Add(el);
+            UltimoElemento = el;
+            LogService.Instancia.Registrar(LogNivel.Accion, el.Tipo.ToString(),
+                "P → " + el.ToLogString());
+            PlaylistService.Instancia.AgregarElemento(el.Tipo, el.Tipo.ToString());
+            PlaylistService.Instancia.AgregarLogo(el.Tipo.ToString(), el.Tipo);
+        }
+
         private void EntraQuiniela_Click(object sender, RoutedEventArgs e) { }
         private void SaleQuiniela_Click(object sender, RoutedEventArgs e) { }
-        private void PQuiniela_Click(object sender, RoutedEventArgs e) { }
+        private void PQuiniela_Click(object sender, RoutedEventArgs e)
+        {
+            var el = new Elemento { Tipo = TipoElemento.Quiniela };
+            el.DatosQuiniela = GetQuiniela();
+            Previsualizar(el);
+        }
         private void EntraPleno15_Click(object sender, RoutedEventArgs e) { }
         private void SalePleno15_Click(object sender, RoutedEventArgs e) { }
-        private void PPleno15_Click(object sender, RoutedEventArgs e) { }
+        private void PPleno15_Click(object sender, RoutedEventArgs e)
+        {
+            var el = new Elemento { Tipo = TipoElemento.Pleno15 };
+            el["AcertantesPleno"] = TxtAcertantesPleno.Text;
+            el["BotePleno"]       = TxtBotePleno.Text;
+            Previsualizar(el);
+        }
     }
 }

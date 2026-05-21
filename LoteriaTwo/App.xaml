@@ -85,6 +85,24 @@
             <Setter Property="Padding"             Value="2,4"/>
         </Style>
 
+        <!-- ── Log DataGrid row coloring ── -->
+        <Style x:Key="LogRowStyle" TargetType="DataGridRow">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Nivel}" Value="Accion">
+                    <Setter Property="Background" Value="#EFF6FF"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Nivel}" Value="Cambio">
+                    <Setter Property="Background" Value="#FFFBEB"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Nivel}" Value="Conexion">
+                    <Setter Property="Background" Value="#F0FDF4"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Nivel}" Value="Error">
+                    <Setter Property="Background" Value="#FEF2F2"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
         <!-- ── GroupBox ── -->
         <Style TargetType="GroupBox">
             <Setter Property="BorderBrush"     Value="{StaticResource BrushBorder}"/>

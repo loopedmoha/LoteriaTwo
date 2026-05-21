@@ -1,0 +1,161 @@
+<UserControl x:Class="LoteriaTwo.Views.PlaylistPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <DockPanel Background="{StaticResource BrushSurface}">
+
+        <!-- ── Cabecera: selector de playlist + guardar / cargar ── -->
+        <Border DockPanel.Dock="Top"
+                BorderBrush="{StaticResource BrushBorder}"
+                BorderThickness="1,0,0,1"
+                Padding="6,6,6,6">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                    <Button Content="Guardar" Style="{StaticResource BtnBlue}"
+                            FontSize="10" Padding="6,3" Margin="0,0,4,0"
+                            Click="Guardar_Click"/>
+                    <Button Content="Cargar"  Style="{StaticResource BtnBlue}"
+                            FontSize="10" Padding="6,3"
+                            Click="Cargar_Click"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="PLAYLIST" FontWeight="Bold" FontSize="11"
+                               Foreground="{StaticResource BrushTextPrimary}"
+                               VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <RadioButton x:Name="RbPl1" Content="1" GroupName="PLSel" Tag="0"
+                                 IsChecked="True" VerticalAlignment="Center"
+                                 Margin="0,0,8,0" Checked="PlSel_Checked"/>
+                    <RadioButton x:Name="RbPl2" Content="2" GroupName="PLSel" Tag="1"
+                                 VerticalAlignment="Center" Margin="0,0,8,0"
+                                 Checked="PlSel_Checked"/>
+                    <RadioButton x:Name="RbPl3" Content="3" GroupName="PLSel" Tag="2"
+                                 VerticalAlignment="Center" Margin="0,0,8,0"
+                                 Checked="PlSel_Checked"/>
+                    <RadioButton x:Name="RbPl4" Content="4" GroupName="PLSel" Tag="3"
+                                 VerticalAlignment="Center"
+                                 Checked="PlSel_Checked"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- ── Dos listas lado a lado ── -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ── LOGOS ─────────────────────────────────── -->
+            <DockPanel Grid.Column="0"
+                       Margin="6,6,3,6"
+                       LastChildFill="True">
+
+                <TextBlock DockPanel.Dock="Top"
+                           Text="LOGOS" FontWeight="Bold" FontSize="10"
+                           Foreground="{StaticResource BrushTextSecondary}"
+                           Margin="0,0,0,4"/>
+
+                <!-- Botones de acción logos -->
+                <StackPanel DockPanel.Dock="Bottom" Margin="0,4,0,0">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+                        <Button Content="▲" Style="{StaticResource BtnFlat}"
+                                FontSize="11" Width="26" Height="22" Padding="0"
+                                HorizontalContentAlignment="Center"
+                                Margin="0,0,2,0" Click="LogoUp_Click"/>
+                        <Button Content="▼" Style="{StaticResource BtnFlat}"
+                                FontSize="11" Width="26" Height="22" Padding="0"
+                                HorizontalContentAlignment="Center"
+                                Click="LogoDown_Click"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Entra Logo" Style="{StaticResource BtnEntra}"
+                                FontSize="9" Padding="4,2" Margin="0,0,2,0"
+                                Click="EntraLogo_Click"/>
+                        <Button Content="Sale Logo"  Style="{StaticResource BtnSale}"
+                                FontSize="9" Padding="4,2"
+                                Click="SaleLogo_Click"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <Border BorderBrush="{StaticResource BrushBorder}" BorderThickness="1"
+                        CornerRadius="4">
+                    <ListBox x:Name="LstLogos"
+                             BorderThickness="0"
+                             Background="Transparent"
+                             FontSize="11"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Nombre}"
+                                           TextTrimming="CharacterEllipsis"
+                                           ToolTip="{Binding Nombre}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Padding" Value="4,2"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                </Border>
+            </DockPanel>
+
+            <!-- ── ELEMENTOS ──────────────────────────────── -->
+            <DockPanel Grid.Column="1"
+                       Margin="3,6,6,6"
+                       LastChildFill="True">
+
+                <TextBlock DockPanel.Dock="Top"
+                           Text="ELEMENTOS" FontWeight="Bold" FontSize="10"
+                           Foreground="{StaticResource BrushTextSecondary}"
+                           Margin="0,0,0,4"/>
+
+                <!-- Botones de acción elementos -->
+                <StackPanel DockPanel.Dock="Bottom" Margin="0,4,0,0">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+                        <Button Content="▲" Style="{StaticResource BtnFlat}"
+                                FontSize="11" Width="26" Height="22" Padding="0"
+                                HorizontalContentAlignment="Center"
+                                Margin="0,0,2,0" Click="ElemUp_Click"/>
+                        <Button Content="▼" Style="{StaticResource BtnFlat}"
+                                FontSize="11" Width="26" Height="22" Padding="0"
+                                HorizontalContentAlignment="Center"
+                                Click="ElemDown_Click"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Sale"      Style="{StaticResource BtnSale}"
+                                FontSize="9" Padding="4,2" Margin="0,0,2,0"
+                                Click="ElemSale_Click"/>
+                        <Button Content="Siguiente" Style="{StaticResource BtnBlue}"
+                                FontSize="9" Padding="4,2"
+                                Click="ElemSig_Click"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <Border BorderBrush="{StaticResource BrushBorder}" BorderThickness="1"
+                        CornerRadius="4">
+                    <ListBox x:Name="LstElementos"
+                             BorderThickness="0"
+                             Background="Transparent"
+                             FontSize="11"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Nombre}"
+                                           TextTrimming="CharacterEllipsis"
+                                           ToolTip="{Binding Nombre}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Padding" Value="4,2"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                </Border>
+            </DockPanel>
+        </Grid>
+    </DockPanel>
+</UserControl>

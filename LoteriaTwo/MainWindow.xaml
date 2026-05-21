@@ -16,6 +16,9 @@
             <MenuItem Header="Configuracion">
                 <MenuItem Header="Reconectar a IPF" Click="ReconectarIPF_Click"/>
             </MenuItem>
+            <MenuItem Header="🛠 Debug">
+                <MenuItem Header="Repositorio de Elementos" Click="DebugElementos_Click"/>
+            </MenuItem>
         </Menu>
 
         <!-- ── GENERAL bar (bottom) ───────────────────── -->
@@ -82,21 +85,30 @@
             </Grid>
         </GroupBox>
 
-        <!-- ── Tab control ────────────────────────────── -->
-        <TabControl Margin="5,3,5,0">
-            <TabItem Header="LOTERÍA y RÓTULOS">
-                <views:LoteriayRotulosView/>
-            </TabItem>
-            <TabItem Header="DÉCIMOS">
-                <views:DecimosView/>
-            </TabItem>
-            <TabItem Header="QUINIELA">
-                <views:QuinielaView/>
-            </TabItem>
-            <TabItem Header="SORTEOS y BOTES">
-                <views:SorteosBotesView/>
-            </TabItem>
-        </TabControl>
+        <!-- ── Contenido principal: pestañas + panel playlist ── -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="370"/>
+            </Grid.ColumnDefinitions>
+
+            <TabControl Grid.Column="0" Margin="5,3,2,0">
+                <TabItem Header="LOTERÍA y RÓTULOS">
+                    <views:LoteriayRotulosView/>
+                </TabItem>
+                <TabItem Header="DÉCIMOS">
+                    <views:DecimosView/>
+                </TabItem>
+                <TabItem Header="QUINIELA">
+                    <views:QuinielaView/>
+                </TabItem>
+                <TabItem Header="SORTEOS y BOTES">
+                    <views:SorteosBotesView/>
+                </TabItem>
+            </TabControl>
+
+            <views:PlaylistPanel Grid.Column="1" Margin="2,3,5,0"/>
+        </Grid>
 
     </DockPanel>
 </Window>

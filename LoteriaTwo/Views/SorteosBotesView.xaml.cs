@@ -1,6 +1,9 @@
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using LoteriaTwo.Models;
+using LoteriaTwo.Services;
 
 namespace LoteriaTwo.Views
 {
@@ -22,6 +25,9 @@ namespace LoteriaTwo.Views
         private readonly TextBox[][]   _txtNumeros      = new TextBox[6][];
         private readonly TextBox[][]   _txtOtros        = new TextBox[6][];
         private readonly TextBox[]     _txtFechaPremiado = new TextBox[6];
+        private string _eurodreamsDia = string.Empty;
+
+        public Elemento? UltimoElemento { get; private set; }
 
         public SorteosBotesView()
         {
@@ -151,18 +157,54 @@ namespace LoteriaTwo.Views
         private void LogoEntra_Click(object sender, RoutedEventArgs e) { }
         private void LogoSale_Click(object sender, RoutedEventArgs e) { }
         private void LogoEncadena_Click(object sender, RoutedEventArgs e) { }
-        private void LogoP_Click(object sender, RoutedEventArgs e) { }
+        private void LogoP_Click(object sender, RoutedEventArgs e)
+        {
+            var el = new Elemento { Tipo = TipoElemento.Logo };
+            el["Logo"] = (CmbLogos.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? string.Empty;
+            Previsualizar(el);
+        }
 
         // ── Handlers — BOTES ─────────────────────────────────────────────────
 
         private void BoteEntra_Click(object sender, RoutedEventArgs e) { }
         private void BoteSale_Click(object sender, RoutedEventArgs e) { }
         private void BoteEncadena_Click(object sender, RoutedEventArgs e) { }
-        private void BoteP_Click(object sender, RoutedEventArgs e) { }
+        private void BoteP_Click(object sender, RoutedEventArgs e)
+        {
+            var el = new Elemento { Tipo = TipoElemento.Bote };
+            el["Juego"] = GetCheckedRadio(this, "BoteGame");
+            (el["Cantidad"], el["Fecha"]) = el["Juego"] switch
+            {
+                "BONOLOTO"     => (TxtCantBonoloto.Text,    TxtFechaBoteBonoloto.Text),
+                "QUINIGOL"     => (TxtCantQuinigol.Text,    TxtFechaBoteQuinigol.Text),
+                "EUROMILLONES" => (TxtCantEuromillones.Text, TxtFechaBoteEuromillones.Text),
+                "LOTERIA"      => (TxtCantLoteria.Text,     TxtFechaBoteLoteria.Text),
+                "PRIMITIVA"    => (TxtCantPrimitiva.Text,   TxtFechaBotePrimitiva.Text),
+                "QUINIELA"     => (TxtCantQuiniela.Text,    TxtFechaBoteQuiniela.Text),
+                "EL GORDO"     => (TxtCantElGordo.Text,     TxtFechaBoteElGordo.Text),
+                "LOTOTURF"     => (TxtCantLototurf.Text,    TxtFechaBoteLototurf.Text),
+                "JOKER"        => (TxtCantJoker.Text,       TxtFechaBoteJoker.Text),
+                "Eurodreams"   => (TxtCantEurodreams.Text,  TxtFechaBoteEurodreams.Text),
+                _              => (string.Empty, string.Empty)
+            };
+            Previsualizar(el);
+        }
 
         // ── Handlers — PREMIADOS ─────────────────────────────────────────────
 
-        private void PremiadosP_Click(object sender, RoutedEventArgs e) { }
+        private void PremiadosP_Click(object sender, RoutedEventArgs e)
+        {
+            int idx = Array.FindIndex(_rdbPremiado, r => r.IsChecked == true);
+            if (idx < 0) return;
+
+            var el = new Elemento { Tipo = TipoElemento.Premiado };
+            el["Juego"]   = JuegosPremiados[idx].Nombre;
+            el["Bote"]    = (_chkBotePremiado[idx].IsChecked == true).ToString();
+            el["Numeros"] = string.Join(",", _txtNumeros[idx].Select(t => t.Text));
+            el["Extras"]  = string.Join(",", _txtOtros[idx].Select(t => t.Text));
+            el["Fecha"]   = _txtFechaPremiado[idx].Text;
+            Previsualizar(el);
+        }
         private void PremiadosEntra_Click(object sender, RoutedEventArgs e) { }
         private void PremiadosSale_Click(object sender, RoutedEventArgs e) { }
         private void PremiadosEncadena_Click(object sender, RoutedEventArgs e) { }
@@ -176,7 +218,12 @@ namespace LoteriaTwo.Views
 
         // ── Handlers — EL MILLÓN / JOKER ─────────────────────────────────────
 
-        private void MillonP_Click(object sender, RoutedEventArgs e) { }
+        private void MillonP_Click(object sender, RoutedEventArgs e)
+        {
+            var el = new Elemento { Tipo = TipoElemento.ElMillon };
+            el["Numero"] = TxtMillonMartes.Text;
+            Previsualizar(el);
+        }
         private void MillonEntra_Click(object sender, RoutedEventArgs e) { }
         private void MillonSale_Click(object sender, RoutedEventArgs e) { }
         private void JokerEntra_Click(object sender, RoutedEventArgs e) { }
@@ -186,16 +233,53 @@ namespace LoteriaTwo.Views
 
         private void EuroMillonEntra_Click(object sender, RoutedEventArgs e) { }
         private void EuroMillonSale_Click(object sender, RoutedEventArgs e) { }
-        private void EuroMillonP_Click(object sender, RoutedEventArgs e) { }
+        private void EuroMillonP_Click(object sender, RoutedEventArgs e)
+        {
+            var el = new Elemento { Tipo = TipoElemento.EuromillonesMosca };
+            el["Numero"] = TxtEuromillonesMillon.Text;
+            Previsualizar(el);
+        }
 
         // ── Handlers — EURODREAMS ────────────────────────────────────────────
 
-        private void EurodreamsLunes_Click(object sender, RoutedEventArgs e) { }
-        private void EurodreamsJueves_Click(object sender, RoutedEventArgs e) { }
+        private void EurodreamsLunes_Click(object sender, RoutedEventArgs e)  { _eurodreamsDia = "LUNES"; }
+        private void EurodreamsJueves_Click(object sender, RoutedEventArgs e) { _eurodreamsDia = "JUEVES"; }
         private void EurodreamsEntra_Click(object sender, RoutedEventArgs e) { }
         private void EurodreamsSale_Click(object sender, RoutedEventArgs e) { }
-        private void EurodreamsP_Click(object sender, RoutedEventArgs e) { }
+        private void EurodreamsP_Click(object sender, RoutedEventArgs e)
+        {
+            var el = new Elemento { Tipo = TipoElemento.Eurodreams };
+            el["DiaSemana"] = _eurodreamsDia;
+            el["Dia"]       = TxtEurodreamsDia.Text;
+            el["Mes"]       = TxtEurodreamsMes.Text;
+            Previsualizar(el);
+        }
         private void EurodreamsPremiado_Click(object sender, RoutedEventArgs e) { }
         private void EurodreamsProximo_Click(object sender, RoutedEventArgs e) { }
+
+        // ── Helpers ──────────────────────────────────────────────────────────
+
+        private void Previsualizar(Elemento el)
+        {
+            ElementoRepository.Instancia.Add(el);
+            UltimoElemento = el;
+            LogService.Instancia.Registrar(LogNivel.Accion, el.Tipo.ToString(),
+                "P → " + el.ToLogString());
+            PlaylistService.Instancia.AgregarElemento(el.Tipo, el.Tipo.ToString());
+            PlaylistService.Instancia.AgregarLogo(el.Tipo.ToString(), el.Tipo);
+        }
+
+        private static string GetCheckedRadio(DependencyObject root, string groupName)
+        {
+            if (root is RadioButton rb && rb.GroupName == groupName && rb.IsChecked == true)
+                return rb.Content?.ToString() ?? string.Empty;
+            foreach (object child in LogicalTreeHelper.GetChildren(root))
+                if (child is DependencyObject dep)
+                {
+                    var result = GetCheckedRadio(dep, groupName);
+                    if (!string.IsNullOrEmpty(result)) return result;
+                }
+            return string.Empty;
+        }
     }
 }

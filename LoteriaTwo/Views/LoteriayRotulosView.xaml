@@ -13,7 +13,7 @@
             <!-- ═══════════════════════════════════════ -->
             <!-- COLUMN 0 — WEB + IMÁGENES              -->
             <!-- ═══════════════════════════════════════ -->
-            <StackPanel Grid.Column="0" Width="200" Margin="0,0,5,0">
+            <StackPanel Grid.Column="0" Width="280" Margin="0,0,5,0">
 
                 <!-- WEB -->
                 <GroupBox Header="WEB" Margin="0,0,0,5">
@@ -40,6 +40,7 @@
                     <Grid Margin="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="65"/>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -63,10 +64,14 @@
                                 Margin="0,2,4,2" Click="ImagenesPreview_Click"/>
                         <RadioButton Content="Foto 1" GroupName="Imagenes"
                                      Grid.Row="0" Grid.Column="1"
-                                     Margin="2,2,2,1" VerticalAlignment="Center"/>
+                                     Margin="2,2,6,1" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="CmbLogoFoto1"
+                                  Grid.Row="0" Grid.Column="2" Margin="0,2,0,1"/>
                         <RadioButton Content="Foto 2" GroupName="Imagenes"
                                      Grid.Row="1" Grid.Column="1"
-                                     Margin="2,1,2,1" VerticalAlignment="Center"/>
+                                     Margin="2,1,6,1" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="CmbLogoFoto2"
+                                  Grid.Row="1" Grid.Column="2" Margin="0,1,0,1"/>
 
                         <!-- ENTRA spans rows 2-3 -->
                         <Button Content="ENTRA" Style="{StaticResource BtnEntra}"
@@ -74,10 +79,14 @@
                                 Margin="0,2,4,2" Click="ImagenesEntra_Click"/>
                         <RadioButton Content="Foto 3" GroupName="Imagenes"
                                      Grid.Row="2" Grid.Column="1"
-                                     Margin="2,1,2,1" VerticalAlignment="Center"/>
+                                     Margin="2,1,6,1" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="CmbLogoFoto3"
+                                  Grid.Row="2" Grid.Column="2" Margin="0,1,0,1"/>
                         <RadioButton Content="Foto 4" GroupName="Imagenes"
                                      Grid.Row="3" Grid.Column="1"
-                                     Margin="2,1,2,1" VerticalAlignment="Center"/>
+                                     Margin="2,1,6,1" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="CmbLogoFoto4"
+                                  Grid.Row="3" Grid.Column="2" Margin="0,1,0,1"/>
 
                         <!-- SALE spans rows 4-5 -->
                         <Button Content="SALE" Style="{StaticResource BtnSale}"
@@ -85,15 +94,19 @@
                                 Margin="0,2,4,2" Click="ImagenesSale_Click"/>
                         <RadioButton Content="Foto 5" GroupName="Imagenes"
                                      Grid.Row="4" Grid.Column="1"
-                                     Margin="2,1,2,1" VerticalAlignment="Center"/>
+                                     Margin="2,1,6,1" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="CmbLogoFoto5"
+                                  Grid.Row="4" Grid.Column="2" Margin="0,1,0,1"/>
                         <RadioButton Content="Video vivo" GroupName="Imagenes"
                                      Grid.Row="5" Grid.Column="1"
-                                     Margin="2,1,2,1" VerticalAlignment="Center"/>
+                                     Margin="2,1,6,1" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="CmbLogoFotoVideo"
+                                  Grid.Row="5" Grid.Column="2" Margin="0,1,0,1"/>
 
                         <!-- Spacer row 6 -->
 
-                        <!-- F1–F5 rows span both columns -->
-                        <Grid Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2">
+                        <!-- F1–F5 rows span all columns -->
+                        <Grid Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="44"/>
