@@ -1,0 +1,111 @@
+<UserControl x:Class="LoteriaTwo.Views.QuinielaView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="290"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ── Partidos (columna principal) ─────────────────────────── -->
+        <DockPanel Grid.Column="0" Margin="10,8,6,8">
+            <CheckBox DockPanel.Dock="Bottom"
+                      x:Name="ChkModoQuiniela"
+                      Content="MODO QUINIELA"
+                      Foreground="{StaticResource BrushTextPrimary}"
+                      Margin="28,8,0,0"/>
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled">
+                <Grid x:Name="GridPartidos"/>
+            </ScrollViewer>
+        </DockPanel>
+
+        <!-- ── Panel de control (columna derecha) ───────────────────── -->
+        <StackPanel Grid.Column="1" Margin="0,8,14,8">
+
+            <!-- FECHA -->
+            <Grid Margin="0,0,0,6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="FECHA" FontWeight="Bold"
+                           Foreground="{StaticResource BrushTextPrimary}"
+                           VerticalAlignment="Center"/>
+                <TextBox x:Name="TxtFecha" Grid.Column="1"/>
+            </Grid>
+
+            <!-- JORNADA -->
+            <Grid Margin="0,0,0,14">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="JORNADA" FontWeight="Bold"
+                           Foreground="{StaticResource BrushTextPrimary}"
+                           VerticalAlignment="Center"/>
+                <TextBox x:Name="TxtJornada" Grid.Column="1"/>
+            </Grid>
+
+            <Button Content="CARGAR QUINIELA" Style="{StaticResource BtnYellow}"
+                    Margin="0,0,0,6" Click="CargarQuiniela_Click"/>
+            <Button Content="ENTRA" Style="{StaticResource BtnEntra}"
+                    Margin="0,0,0,6" MinHeight="38" Click="EntraQuiniela_Click"/>
+            <Grid Margin="0,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Content="SALE" Style="{StaticResource BtnSale}"
+                        Grid.Column="0" Margin="0,0,4,0" MinHeight="38"
+                        Click="SaleQuiniela_Click"/>
+                <Button Content="P" Style="{StaticResource BtnPreview}"
+                        Grid.Column="1" MinHeight="38"
+                        Click="PQuiniela_Click"/>
+            </Grid>
+
+            <Separator Margin="0,14,0,14"/>
+
+            <!-- ACERTANTES / BOTE PLENO -->
+            <Grid Margin="0,0,0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="ACERTANTES PLENO" FontWeight="Bold" FontSize="11"
+                           Foreground="{StaticResource BrushTextPrimary}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBox x:Name="TxtAcertantesPleno" Grid.Column="1"/>
+            </Grid>
+            <Grid Margin="0,0,0,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="BOTE PLENO" FontWeight="Bold" FontSize="11"
+                           Foreground="{StaticResource BrushTextPrimary}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBox x:Name="TxtBotePleno" Grid.Column="1"/>
+            </Grid>
+
+            <!-- PLENO 15 -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Content="ENTRA PLENO 15" Style="{StaticResource BtnEntra}"
+                        Grid.Column="0" Margin="0,0,3,0"
+                        Click="EntraPleno15_Click"/>
+                <Button Content="SALE PLENO 15" Style="{StaticResource BtnSale}"
+                        Grid.Column="1" Margin="0,0,3,0"
+                        Click="SalePleno15_Click"/>
+                <Button Content="P PLENO 15" Style="{StaticResource BtnPreview}"
+                        Grid.Column="2"
+                        Click="PPleno15_Click"/>
+            </Grid>
+
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -7,7 +7,6 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
@@ -203,44 +202,9 @@
             </GroupBox>
 
             <!-- ═══════════════════════════════════════ -->
-            <!-- COLUMN 2 — DÉCIMOS (sin crawl)         -->
+            <!-- COLUMN 2 — CIUDADES                    -->
             <!-- ═══════════════════════════════════════ -->
-            <GroupBox Header="DECIMOS" Grid.Column="2" Width="180" Margin="0,0,5,0"
-                      VerticalAlignment="Top">
-                <StackPanel Margin="6">
-                    <Button Content="BUSCAR DECIMO"   Style="{StaticResource BtnBlue}"
-                            Margin="0,3" Click="BuscarDecimo_Click"/>
-                    <Button Content="POSICION JUEVES" Style="{StaticResource BtnBlue}"
-                            Margin="0,3" Click="PosicionJueves_Click"/>
-                    <Button Content="POSICION SABADO" Style="{StaticResource BtnBlue}"
-                            Margin="0,3" Click="PosicionSabado_Click"/>
-
-                    <!-- Previsualización del décimo -->
-                    <Border Margin="0,8,0,0"
-                            BorderBrush="{StaticResource BrushBorder}"
-                            BorderThickness="1" CornerRadius="4"
-                            Background="{StaticResource BrushSurface2}"
-                            MinHeight="160">
-                        <Grid>
-                            <TextBlock x:Name="TxtDecimoPlaceholder"
-                                       Text="Sin imagen"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Foreground="{StaticResource BrushTextSecondary}"
-                                       FontSize="11" FontFamily="Segoe UI"/>
-                            <Image x:Name="ImgDecimo"
-                                   Stretch="Uniform"
-                                   Margin="4"
-                                   Visibility="Collapsed"/>
-                        </Grid>
-                    </Border>
-                </StackPanel>
-            </GroupBox>
-
-            <!-- ═══════════════════════════════════════ -->
-            <!-- COLUMN 3 — CIUDADES                    -->
-            <!-- ═══════════════════════════════════════ -->
-            <GroupBox Header="CIUDADES" Grid.Column="3" VerticalAlignment="Top">
+            <GroupBox Header="CIUDADES" Grid.Column="2" VerticalAlignment="Top">
                 <Grid Margin="6">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>

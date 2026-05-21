@@ -88,19 +88,13 @@
                 <views:LoteriayRotulosView/>
             </TabItem>
             <TabItem Header="DÉCIMOS">
-                <TextBlock Text="Pestaña DÉCIMOS — próximamente"
-                           HorizontalAlignment="Center" VerticalAlignment="Center"
-                           FontSize="16" Foreground="{StaticResource BrushTextSecondary}"/>
+                <views:DecimosView/>
             </TabItem>
             <TabItem Header="QUINIELA">
-                <TextBlock Text="Pestaña QUINIELA — próximamente"
-                           HorizontalAlignment="Center" VerticalAlignment="Center"
-                           FontSize="16" Foreground="{StaticResource BrushTextSecondary}"/>
+                <views:QuinielaView/>
             </TabItem>
             <TabItem Header="SORTEOS y BOTES">
-                <TextBlock Text="Pestaña SORTEOS y BOTES — próximamente"
-                           HorizontalAlignment="Center" VerticalAlignment="Center"
-                           FontSize="16" Foreground="{StaticResource BrushTextSecondary}"/>
+                <views:SorteosBotesView/>
             </TabItem>
         </TabControl>
 

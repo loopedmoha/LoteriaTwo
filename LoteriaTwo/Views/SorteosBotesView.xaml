@@ -1,0 +1,367 @@
+<UserControl x:Class="LoteriaTwo.Views.SorteosBotesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ═══ PANEL IZQUIERDO: LOGOS + BOTES ═══════════════════ -->
+            <StackPanel Grid.Column="0" Width="375" Margin="0,0,5,0">
+
+                <!-- LOGOS -->
+                <GroupBox Header="LOGOS" Margin="0,0,0,5">
+                    <StackPanel Margin="6">
+                        <ComboBox x:Name="CmbLogos" Margin="0,0,0,8" SelectedIndex="0">
+                            <ComboBoxItem Content=""/>
+                            <ComboBoxItem Content="Bonoloto"/>
+                            <ComboBoxItem Content="Primitiva"/>
+                            <ComboBoxItem Content="El Gordo"/>
+                            <ComboBoxItem Content="Euromillones"/>
+                            <ComboBoxItem Content="EuromillonesMillon"/>
+                            <ComboBoxItem Content="Eurodreams"/>
+                            <ComboBoxItem Content="LotoTurf"/>
+                            <ComboBoxItem Content="Quiniela"/>
+                            <ComboBoxItem Content="Quinigol"/>
+                            <ComboBoxItem Content="LoteriaNacional"/>
+                            <ComboBoxItem Content="ApuestaHipica"/>
+                            <ComboBoxItem Content="Joker"/>
+                            <ComboBoxItem Content="ElMillon"/>
+                            <ComboBoxItem Content="Deporte"/>
+                            <ComboBoxItem Content="Cultura"/>
+                            <ComboBoxItem Content="Sociedad"/>
+                            <ComboBoxItem Content="GenericoLAE"/>
+                            <ComboBoxItem Content="ProgLaSuerte"/>
+                            <ComboBoxItem Content="Elige8"/>
+                        </ComboBox>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Button Content="ENTRA"    Style="{StaticResource BtnEntra}"
+                                    Grid.Row="0" Grid.Column="0" Margin="0,0,3,3"
+                                    Click="LogoEntra_Click"/>
+                            <Button Content="SALE"     Style="{StaticResource BtnSale}"
+                                    Grid.Row="0" Grid.Column="1" Margin="0,0,0,3"
+                                    Click="LogoSale_Click"/>
+                            <Button Content="ENCADENA" Style="{StaticResource BtnYellow}"
+                                    Grid.Row="1" Grid.Column="0" Margin="0,0,3,0"
+                                    Click="LogoEncadena_Click"/>
+                            <Button Content="P"        Style="{StaticResource BtnPreview}"
+                                    Grid.Row="1" Grid.Column="1"
+                                    Click="LogoP_Click"/>
+                        </Grid>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- BOTES -->
+                <GroupBox Header="BOTES">
+                    <Grid Margin="6,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="105"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Cabeceras -->
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="CANTIDAD"
+                                   FontWeight="Bold" FontSize="10"
+                                   Foreground="{StaticResource BrushTextPrimary}"
+                                   HorizontalAlignment="Center" Margin="0,0,0,3"/>
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="FECHA"
+                                   FontWeight="Bold" FontSize="10"
+                                   Foreground="{StaticResource BrushTextPrimary}"
+                                   HorizontalAlignment="Center" Margin="0,0,0,3"/>
+
+                        <!-- BONOLOTO -->
+                        <RadioButton Grid.Row="1" Grid.Column="0" Content="BONOLOTO"
+                                     GroupName="BoteGame" x:Name="RdbBoteBonoloto"
+                                     Foreground="{StaticResource BrushTextPrimary}"
+                                     IsChecked="True" Margin="0,2"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="TxtCantBonoloto"   Margin="3,2"/>
+                        <TextBox Grid.Row="1" Grid.Column="2" x:Name="TxtFechaBoteBonoloto" Margin="3,2"/>
+
+                        <!-- QUINIGOL -->
+                        <RadioButton Grid.Row="2" Grid.Column="0" Content="QUINIGOL"
+                                     GroupName="BoteGame" x:Name="RdbBoteQuinigol"
+                                     Foreground="{StaticResource BrushTextPrimary}" Margin="0,2"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" x:Name="TxtCantQuinigol"   Margin="3,2"/>
+                        <TextBox Grid.Row="2" Grid.Column="2" x:Name="TxtFechaBoteQuinigol" Margin="3,2"/>
+
+                        <!-- EUROMILLONES -->
+                        <RadioButton Grid.Row="3" Grid.Column="0" Content="EUROMILLONES"
+                                     GroupName="BoteGame" x:Name="RdbBoteEuromillones"
+                                     Foreground="{StaticResource BrushTextPrimary}" Margin="0,2"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" x:Name="TxtCantEuromillones"   Margin="3,2"/>
+                        <TextBox Grid.Row="3" Grid.Column="2" x:Name="TxtFechaBoteEuromillones" Margin="3,2"/>
+
+                        <!-- LOTERIA -->
+                        <RadioButton Grid.Row="4" Grid.Column="0" Content="LOTERIA"
+                                     GroupName="BoteGame" x:Name="RdbBoteLoteria"
+                                     Foreground="{StaticResource BrushTextPrimary}" Margin="0,2"/>
+                        <TextBox Grid.Row="4" Grid.Column="1" x:Name="TxtCantLoteria"   Margin="3,2"/>
+                        <TextBox Grid.Row="4" Grid.Column="2" x:Name="TxtFechaBoteLoteria" Margin="3,2"/>
+
+                        <!-- PRIMITIVA -->
+                        <RadioButton Grid.Row="5" Grid.Column="0" Content="PRIMITIVA"
+                                     GroupName="BoteGame" x:Name="RdbBotePrimitiva"
+                                     Foreground="{StaticResource BrushTextPrimary}" Margin="0,2"/>
+                        <TextBox Grid.Row="5" Grid.Column="1" x:Name="TxtCantPrimitiva"   Margin="3,2"/>
+                        <TextBox Grid.Row="5" Grid.Column="2" x:Name="TxtFechaBotePrimitiva" Margin="3,2"/>
+
+                        <!-- QUINIELA -->
+                        <RadioButton Grid.Row="6" Grid.Column="0" Content="QUINIELA"
+                                     GroupName="BoteGame" x:Name="RdbBoteQuiniela"
+                                     Foreground="{StaticResource BrushTextPrimary}" Margin="0,2"/>
+                        <TextBox Grid.Row="6" Grid.Column="1" x:Name="TxtCantQuiniela"   Margin="3,2"/>
+                        <TextBox Grid.Row="6" Grid.Column="2" x:Name="TxtFechaBoteQuiniela" Margin="3,2"/>
+
+                        <!-- EL GORDO -->
+                        <RadioButton Grid.Row="7" Grid.Column="0" Content="EL GORDO"
+                                     GroupName="BoteGame" x:Name="RdbBoteElGordo"
+                                     Foreground="{StaticResource BrushTextPrimary}" Margin="0,2"/>
+                        <TextBox Grid.Row="7" Grid.Column="1" x:Name="TxtCantElGordo"   Margin="3,2"/>
+                        <TextBox Grid.Row="7" Grid.Column="2" x:Name="TxtFechaBoteElGordo" Margin="3,2"/>
+
+                        <!-- LOTOTURF -->
+                        <RadioButton Grid.Row="8" Grid.Column="0" Content="LOTOTURF"
+                                     GroupName="BoteGame" x:Name="RdbBoteLototurf"
+                                     Foreground="{StaticResource BrushTextPrimary}" Margin="0,2"/>
+                        <TextBox Grid.Row="8" Grid.Column="1" x:Name="TxtCantLototurf"   Margin="3,2"/>
+                        <TextBox Grid.Row="8" Grid.Column="2" x:Name="TxtFechaBoteLototurf" Margin="3,2"/>
+
+                        <!-- JOKER -->
+                        <RadioButton Grid.Row="9" Grid.Column="0" Content="JOKER"
+                                     GroupName="BoteGame" x:Name="RdbBoteJoker"
+                                     Foreground="{StaticResource BrushTextPrimary}" Margin="0,2"/>
+                        <TextBox Grid.Row="9" Grid.Column="1" x:Name="TxtCantJoker"   Margin="3,2"/>
+                        <TextBox Grid.Row="9" Grid.Column="2" x:Name="TxtFechaBoteJoker" Margin="3,2"/>
+
+                        <!-- EURODREAMS -->
+                        <RadioButton Grid.Row="10" Grid.Column="0" Content="Eurodreams"
+                                     GroupName="BoteGame" x:Name="RdbBoteEurodreams"
+                                     Foreground="{StaticResource BrushTextPrimary}" Margin="0,2"/>
+                        <TextBox Grid.Row="10" Grid.Column="1" x:Name="TxtCantEurodreams"   Margin="3,2"/>
+                        <TextBox Grid.Row="10" Grid.Column="2" x:Name="TxtFechaBoteEurodreams" Margin="3,2"/>
+
+                        <!-- Botones BOTES -->
+                        <StackPanel Grid.Row="11" Grid.ColumnSpan="3"
+                                    Orientation="Horizontal" Margin="0,8,0,0">
+                            <Button Content="ENTRA"    Style="{StaticResource BtnEntra}"
+                                    Margin="0,0,4,0" Click="BoteEntra_Click"/>
+                            <Button Content="SALE"     Style="{StaticResource BtnSale}"
+                                    Margin="0,0,4,0" Click="BoteSale_Click"/>
+                            <Button Content="ENCADENA" Style="{StaticResource BtnYellow}"
+                                    Margin="0,0,4,0" Click="BoteEncadena_Click"/>
+                            <Button Content="P"        Style="{StaticResource BtnPreview}"
+                                    MinWidth="50"      Click="BoteP_Click"/>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+
+            </StackPanel>
+
+            <!-- ═══ PANEL CENTRAL: PREMIADOS ════════════════════════ -->
+            <GroupBox Header="PREMIADOS" Grid.Column="1">
+                <Grid Margin="6,4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Filas de juegos (construidas en code-behind) -->
+                    <Grid x:Name="GridPremiados" Grid.Row="0"/>
+
+                    <!-- Botones de acción -->
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,6">
+                        <Button Content="P"        Style="{StaticResource BtnPreview}"
+                                MinWidth="80"  Margin="0,0,6,0" Click="PremiadosP_Click"/>
+                        <Button Content="ENTRA"    Style="{StaticResource BtnEntra}"
+                                MinWidth="80"  Margin="0,0,6,0" Click="PremiadosEntra_Click"/>
+                        <Button Content="SALE"     Style="{StaticResource BtnSale}"
+                                MinWidth="80"  Margin="0,0,6,0" Click="PremiadosSale_Click"/>
+                        <Button Content="ENCADENA" Style="{StaticResource BtnYellow}"
+                                MinWidth="100" Margin="0,0,6,0" Click="PremiadosEncadena_Click"/>
+                        <Button Content="ORDENAR"  Style="{StaticResource BtnBlue}"
+                                MinWidth="100"             Click="PremiadosOrdenar_Click"/>
+                    </StackPanel>
+
+                    <!-- FALDONES APUESTAS -->
+                    <GroupBox Header="FALDONES APUESTAS" Grid.Row="2">
+                        <StackPanel Orientation="Horizontal" Margin="6,4">
+                            <Button Content="ENTRA"    Style="{StaticResource BtnEntra}"
+                                    Margin="0,0,4,0" Click="FaldonEntra_Click"/>
+                            <Button Content="SALE"     Style="{StaticResource BtnSale}"
+                                    Margin="0,0,4,0" Click="FaldonSale_Click"/>
+                            <Button Content="CORREGIR" Style="{StaticResource BtnBlue}"
+                                    Margin="0,0,16,0" Click="FaldonCorregir_Click"/>
+                            <CheckBox x:Name="ChkSeguridad"
+                                      Content="Seguridad"
+                                      Foreground="{StaticResource BrushTextPrimary}"
+                                      VerticalAlignment="Center" Margin="0,0,16,0"/>
+                            <CheckBox x:Name="ChkPasarGanador"
+                                      Content="Pasar ganador con TAB"
+                                      Foreground="{StaticResource BrushTextPrimary}"
+                                      VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </GroupBox>
+                </Grid>
+            </GroupBox>
+
+            <!-- ═══ PANEL DERECHO ═══════════════════════════════════ -->
+            <StackPanel Grid.Column="2" Width="245" Margin="5,0,0,0">
+
+                <!-- EL MILLÓN / JOKER -->
+                <GroupBox Header="EL MILLÓN / JOKER" Margin="0,0,0,5">
+                    <StackPanel Margin="6">
+                        <Grid Margin="0,0,0,3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="El millón martes"
+                                       Foreground="{StaticResource BrushTextPrimary}"
+                                       FontSize="11" VerticalAlignment="Center"/>
+                            <Button Content="P" Style="{StaticResource BtnPreview}"
+                                    Grid.Column="1" MinWidth="44"
+                                    Click="MillonP_Click"/>
+                        </Grid>
+                        <TextBox x:Name="TxtMillonMartes" Margin="0,0,0,4"/>
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Content="ENTRA" Style="{StaticResource BtnEntra}"
+                                    Grid.Column="0" Margin="0,0,3,0" Click="MillonEntra_Click"/>
+                            <Button Content="SALE"  Style="{StaticResource BtnSale}"
+                                    Grid.Column="1"                Click="MillonSale_Click"/>
+                        </Grid>
+
+                        <TextBlock Text="Joker jueves"
+                                   Foreground="{StaticResource BrushTextPrimary}"
+                                   FontSize="11" Margin="0,0,0,3"/>
+                        <TextBox x:Name="TxtJokerJueves" Margin="0,0,0,4"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Content="ENTRA" Style="{StaticResource BtnEntra}"
+                                    Grid.Column="0" Margin="0,0,3,0" Click="JokerEntra_Click"/>
+                            <Button Content="SALE"  Style="{StaticResource BtnSale}"
+                                    Grid.Column="1"                Click="JokerSale_Click"/>
+                        </Grid>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- EUROMILLONES -->
+                <GroupBox Header="EUROMILLONES" Margin="0,0,0,5">
+                    <StackPanel Margin="6">
+                        <TextBox x:Name="TxtEuromillonesMillon" Margin="0,0,0,6"/>
+                        <Grid Margin="0,0,0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Content="ENTRA MOSCA" Style="{StaticResource BtnEntra}"
+                                    Grid.Column="0" Margin="0,0,3,0"
+                                    Click="EuroMillonEntra_Click"/>
+                            <Button Content="SALE MOSCA"  Style="{StaticResource BtnSale}"
+                                    Grid.Column="1"
+                                    Click="EuroMillonSale_Click"/>
+                        </Grid>
+                        <Button Content="P" Style="{StaticResource BtnPreview}"
+                                Click="EuroMillonP_Click"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- EURODREAMS -->
+                <GroupBox Header="EURODREAMS">
+                    <StackPanel Margin="6">
+                        <Grid Margin="0,0,0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Content="LUNES"  Style="{StaticResource BtnBlue}"
+                                    Grid.Column="0" Margin="0,0,3,0"
+                                    Click="EurodreamsLunes_Click"/>
+                            <Button Content="JUEVES" Style="{StaticResource BtnBlue}"
+                                    Grid.Column="1"
+                                    Click="EurodreamsJueves_Click"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Content="ENTRA" Style="{StaticResource BtnEntra}"
+                                    Grid.Column="0" Margin="0,0,3,0"
+                                    Click="EurodreamsEntra_Click"/>
+                            <Button Content="SALE"  Style="{StaticResource BtnSale}"
+                                    Grid.Column="1"
+                                    Click="EurodreamsSale_Click"/>
+                        </Grid>
+                        <Button Content="P" Style="{StaticResource BtnPreview}"
+                                Margin="0,0,0,4" Click="EurodreamsP_Click"/>
+                        <Grid Margin="0,0,0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Content="PREMIADO" Style="{StaticResource BtnPreview}"
+                                    Grid.Column="0" Margin="0,0,3,0"
+                                    Click="EurodreamsPremiado_Click"/>
+                            <Button Content="PROXIMO"  Style="{StaticResource BtnYellow}"
+                                    Grid.Column="1"
+                                    Click="EurodreamsProximo_Click"/>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Margin="0,0,3,0">
+                                <TextBlock Text="Dia" FontSize="10"
+                                           Foreground="{StaticResource BrushTextPrimary}"
+                                           Margin="0,0,0,2"/>
+                                <TextBox x:Name="TxtEurodreamsDia" MaxLength="2"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="Mes" FontSize="10"
+                                           Foreground="{StaticResource BrushTextPrimary}"
+                                           Margin="0,0,0,2"/>
+                                <TextBox x:Name="TxtEurodreamsMes" MaxLength="2"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </GroupBox>
+
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

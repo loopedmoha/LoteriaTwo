@@ -1,0 +1,244 @@
+<UserControl x:Class="LoteriaTwo.Views.DecimosView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="190"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ── Premios ───────────────────────────────────────────────── -->
+        <Grid Grid.Column="0" Margin="14,8,8,8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>   <!-- FECHA -->
+                <RowDefinition Height="Auto"/>   <!-- separador -->
+                <RowDefinition Height="*"/>      <!-- PRIMER PREMIO -->
+                <RowDefinition Height="Auto"/>   <!-- separador -->
+                <RowDefinition Height="*"/>      <!-- PREMIO ESPECIAL -->
+                <RowDefinition Height="Auto"/>   <!-- separador -->
+                <RowDefinition Height="*"/>      <!-- SEGUNDO PREMIO -->
+                <RowDefinition Height="Auto"/>   <!-- separador -->
+                <RowDefinition Height="*"/>      <!-- TERCER PREMIO -->
+            </Grid.RowDefinitions>
+
+            <!-- FECHA -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,6">
+                <TextBlock Text="FECHA"
+                           Foreground="{StaticResource BrushTextPrimary}"
+                           FontSize="10" FontWeight="SemiBold"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBox x:Name="TxtFecha" Width="200"/>
+            </StackPanel>
+
+            <Separator Grid.Row="1"/>
+
+            <!-- PRIMER PREMIO -->
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal"
+                            VerticalAlignment="Center" Margin="0,0,16,0">
+                    <StackPanel Margin="0,0,16,0">
+                        <TextBlock Text="NUMERO PREMIO"
+                                   Foreground="{StaticResource BrushTextPrimary}"
+                                   FontSize="10" FontWeight="SemiBold" Margin="0,0,0,3"/>
+                        <TextBox x:Name="TxtNumeroPrimero" Width="130" MaxLength="5"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,16,0">
+                        <TextBlock Text="CANTIDAD PRIMER PREMIO"
+                                   Foreground="{StaticResource BrushTextPrimary}"
+                                   FontSize="10" FontWeight="SemiBold" Margin="0,0,0,3"/>
+                        <TextBox x:Name="TxtCantidadPrimero" Width="180"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,12,0">
+                        <TextBlock Text=" " FontSize="10" Margin="0,0,0,3"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox x:Name="TxtReintegro1" Width="28" MaxLength="1"
+                                     HorizontalContentAlignment="Center" Margin="0,0,3,0"/>
+                            <TextBox x:Name="TxtReintegro2" Width="28" MaxLength="1"
+                                     HorizontalContentAlignment="Center" Margin="0,0,3,0"/>
+                            <TextBox x:Name="TxtReintegro3" Width="28" MaxLength="1"
+                                     HorizontalContentAlignment="Center"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <CheckBox x:Name="ChkReintegroPrimero"
+                              Content="Reintegro y premio"
+                              Foreground="{StaticResource BrushTextPrimary}"
+                              VerticalAlignment="Bottom" Margin="0,0,0,2"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Content="ENTRA" Style="{StaticResource BtnEntra}"
+                            MinWidth="120" MinHeight="42" Margin="0,0,8,0"
+                            Click="EntraPrimero_Click"/>
+                    <Button Content="SALE"  Style="{StaticResource BtnSale}"
+                            MinWidth="120" MinHeight="42" Margin="0,0,8,0"
+                            Click="SalePrimero_Click"/>
+                    <Button Content="P"     Style="{StaticResource BtnPreview}"
+                            MinWidth="120" MinHeight="42"
+                            Click="PPrimero_Click"/>
+                </StackPanel>
+            </Grid>
+
+            <Separator Grid.Row="3"/>
+
+            <!-- PREMIO ESPECIAL -->
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal"
+                            VerticalAlignment="Center" Margin="0,0,16,0">
+                    <StackPanel Margin="0,0,16,0">
+                        <TextBlock Text="NUMERO PREMIO"
+                                   Foreground="{StaticResource BrushTextPrimary}"
+                                   FontSize="10" FontWeight="SemiBold" Margin="0,0,0,3"/>
+                        <TextBox x:Name="TxtNumeroEspecial" Width="130" MaxLength="5"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,16,0">
+                        <TextBlock Text="CANTIDAD PREMIO ESPECIAL"
+                                   Foreground="{StaticResource BrushTextPrimary}"
+                                   FontSize="10" FontWeight="SemiBold" Margin="0,0,0,3"/>
+                        <TextBox x:Name="TxtCantidadEspecial" Width="180"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,16,0">
+                        <TextBlock Text="SERIE"
+                                   Foreground="{StaticResource BrushTextPrimary}"
+                                   FontSize="10" FontWeight="SemiBold" Margin="0,0,0,3"/>
+                        <TextBox x:Name="TxtSerieEspecial" Width="90"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="FRACC"
+                                   Foreground="{StaticResource BrushTextPrimary}"
+                                   FontSize="10" FontWeight="SemiBold" Margin="0,0,0,3"/>
+                        <TextBox x:Name="TxtFraccEspecial" Width="90"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Content="ENTRA" Style="{StaticResource BtnEntra}"
+                            MinWidth="120" MinHeight="42" Margin="0,0,8,0"
+                            Click="EntraEspecial_Click"/>
+                    <Button Content="SALE"  Style="{StaticResource BtnSale}"
+                            MinWidth="120" MinHeight="42" Margin="0,0,8,0"
+                            Click="SaleEspecial_Click"/>
+                    <Button Content="P"     Style="{StaticResource BtnPreview}"
+                            MinWidth="120" MinHeight="42"
+                            Click="PEspecial_Click"/>
+                </StackPanel>
+            </Grid>
+
+            <Separator Grid.Row="5"/>
+
+            <!-- SEGUNDO PREMIO -->
+            <Grid Grid.Row="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal"
+                            VerticalAlignment="Center" Margin="0,0,16,0">
+                    <StackPanel Margin="0,0,16,0">
+                        <TextBlock Text="NUMERO PREMIO"
+                                   Foreground="{StaticResource BrushTextPrimary}"
+                                   FontSize="10" FontWeight="SemiBold" Margin="0,0,0,3"/>
+                        <TextBox x:Name="TxtNumeroSegundo" Width="130" MaxLength="5"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="CANTIDAD SEGUNDO PREMIO"
+                                   Foreground="{StaticResource BrushTextPrimary}"
+                                   FontSize="10" FontWeight="SemiBold" Margin="0,0,0,3"/>
+                        <TextBox x:Name="TxtCantidadSegundo" Width="180"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Content="ENTRA" Style="{StaticResource BtnEntra}"
+                            MinWidth="120" MinHeight="42" Margin="0,0,8,0"
+                            Click="EntraSegundo_Click"/>
+                    <Button Content="SALE"  Style="{StaticResource BtnSale}"
+                            MinWidth="120" MinHeight="42" Margin="0,0,8,0"
+                            Click="SaleSegundo_Click"/>
+                    <Button Content="P"     Style="{StaticResource BtnPreview}"
+                            MinWidth="120" MinHeight="42"
+                            Click="PSegundo_Click"/>
+                </StackPanel>
+            </Grid>
+
+            <Separator Grid.Row="7"/>
+
+            <!-- TERCER PREMIO -->
+            <Grid Grid.Row="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal"
+                            VerticalAlignment="Center" Margin="0,0,16,0">
+                    <StackPanel Margin="0,0,16,0">
+                        <TextBlock Text="NUMERO PREMIO"
+                                   Foreground="{StaticResource BrushTextPrimary}"
+                                   FontSize="10" FontWeight="SemiBold" Margin="0,0,0,3"/>
+                        <TextBox x:Name="TxtNumeroTercero" Width="130" MaxLength="5"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="CANTIDAD TERCER PREMIO"
+                                   Foreground="{StaticResource BrushTextPrimary}"
+                                   FontSize="10" FontWeight="SemiBold" Margin="0,0,0,3"/>
+                        <TextBox x:Name="TxtCantidadTercero" Width="180"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Content="ENTRA" Style="{StaticResource BtnEntra}"
+                            MinWidth="120" MinHeight="42" Margin="0,0,8,0"
+                            Click="EntraTercero_Click"/>
+                    <Button Content="SALE"  Style="{StaticResource BtnSale}"
+                            MinWidth="120" MinHeight="42" Margin="0,0,8,0"
+                            Click="SaleTercero_Click"/>
+                    <Button Content="P"     Style="{StaticResource BtnPreview}"
+                            MinWidth="120" MinHeight="42"
+                            Click="PTercero_Click"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        <!-- ── DECIMOS (columna derecha) ─────────────────────────────── -->
+        <GroupBox Header="DECIMOS" Grid.Column="1" Margin="0,8,14,8">
+            <Grid Margin="6">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Button Grid.Row="0" Content="BUSCAR DECIMO"
+                        Style="{StaticResource BtnBlue}" Margin="0,0,0,4"
+                        Click="BuscarDecimo_Click"/>
+                <Button Grid.Row="1" Content="POSICION JUEVES"
+                        Style="{StaticResource BtnBlue}" Margin="0,0,0,4"
+                        Click="PosicionJueves_Click"/>
+                <Button Grid.Row="2" Content="POSICION SABADO"
+                        Style="{StaticResource BtnBlue}" Margin="0,0,0,8"
+                        Click="PosicionSabado_Click"/>
+                <Border Grid.Row="3"
+                        BorderBrush="{StaticResource BrushBorder}"
+                        BorderThickness="1" CornerRadius="4"
+                        Background="{StaticResource BrushSurface2}">
+                    <Grid>
+                        <TextBlock x:Name="TxtDecimoPlaceholder"
+                                   Text="Sin imagen"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Foreground="{StaticResource BrushTextSecondary}"
+                                   FontSize="11"/>
+                        <Image x:Name="ImgDecimo"
+                               Stretch="Uniform"
+                               Margin="4"
+                               Visibility="Collapsed"/>
+                    </Grid>
+                </Border>
+            </Grid>
+        </GroupBox>
+
+    </Grid>
+</UserControl>

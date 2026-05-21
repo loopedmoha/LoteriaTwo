@@ -1,8 +1,6 @@
-using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 using LoteriaTwo.Models;
 
 namespace LoteriaTwo.Views
@@ -126,26 +124,6 @@ namespace LoteriaTwo.Views
         private void EntrarRotulo_Click(object sender, RoutedEventArgs e) { }
         private void SaleRotulo_Click(object sender, RoutedEventArgs e) { }
         private void PreviewRotulo_Click(object sender, RoutedEventArgs e) { }
-
-        // ── DÉCIMOS ──────────────────────────────────────────────────────────
-
-        private void BuscarDecimo_Click(object sender, RoutedEventArgs e)
-        {
-            var dlg = new Microsoft.Win32.OpenFileDialog
-            {
-                Title = "Seleccionar imagen del décimo",
-                Filter = "Imágenes|*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.tiff|Todos los archivos|*.*"
-            };
-            if (dlg.ShowDialog() != true) return;
-
-            var bmp = new BitmapImage(new Uri(dlg.FileName));
-            ImgDecimo.Source = bmp;
-            ImgDecimo.Visibility = Visibility.Visible;
-            TxtDecimoPlaceholder.Visibility = Visibility.Collapsed;
-        }
-
-        private void PosicionJueves_Click(object sender, RoutedEventArgs e) { }
-        private void PosicionSabado_Click(object sender, RoutedEventArgs e) { }
 
         // ── CIUDADES — LOGO ──────────────────────────────────────────────────
 
