@@ -38,6 +38,14 @@ namespace LoteriaTwo.Services
             LogService.Instancia.Registrar(LogNivel.Accion, "Formulario", "Guardado → formulario.json");
         }
 
+        public void Limpiar()
+        {
+            var empty = new Dictionary<string, string>();
+            foreach (var kv in _secciones)
+                kv.Value.Escribir(empty);
+            LogService.Instancia.Registrar(LogNivel.Accion, "Formulario", "Formulario limpiado");
+        }
+
         public bool Cargar()
         {
             if (!File.Exists(RutaFormulario)) return false;

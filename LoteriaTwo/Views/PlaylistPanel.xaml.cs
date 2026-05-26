@@ -21,9 +21,32 @@ namespace LoteriaTwo.Views
         private void BindListas()
         {
             if (LstLogos is null || LstElementos is null) return;
+
+            if (LstLogos.ItemsSource is ObservableCollection<PlaylistItem> prevL)
+                prevL.CollectionChanged -= OnCollectionChanged;
+            if (LstElementos.ItemsSource is ObservableCollection<PlaylistItem> prevE)
+                prevE.CollectionChanged -= OnCollectionChanged;
+
             var activa = PlaylistService.Instancia.Activa;
             LstLogos.ItemsSource     = activa.Logos;
             LstElementos.ItemsSource = activa.Elementos;
+
+            activa.Logos.CollectionChanged     += OnCollectionChanged;
+            activa.Elementos.CollectionChanged += OnCollectionChanged;
+
+            ActualizarContadores();
+        }
+
+        private void OnCollectionChanged(object? sender,
+            System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+            => ActualizarContadores();
+
+        private void ActualizarContadores()
+        {
+            if (TxtHeaderLogos is null || TxtHeaderElementos is null) return;
+            var activa = PlaylistService.Instancia.Activa;
+            TxtHeaderLogos.Text     = $"LOGOS ({activa.Logos.Count})";
+            TxtHeaderElementos.Text = $"ELEMENTOS ({activa.Elementos.Count})";
         }
 
         // ── Selector de playlist ──────────────────────────────────────────────
@@ -62,8 +85,18 @@ namespace LoteriaTwo.Views
 
         // ── Acciones LOGOS ────────────────────────────────────────────────────
 
-        private void EntraLogo_Click(object sender, RoutedEventArgs e) { }
-        private void SaleLogo_Click(object sender, RoutedEventArgs e)  { }
+        private void EntraLogo_Click(object sender, RoutedEventArgs e)
+        {
+            if (LstLogos.SelectedItem is not PlaylistItem item) return;
+            var el = ElementoRepository.Instancia.GetByTipo(item.Tipo)
+                  ?? new Elemento { Tipo = item.Tipo };
+            BrainstormService.Instancia.Entra(el);
+        }
+        private void SaleLogo_Click(object sender, RoutedEventArgs e)
+        {
+            if (LstLogos.SelectedItem is not PlaylistItem item) return;
+            BrainstormService.Instancia.Sale(new Elemento { Tipo = item.Tipo });
+        }
 
         // ── Acciones ELEMENTOS ────────────────────────────────────────────────
 
@@ -81,16 +114,25 @@ namespace LoteriaTwo.Views
         {
             if (LstElementos.ItemsSource is not ObservableCollection<PlaylistItem> col) return;
 
-            int prev = LstElementos.SelectedIndex;
-            int next = prev + 1;
+            int current = LstElementos.SelectedIndex < 0 ? -1 : LstElementos.SelectedIndex;
+            int next = current + 1;
+
+            if (current >= 0 && current < col.Count)
+            {
+                var item     = col[current];
+                var snapshot = LiveDataService.Instancia.GetSnapshot(item.Tipo);
+                var datos    = snapshot.Length > 0 ? $"  |  {snapshot}" : string.Empty;
+                Debug.WriteLine($"[Playlist] ENTRA [{current + 1}/{col.Count}] {item.Nombre}{datos}");
+
+                var el = ElementoRepository.Instancia.GetByTipo(item.Tipo);
+                if (el is not null)
+                    BrainstormService.Instancia.Entra(el);
+            }
 
             if (next < col.Count)
             {
                 LstElementos.SelectedIndex = next;
-                var item     = col[next];
-                var snapshot = LiveDataService.Instancia.GetSnapshot(item.Tipo);
-                var datos    = snapshot.Length > 0 ? $"  |  {snapshot}" : string.Empty;
-                Debug.WriteLine($"[Playlist] Siguiente → [{next + 1}/{col.Count}] {item.Nombre}{datos}");
+                Debug.WriteLine($"[Playlist] Siguiente → [{next + 1}/{col.Count}] {col[next].Nombre}");
             }
             else
             {

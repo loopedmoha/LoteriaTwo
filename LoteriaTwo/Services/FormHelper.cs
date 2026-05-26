@@ -9,6 +9,16 @@ namespace LoteriaTwo.Services
         public static string Gv(this Dictionary<string, string> d, string key)
             => d.TryGetValue(key, out var v) ? v : string.Empty;
 
+        public static void RestoreComboByTag(ComboBox cmb, string tagValue)
+        {
+            if (string.IsNullOrEmpty(tagValue)) return;
+            foreach (var item in cmb.Items)
+            {
+                var tag = item is ComboBoxItem cbi ? cbi.Tag?.ToString() : item?.ToString();
+                if (tag == tagValue) { cmb.SelectedItem = item; return; }
+            }
+        }
+
         public static void RestoreCombo(ComboBox cmb, string value)
         {
             if (string.IsNullOrEmpty(value)) return;

@@ -68,6 +68,22 @@ namespace LoteriaTwo.Services
 
         public void UpdateIp(string ip) => _ip = ip;
 
+        public bool Send(string command)
+        {
+            if (_client is null || !_client.Connected) return false;
+            try
+            {
+                var bytes = System.Text.Encoding.ASCII.GetBytes(command);
+                _client.GetStream().Write(bytes, 0, bytes.Length);
+                return true;
+            }
+            catch
+            {
+                Disconnect();
+                return false;
+            }
+        }
+
         public void Dispose() => Disconnect();
     }
 }

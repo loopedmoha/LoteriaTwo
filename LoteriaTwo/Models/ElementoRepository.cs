@@ -32,6 +32,9 @@ namespace LoteriaTwo.Models
             return true;
         }
 
+        public Elemento? GetByTipo(TipoElemento tipo)
+            => _elementos.LastOrDefault(e => e.Tipo == tipo);
+
         public void Clear() => _elementos.Clear();
     }
 }

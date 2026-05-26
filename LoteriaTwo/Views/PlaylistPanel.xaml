@@ -50,8 +50,9 @@
                        Margin="6,6,3,6"
                        LastChildFill="True">
 
-                <TextBlock DockPanel.Dock="Top"
-                           Text="LOGOS" FontWeight="Bold" FontSize="10"
+                <TextBlock x:Name="TxtHeaderLogos"
+                           DockPanel.Dock="Top"
+                           Text="LOGOS (0)" FontWeight="Bold" FontSize="10"
                            Foreground="{StaticResource BrushTextSecondary}"
                            Margin="0,0,0,4"/>
 
@@ -106,8 +107,9 @@
                        Margin="3,6,6,6"
                        LastChildFill="True">
 
-                <TextBlock DockPanel.Dock="Top"
-                           Text="ELEMENTOS" FontWeight="Bold" FontSize="10"
+                <TextBlock x:Name="TxtHeaderElementos"
+                           DockPanel.Dock="Top"
+                           Text="ELEMENTOS (0)" FontWeight="Bold" FontSize="10"
                            Foreground="{StaticResource BrushTextSecondary}"
                            Margin="0,0,0,4"/>
 
@@ -125,10 +127,10 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Button Content="Sale"      Style="{StaticResource BtnSale}"
-                                FontSize="9" Padding="4,2" Margin="0,0,2,0"
+                                FontSize="9" Padding="4,2" Margin="0,0,4,0"
                                 Click="ElemSale_Click"/>
-                        <Button Content="Siguiente" Style="{StaticResource BtnBlue}"
-                                FontSize="9" Padding="4,2"
+                        <Button Content="▶  SIGUIENTE" Style="{StaticResource BtnEntra}"
+                                FontSize="11" Padding="8,4" FontWeight="Bold"
                                 Click="ElemSig_Click"/>
                     </StackPanel>
                 </StackPanel>

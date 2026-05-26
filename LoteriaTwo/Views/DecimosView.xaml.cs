@@ -76,8 +76,16 @@ namespace LoteriaTwo.Views
             el["Fraccion"] = TxtFraccEspecial.Text;
             Previsualizar(el);
         }
-        private void EntraEspecial_Click(object sender, RoutedEventArgs e) { }
-        private void SaleEspecial_Click(object sender, RoutedEventArgs e) { }
+        private void EntraEspecial_Click(object sender, RoutedEventArgs e)
+        {
+            var el = new Elemento { Tipo = TipoElemento.PremioEspecial };
+            el["Fecha"] = TxtFecha.Text; el["Numero"] = TxtNumeroEspecial.Text;
+            el["Cantidad"] = TxtCantidadEspecial.Text; el["Serie"] = TxtSerieEspecial.Text;
+            el["Fraccion"] = TxtFraccEspecial.Text;
+            BrainstormService.Instancia.Entra(el);
+        }
+        private void SaleEspecial_Click(object sender, RoutedEventArgs e)
+            => BrainstormService.Instancia.Sale(new Elemento { Tipo = TipoElemento.PremioEspecial });
 
         private void PPrimero_Click(object sender, RoutedEventArgs e)
         {
@@ -91,8 +99,19 @@ namespace LoteriaTwo.Views
             el["ReintegroPremio"] = (ChkReintegroPrimero.IsChecked == true).ToString();
             Previsualizar(el);
         }
-        private void EntraPrimero_Click(object sender, RoutedEventArgs e) { }
-        private void SalePrimero_Click(object sender, RoutedEventArgs e) { }
+        private void EntraPrimero_Click(object sender, RoutedEventArgs e)
+        {
+            var el = new Elemento { Tipo = TipoElemento.PrimerPremio };
+            el["Fecha"] = TxtFecha.Text; el["Numero"] = TxtNumeroPrimero.Text;
+            el["Cantidad"] = TxtCantidadPrimero.Text; el["Serie"] = TxtSerieEspecial.Text;
+            el["Fraccion"] = TxtFraccEspecial.Text;
+            el["Reintegro1"] = TxtReintegro1.Text; el["Reintegro2"] = TxtReintegro2.Text;
+            el["Reintegro3"] = TxtReintegro3.Text;
+            el["ReintegroPremio"] = (ChkReintegroPrimero.IsChecked == true).ToString();
+            BrainstormService.Instancia.Entra(el);
+        }
+        private void SalePrimero_Click(object sender, RoutedEventArgs e)
+            => BrainstormService.Instancia.Sale(new Elemento { Tipo = TipoElemento.PrimerPremio });
 
         private void PSegundo_Click(object sender, RoutedEventArgs e)
         {
@@ -102,8 +121,15 @@ namespace LoteriaTwo.Views
             el["Cantidad"] = TxtCantidadSegundo.Text;
             Previsualizar(el);
         }
-        private void EntraSegundo_Click(object sender, RoutedEventArgs e) { }
-        private void SaleSegundo_Click(object sender, RoutedEventArgs e) { }
+        private void EntraSegundo_Click(object sender, RoutedEventArgs e)
+        {
+            var el = new Elemento { Tipo = TipoElemento.SegundoPremio };
+            el["Fecha"] = TxtFecha.Text; el["Numero"] = TxtNumeroSegundo.Text;
+            el["Cantidad"] = TxtCantidadSegundo.Text;
+            BrainstormService.Instancia.Entra(el);
+        }
+        private void SaleSegundo_Click(object sender, RoutedEventArgs e)
+            => BrainstormService.Instancia.Sale(new Elemento { Tipo = TipoElemento.SegundoPremio });
 
         private void PTercero_Click(object sender, RoutedEventArgs e)
         {
@@ -113,8 +139,15 @@ namespace LoteriaTwo.Views
             el["Cantidad"] = TxtCantidadTercero.Text;
             Previsualizar(el);
         }
-        private void EntraTercero_Click(object sender, RoutedEventArgs e) { }
-        private void SaleTercero_Click(object sender, RoutedEventArgs e) { }
+        private void EntraTercero_Click(object sender, RoutedEventArgs e)
+        {
+            var el = new Elemento { Tipo = TipoElemento.TercerPremio };
+            el["Fecha"] = TxtFecha.Text; el["Numero"] = TxtNumeroTercero.Text;
+            el["Cantidad"] = TxtCantidadTercero.Text;
+            BrainstormService.Instancia.Entra(el);
+        }
+        private void SaleTercero_Click(object sender, RoutedEventArgs e)
+            => BrainstormService.Instancia.Sale(new Elemento { Tipo = TipoElemento.TercerPremio });
 
         // ── DÉCIMOS ──────────────────────────────────────────────────────────
 

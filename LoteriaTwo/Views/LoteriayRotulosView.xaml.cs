@@ -238,8 +238,10 @@ namespace LoteriaTwo.Views
         {
             Previsualizar(new Elemento { Tipo = TipoElemento.Web });
         }
-        private void WebEntra_Click(object sender, RoutedEventArgs e) { }
-        private void WebSale_Click(object sender, RoutedEventArgs e) { }
+        private void WebEntra_Click(object sender, RoutedEventArgs e)
+            => BrainstormService.Instancia.Entra(new Elemento { Tipo = TipoElemento.Web });
+        private void WebSale_Click(object sender, RoutedEventArgs e)
+            => BrainstormService.Instancia.Sale(new Elemento { Tipo = TipoElemento.Web });
 
         // ── IMÁGENES ─────────────────────────────────────────────────────────
 
@@ -277,8 +279,13 @@ namespace LoteriaTwo.Views
 
             Previsualizar(el);
         }
-        private void ImagenesEntra_Click(object sender, RoutedEventArgs e) { }
-        private void ImagenesSale_Click(object sender, RoutedEventArgs e) { }
+        private void ImagenesEntra_Click(object sender, RoutedEventArgs e)
+        {
+            if (UltimoElemento?.Tipo == TipoElemento.Imagen)
+                BrainstormService.Instancia.Entra(UltimoElemento);
+        }
+        private void ImagenesSale_Click(object sender, RoutedEventArgs e)
+            => BrainstormService.Instancia.Sale(new Elemento { Tipo = TipoElemento.Imagen });
         private void F1_Click(object sender, RoutedEventArgs e) => AbrirImagen(TxtF1);
         private void F2_Click(object sender, RoutedEventArgs e) => AbrirImagen(TxtF2);
         private void F3_Click(object sender, RoutedEventArgs e) => AbrirImagen(TxtF3);
@@ -305,8 +312,17 @@ namespace LoteriaTwo.Views
             if (sender is Button btn)
                 TxtLinea1Primera.Text = btn.Tag?.ToString() ?? string.Empty;
         }
-        private void EntrarRotulo_Click(object sender, RoutedEventArgs e) { }
-        private void SaleRotulo_Click(object sender, RoutedEventArgs e) { }
+        private void EntrarRotulo_Click(object sender, RoutedEventArgs e)
+        {
+            var el = new Elemento { Tipo = TipoElemento.Rotulo };
+            el["Tipo"]         = GetCheckedRadio(this, "TipoRotulo");
+            el["Linea1Primera"] = TxtLinea1Primera.Text;
+            el["Linea1Segunda"] = TxtLinea1Segunda.Text;
+            el["Linea2"]        = TxtLinea2.Text;
+            BrainstormService.Instancia.Entra(el);
+        }
+        private void SaleRotulo_Click(object sender, RoutedEventArgs e)
+            => BrainstormService.Instancia.Sale(new Elemento { Tipo = TipoElemento.Rotulo });
         private void PreviewRotulo_Click(object sender, RoutedEventArgs e)
         {
             var el = new Elemento { Tipo = TipoElemento.Rotulo };
@@ -341,8 +357,22 @@ namespace LoteriaTwo.Views
             el["Texto2"]     = m.Texto2;
             Previsualizar(el);
         }
-        private void LogoEntra_Click(object sender, RoutedEventArgs e) { }
-        private void LogoSale_Click(object sender, RoutedEventArgs e) { }
+        private void LogoEntra_Click(object sender, RoutedEventArgs e)
+        {
+            GuardarMapaActual();
+            var m = _mapas[_mapaActual];
+            var el = new Elemento { Tipo = TipoElemento.LogoCiudades };
+            el["Logo"] = m.Logo; el["Fecha"] = m.Fecha;
+            el["Ciudad1"] = m.Ciudad1; el["Ciudad2"] = m.Ciudad2; el["Ciudad3"] = m.Ciudad3;
+            el["Ciudad4"] = m.Ciudad4; el["Ciudad5"] = m.Ciudad5;
+            el["Comunidad1"] = m.Comunidad1; el["Comunidad2"] = m.Comunidad2;
+            el["Comunidad3"] = m.Comunidad3; el["Comunidad4"] = m.Comunidad4;
+            el["Comunidad5"] = m.Comunidad5;
+            el["Texto1"] = m.Texto1; el["Texto2"] = m.Texto2;
+            BrainstormService.Instancia.Entra(el);
+        }
+        private void LogoSale_Click(object sender, RoutedEventArgs e)
+            => BrainstormService.Instancia.Sale(new Elemento { Tipo = TipoElemento.LogoCiudades });
 
         // ── Helpers ──────────────────────────────────────────────────────────
 

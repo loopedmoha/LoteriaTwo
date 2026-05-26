@@ -41,10 +41,10 @@
                 <!-- Indicador de conexión IPF -->
                 <StackPanel Grid.Column="1" Orientation="Horizontal"
                             VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Ellipse x:Name="EllipseConexion" Width="10" Height="10"
-                             Fill="#DC2626" Margin="0,0,6,0"/>
+                    <Ellipse x:Name="EllipseConexion" Width="14" Height="14"
+                             Fill="#DC2626" Margin="0,0,8,0"/>
                     <TextBlock x:Name="TxtConexion" Text="Sin conexión IPF"
-                               FontSize="10" FontFamily="Segoe UI"
+                               FontSize="12" FontFamily="Segoe UI" FontWeight="SemiBold"
                                Foreground="{StaticResource BrushTextSecondary}"
                                VerticalAlignment="Center"/>
                 </StackPanel>

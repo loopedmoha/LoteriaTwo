@@ -10,6 +10,7 @@ namespace LoteriaTwo.Config
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json");
 
         public string BrainstormIP { get; set; } = "127.0.0.1";
+        public string BrainstormDB { get; set; } = "LoteriasTotal/LoteriaApuestas";
 
         public static AppConfig Load()
         {

@@ -258,16 +258,30 @@ namespace LoteriaTwo.Views
             PlaylistService.Instancia.AgregarLogo("Quiniela", el.Tipo);
         }
 
-        private void EntraQuiniela_Click(object sender, RoutedEventArgs e) { }
-        private void SaleQuiniela_Click(object sender, RoutedEventArgs e) { }
+        private void EntraQuiniela_Click(object sender, RoutedEventArgs e)
+        {
+            var el = new Elemento { Tipo = TipoElemento.Quiniela };
+            el.DatosQuiniela = GetQuiniela();
+            BrainstormService.Instancia.Entra(el);
+        }
+        private void SaleQuiniela_Click(object sender, RoutedEventArgs e)
+            => BrainstormService.Instancia.Sale(new Elemento { Tipo = TipoElemento.Quiniela });
         private void PQuiniela_Click(object sender, RoutedEventArgs e)
         {
             var el = new Elemento { Tipo = TipoElemento.Quiniela };
             el.DatosQuiniela = GetQuiniela();
             Previsualizar(el);
         }
-        private void EntraPleno15_Click(object sender, RoutedEventArgs e) { }
-        private void SalePleno15_Click(object sender, RoutedEventArgs e) { }
+        private void EntraPleno15_Click(object sender, RoutedEventArgs e)
+        {
+            var el = new Elemento { Tipo = TipoElemento.Pleno15 };
+            el.DatosQuiniela = GetQuiniela();
+            el["AcertantesPleno"] = TxtAcertantesPleno.Text;
+            el["BotePleno"]       = TxtBotePleno.Text;
+            BrainstormService.Instancia.Entra(el);
+        }
+        private void SalePleno15_Click(object sender, RoutedEventArgs e)
+            => BrainstormService.Instancia.Sale(new Elemento { Tipo = TipoElemento.Pleno15 });
         private void PPleno15_Click(object sender, RoutedEventArgs e)
         {
             var el = new Elemento { Tipo = TipoElemento.Pleno15 };

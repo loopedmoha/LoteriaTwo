@@ -14,6 +14,7 @@ namespace LoteriaTwo
 
             var config = AppConfig.Load();
             var connection = new BrainstormConnection(config.BrainstormIP);
+            BrainstormService.Instancia.Inicializar(connection, config.BrainstormDB);
 
             // Registrar el MainWindow ANTES del splash para que WPF
             // no cierre la app cuando el splash se cierre.

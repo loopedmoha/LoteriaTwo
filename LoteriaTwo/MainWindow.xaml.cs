@@ -90,7 +90,12 @@ namespace LoteriaTwo
         // ── GENERAL ───────────────────────────────────────────────────────────
 
         private void SaleUltimo_Click(object sender, RoutedEventArgs e) { }
-        private void LimpiarFormulario_Click(object sender, RoutedEventArgs e) { }
+        private void LimpiarFormulario_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("¿Limpiar todos los campos del formulario?", "Confirmar limpieza",
+                    MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
+            FormStateService.Instancia.Limpiar();
+        }
         private void Guardar_Click(object sender, RoutedEventArgs e)
         {
             try { FormStateService.Instancia.Guardar(); }

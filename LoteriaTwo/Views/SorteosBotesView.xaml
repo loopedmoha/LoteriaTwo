@@ -16,26 +16,26 @@
                 <GroupBox Header="LOGOS" Margin="0,0,0,5">
                     <StackPanel Margin="6">
                         <ComboBox x:Name="CmbLogos" Margin="0,0,0,8" SelectedIndex="0">
-                            <ComboBoxItem Content=""/>
-                            <ComboBoxItem Content="Bonoloto"/>
-                            <ComboBoxItem Content="Primitiva"/>
-                            <ComboBoxItem Content="El Gordo"/>
-                            <ComboBoxItem Content="Euromillones"/>
-                            <ComboBoxItem Content="EuromillonesMillon"/>
-                            <ComboBoxItem Content="Eurodreams"/>
-                            <ComboBoxItem Content="LotoTurf"/>
-                            <ComboBoxItem Content="Quiniela"/>
-                            <ComboBoxItem Content="Quinigol"/>
-                            <ComboBoxItem Content="LoteriaNacional"/>
-                            <ComboBoxItem Content="ApuestaHipica"/>
-                            <ComboBoxItem Content="Joker"/>
-                            <ComboBoxItem Content="ElMillon"/>
-                            <ComboBoxItem Content="Deporte"/>
-                            <ComboBoxItem Content="Cultura"/>
-                            <ComboBoxItem Content="Sociedad"/>
-                            <ComboBoxItem Content="GenericoLAE"/>
-                            <ComboBoxItem Content="ProgLaSuerte"/>
-                            <ComboBoxItem Content="Elige8"/>
+                            <ComboBoxItem Content=""                          Tag=""/>
+                            <ComboBoxItem Content="Bonoloto"                  Tag="Bonoloto"/>
+                            <ComboBoxItem Content="Primitiva"                 Tag="Primitiva"/>
+                            <ComboBoxItem Content="El Gordo de la Primitiva"  Tag="El Gordo"/>
+                            <ComboBoxItem Content="Euromillones"              Tag="Euromillones"/>
+                            <ComboBoxItem Content="El Millón (Euromillones)"  Tag="EuromillonesMillon"/>
+                            <ComboBoxItem Content="Eurodreams"                Tag="Eurodreams"/>
+                            <ComboBoxItem Content="Lototurf"                  Tag="LotoTurf"/>
+                            <ComboBoxItem Content="Quiniela"                  Tag="Quiniela"/>
+                            <ComboBoxItem Content="Quinigol"                  Tag="Quinigol"/>
+                            <ComboBoxItem Content="Lotería Nacional"          Tag="LoteriaNacional"/>
+                            <ComboBoxItem Content="Apuesta Hípica"            Tag="ApuestaHipica"/>
+                            <ComboBoxItem Content="Joker"                     Tag="Joker"/>
+                            <ComboBoxItem Content="El Millón"                 Tag="ElMillon"/>
+                            <ComboBoxItem Content="Deporte"                   Tag="Deporte"/>
+                            <ComboBoxItem Content="Cultura"                   Tag="Cultura"/>
+                            <ComboBoxItem Content="Sociedad"                  Tag="Sociedad"/>
+                            <ComboBoxItem Content="Genérico LAE"              Tag="GenericoLAE"/>
+                            <ComboBoxItem Content="Prog. La Suerte"           Tag="ProgLaSuerte"/>
+                            <ComboBoxItem Content="Elige 8"                   Tag="Elige8"/>
                         </ComboBox>
                         <Grid>
                             <Grid.ColumnDefinitions>
