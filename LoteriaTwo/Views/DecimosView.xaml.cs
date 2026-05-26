@@ -164,6 +164,9 @@ namespace LoteriaTwo.Views
             ImgDecimo.Source = bmp;
             ImgDecimo.Visibility = Visibility.Visible;
             TxtDecimoPlaceholder.Visibility = Visibility.Collapsed;
+
+            BrainstormService.Instancia.EnviarTexFile("LoteriaDecimo", dlg.FileName);
+
             LogService.Instancia.Registrar(LogNivel.Cambio, "Décimos",
                 $"Décimo cargado: {System.IO.Path.GetFileName(dlg.FileName)}");
         }

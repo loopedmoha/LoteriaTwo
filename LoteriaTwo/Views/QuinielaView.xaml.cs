@@ -258,6 +258,17 @@ namespace LoteriaTwo.Views
             PlaylistService.Instancia.AgregarLogo("Quiniela", el.Tipo);
         }
 
+        private void ChkModoQuiniela_Checked(object sender, RoutedEventArgs e)
+        {
+            BrainstormService.Instancia.ModoQuiniela = true;
+            BrainstormService.Instancia.Enviar(BrainstormService.Instancia.CambiarFondo("Rojo"));
+        }
+        private void ChkModoQuiniela_Unchecked(object sender, RoutedEventArgs e)
+        {
+            BrainstormService.Instancia.ModoQuiniela = false;
+            BrainstormService.Instancia.Enviar(BrainstormService.Instancia.CambiarFondo("Azul"));
+        }
+
         private void EntraQuiniela_Click(object sender, RoutedEventArgs e)
         {
             var el = new Elemento { Tipo = TipoElemento.Quiniela };

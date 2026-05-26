@@ -374,8 +374,13 @@ namespace LoteriaTwo.Views
 
         // ── Handlers — FALDONES ──────────────────────────────────────────────
 
-        private void FaldonEntra_Click(object sender, RoutedEventArgs e) { }
-        private void FaldonSale_Click(object sender, RoutedEventArgs e) { }
+        private void FaldonEntra_Click(object sender, RoutedEventArgs e)
+        {
+            var el = BuildPremiadoElemento();
+            if (el is not null) BrainstormService.Instancia.EntraFaldon(el);
+        }
+        private void FaldonSale_Click(object sender, RoutedEventArgs e)
+            => BrainstormService.Instancia.SaleFaldon();
         private void FaldonCorregir_Click(object sender, RoutedEventArgs e) { }
 
         // ── Handlers — EL MILLÓN / JOKER ─────────────────────────────────────

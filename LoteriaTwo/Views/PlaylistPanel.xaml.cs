@@ -116,6 +116,13 @@ namespace LoteriaTwo.Views
 
             int current = LstElementos.SelectedIndex < 0 ? -1 : LstElementos.SelectedIndex;
             int next = current + 1;
+            int prev = current - 1;
+
+            if (prev >= 0 && prev < col.Count)
+            {
+                Debug.WriteLine($"[Playlist] SALE  [{prev + 1}/{col.Count}] {col[prev].Nombre}");
+                BrainstormService.Instancia.Sale(new Elemento { Tipo = col[prev].Tipo });
+            }
 
             if (current >= 0 && current < col.Count)
             {

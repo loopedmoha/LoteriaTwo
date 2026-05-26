@@ -101,8 +101,10 @@ namespace LoteriaTwo
             try { FormStateService.Instancia.Guardar(); }
             catch { MessageBox.Show("Error al guardar el estado.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); }
         }
-        private void EntrarFondo_Click(object sender, RoutedEventArgs e) { }
-        private void SaleFondo_Click(object sender, RoutedEventArgs e) { }
+        private void EntrarFondo_Click(object sender, RoutedEventArgs e)
+            => BrainstormService.Instancia.EntraFondo();
+        private void SaleFondo_Click(object sender, RoutedEventArgs e)
+            => BrainstormService.Instancia.SaleFondo();
         private void AbrirPlaylist_Click(object sender, RoutedEventArgs e) { }
         private void Reset_Click(object sender, RoutedEventArgs e) { }
     }

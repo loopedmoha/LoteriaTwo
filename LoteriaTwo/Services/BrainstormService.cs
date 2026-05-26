@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using LoteriaTwo.Models;
@@ -44,22 +45,53 @@ namespace LoteriaTwo.Services
         public bool Enviar(string cmd)
         {
             if (_conn is null || string.IsNullOrEmpty(cmd)) return false;
+            Debug.WriteLine($"[IPF] >>> {cmd}");
             var ok = _conn.Send(cmd);
             var nivel = ok ? LogNivel.Accion : LogNivel.Error;
-            LogService.Instancia.Registrar(nivel, "IPF", ok ? $"Enviado ({cmd.Length} bytes)" : "Error al enviar");
+            LogService.Instancia.Registrar(nivel, "IPF", ok ? cmd : $"ERROR al enviar: {cmd}");
             return ok;
         }
 
         // ── PUBLIC API ────────────────────────────────────────────────────────
 
-        public bool Entra(Elemento el) => Enviar(BuildEntra(el));
-        public bool Sale(Elemento el)  => Enviar(BuildSale(el));
+        public bool ModoQuiniela { get; set; }
+
+        public bool Entra(Elemento el)  => Enviar(BuildEntra(el));
+        public bool Sale(Elemento el)   => Enviar(BuildSale(el));
+        public bool EntraFondo()                 => Enviar(Run("Fondo/Entra"));
+        public bool SaleFondo()                  => Enviar(Run("Fondo/Sale"));
+        public string CambiarFondo(string color) => Run($"Fondo/{color}");
+        public bool EnviarTexFile(string obj, string path)
+            => Enviar($"itemset('<{_bd}>{obj}','TEX_FILE','{path}');");
+        public bool EntraFaldon(Elemento el) => Enviar(BuildEntraFaldon(el));
+        public bool SaleFaldon()             => Enviar(Run("SaleFaldon"));
+
+        private string FondoColor(Elemento el)
+        {
+            if (ModoQuiniela) return "Rojo";
+            if (el.Tipo == TipoElemento.Premiado)
+            {
+                return el["Juego"].ToUpperInvariant() switch
+                {
+                    "EL GORDO"                         => "Gordo",
+                    "PRIMITIVA"                        => "Primitiva",
+                    "BONOLOTO"                         => "Bonoloto",
+                    "EUROMILLONES" or "EUROMILLONES M" => "Euromillones",
+                    "LOTOTURF"                         => "Lototurf",
+                    _                                  => "Azul"
+                };
+            }
+            return "Azul";
+        }
 
         // ── ENTRA builders ────────────────────────────────────────────────────
 
         private string BuildEntra(Elemento el)
         {
-            return el.Tipo switch
+            if (el.Tipo is TipoElemento.Quiniela or TipoElemento.Pleno15)
+                ModoQuiniela = true;
+            var fondo = Run($"Fondo/{FondoColor(el)}");
+            var contenido = el.Tipo switch
             {
                 TipoElemento.Logo              => EntraLogo(el),
                 TipoElemento.Bote              => EntraBote(el),
@@ -79,30 +111,74 @@ namespace LoteriaTwo.Services
                 TipoElemento.Web               => Run("CartonWeb/Entra", 0.1),
                 _ => string.Empty,
             };
+            return fondo + contenido;
         }
 
-        private string BuildSale(Elemento el)
+        private string BuildSale(Elemento el) => el.Tipo switch
         {
-            return el.Tipo switch
+            TipoElemento.Logo              => Run("SorteosYBotes/LogoSorteo/Sale"),
+            TipoElemento.Bote              => Run("SorteosYBotes/Bote/Sale"),
+            TipoElemento.Premiado          => Run("Premiados/Sale"),
+            TipoElemento.ElMillon          => Run("ElMillon/Sale"),
+            TipoElemento.EuromillonesMosca => Run("MoscaEuroMillones/Sale"),
+            TipoElemento.Eurodreams        => Run("SaleEurodreams"),
+            TipoElemento.PrimerPremio      => Run("LoteriaPremio/Sale"),
+            TipoElemento.PremioEspecial    => Run("LoteriaPremio/Sale"),
+            TipoElemento.SegundoPremio     => Run("LoteriaPremio/Sale"),
+            TipoElemento.TercerPremio      => Run("LoteriaPremio/Sale"),
+            TipoElemento.Quiniela          => Run("Quiniela/QuinielaResultados/Sale"),
+            TipoElemento.Pleno15           => Run("Quiniela/QuinielaPleno/Sale"),
+            TipoElemento.Rotulo            => Run("SaleRotulo"),
+            TipoElemento.LogoCiudades      => Run("Mapa/Sale"),
+            TipoElemento.Imagen            => Run("Imagen/Sale"),
+            TipoElemento.Web               => Run("CartonWeb/Sale"),
+            _ => string.Empty,
+        };
+
+        // ── FALDÓN ────────────────────────────────────────────────────────────
+
+        private string BuildEntraFaldon(Elemento el)
+        {
+            var juego = el["Juego"].ToUpperInvariant();
+            var nums  = el["Numeros"].Split(',');
+            var extras = el["Extras"].Split(',', StringSplitOptions.RemoveEmptyEntries);
+            var sb = new StringBuilder();
+
+            for (int i = 0; i < nums.Length; i++)
+                if (!string.IsNullOrWhiteSpace(nums[i]))
+                    sb.Append(Set($"cifra_Faldones_0{i + 1}", "TEXT_STRING", nums[i]));
+
+            switch (juego)
             {
-                TipoElemento.Logo              => Run("SorteosYBotes/LogoSorteo/Sale"),
-                TipoElemento.Bote              => Run("SorteosYBotes/Bote/Sale"),
-                TipoElemento.Premiado          => Run("Premiados/Sale"),
-                TipoElemento.ElMillon          => Run("ElMillon/Sale"),
-                TipoElemento.EuromillonesMosca => Run("MoscaEuroMillones/Sale"),
-                TipoElemento.Eurodreams        => Run("SaleEurodreams"),
-                TipoElemento.PrimerPremio      => Run("LoteriaPremio/Sale"),
-                TipoElemento.PremioEspecial    => Run("LoteriaPremio/Sale"),
-                TipoElemento.SegundoPremio     => Run("LoteriaPremio/Sale"),
-                TipoElemento.TercerPremio      => Run("LoteriaPremio/Sale"),
-                TipoElemento.Quiniela          => Run("Quiniela/QuinielaResultados/Sale"),
-                TipoElemento.Pleno15           => Run("Quiniela/QuinielaPleno/Sale"),
-                TipoElemento.Rotulo            => Run("SaleRotulo"),
-                TipoElemento.LogoCiudades      => Run("Mapa/Sale"),
-                TipoElemento.Imagen            => Run("Imagen/Sale"),
-                TipoElemento.Web               => Run("CartonWeb/Sale"),
-                _ => string.Empty,
+                case "BONOLOTO":
+                case "PRIMITIVA":
+                    if (extras.Length > 0) sb.Append(Set("cifra_Faldones_07", "TEXT_STRING", $"C{extras[0]}"));
+                    if (extras.Length > 1) sb.Append(Set("cifra_Faldones_08", "TEXT_STRING", $"R{extras[1]}"));
+                    break;
+                case "EL GORDO":
+                    if (extras.Length > 0) sb.Append(Set("cifra_Faldones_06", "TEXT_STRING", extras[0]));
+                    break;
+                case "EUROMILLONES M":
+                    if (extras.Length > 0) sb.Append(Set("cifra_Faldones_06", "TEXT_STRING", extras[0]));
+                    if (extras.Length > 1) sb.Append(Set("cifra_Faldones_07", "TEXT_STRING", extras[1]));
+                    break;
+            }
+
+            var tipoEvento = juego switch
+            {
+                "BONOLOTO"       => "Faldon_Bonoloto",
+                "PRIMITIVA"      => "Faldon_Primitiva",
+                "EL GORDO"       => "Faldon_Gordo",
+                "EUROMILLONES M" => "Faldon_Euromillon",
+                "LOTOTURF"       => "Faldon_Lototurf",
+                _                => string.Empty
             };
+            if (string.IsNullOrEmpty(tipoEvento)) return string.Empty;
+
+            sb.Append(Run("Fondo/Sale"));
+            sb.Append(Run(tipoEvento));
+            sb.Append(Run("EntraFaldon", 0.1));
+            return sb.ToString();
         }
 
         // ── LOGO ──────────────────────────────────────────────────────────────
@@ -351,8 +427,6 @@ namespace LoteriaTwo.Services
             bool esLaSuerte = tipo.Contains("Suerte", StringComparison.OrdinalIgnoreCase);
             bool doble = !string.IsNullOrEmpty(l2);
 
-            sb.Append(Set("Fondo", "OBJ_CULL", true, 0.4));
-
             if (!doble)
             {
                 sb.Append(Set("Rotulos_Txt_01", "TEXT_STRING", l1a, D));
@@ -446,7 +520,7 @@ namespace LoteriaTwo.Services
             "PRIMITIVA"    => "Primitiva",
             "QUINIELA"     => "Quiniela",
             "EL GORDO"     => "El Gordo",
-            "LOTOTURF"     => "LotoTurf",
+            "LOTOTURF"     => "Lototurf",
             "JOKER"        => "Joker",
             "Eurodreams"   => "Eurodreams",
             _              => juego,
@@ -458,7 +532,7 @@ namespace LoteriaTwo.Services
             "EUROMILLONES M" => "EuromillonesMillon",
             "PRIMITIVA"      => "Primitiva",
             "EL GORDO"       => "El Gordo",
-            "LOTOTURF"       => "LotoTurf",
+            "LOTOTURF"       => "Lototurf",
             "EURODREAMS"     => "Eurodreams",
             _                => juego,
         };

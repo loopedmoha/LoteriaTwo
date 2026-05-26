@@ -13,7 +13,9 @@
                       x:Name="ChkModoQuiniela"
                       Content="MODO QUINIELA"
                       Foreground="{StaticResource BrushTextPrimary}"
-                      Margin="28,8,0,0"/>
+                      Margin="28,8,0,0"
+                      Checked="ChkModoQuiniela_Checked"
+                      Unchecked="ChkModoQuiniela_Unchecked"/>
             <ScrollViewer VerticalScrollBarVisibility="Auto"
                           HorizontalScrollBarVisibility="Disabled">
                 <Grid x:Name="GridPartidos"/>
