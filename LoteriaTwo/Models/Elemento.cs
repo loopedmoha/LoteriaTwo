@@ -43,6 +43,44 @@ namespace LoteriaTwo.Models
             set => Datos[key] = value;
         }
 
+        public string ToPlaylistNombre()
+        {
+            switch (Tipo)
+            {
+                case TipoElemento.Web:            return "Web";
+                case TipoElemento.Rotulo:         { var v = this["Tipo"];     return v.Length > 0 ? $"Rótulo – {v}"     : "Rótulo"; }
+                case TipoElemento.LogoCiudades:   { var v = this["Logo"];     return v.Length > 0 ? $"Ciudades – {v}"   : "Ciudades"; }
+                case TipoElemento.PrimerPremio:   return "1er Premio";
+                case TipoElemento.SegundoPremio:  return "2º Premio";
+                case TipoElemento.TercerPremio:   return "3er Premio";
+                case TipoElemento.PremioEspecial: return "Premio Especial";
+                case TipoElemento.Quiniela:       { var v = DatosQuiniela?.Jornada ?? string.Empty; return v.Length > 0 ? $"Quiniela J.{v}" : "Quiniela"; }
+                case TipoElemento.Pleno15:        return "Pleno 15";
+                case TipoElemento.Logo:           { var v = this["Logo"];     return v.Length > 0 ? $"Logo – {v}"       : "Logo"; }
+                case TipoElemento.Bote:           { var v = this["Juego"];    return v.Length > 0 ? $"Bote – {v}"       : "Bote"; }
+                case TipoElemento.Premiado:       { var v = this["Juego"];    return v.Length > 0 ? $"Premiado – {v}"   : "Premiado"; }
+                case TipoElemento.ElMillon:       return "El Millón";
+                case TipoElemento.EuromillonesMosca: return "Euromillones M.";
+                case TipoElemento.Eurodreams:     { var v = this["DiaSemana"]; return v.Length > 0 ? $"Eurodreams – {v}" : "Eurodreams"; }
+
+                case TipoElemento.Imagen:
+                    var logoKey = this["Foto"] switch
+                    {
+                        "Foto 1"     => "LogoFoto1",
+                        "Foto 2"     => "LogoFoto2",
+                        "Foto 3"     => "LogoFoto3",
+                        "Foto 4"     => "LogoFoto4",
+                        "Foto 5"     => "LogoFoto5",
+                        "Video vivo" => "LogoFotoVideo",
+                        _            => string.Empty,
+                    };
+                    var logoNombre = logoKey.Length > 0 ? this[logoKey] : string.Empty;
+                    return logoNombre.Length > 0 ? $"Imagen – {logoNombre}" : "Imagen";
+
+                default: return Tipo.ToString();
+            }
+        }
+
         public string ToLogString()
         {
             if (DatosQuiniela is { } q)

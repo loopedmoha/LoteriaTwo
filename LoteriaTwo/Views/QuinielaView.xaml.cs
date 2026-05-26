@@ -20,6 +20,46 @@ namespace LoteriaTwo.Views
         {
             InitializeComponent();
             BuildGrid();
+            LiveDataService.Instancia.Registrar(TipoElemento.Quiniela,
+                () => $"Jornada: {TxtJornada.Text}  Fecha: {TxtFecha.Text}");
+            RegistrarFormState();
+        }
+
+        private void RegistrarFormState()
+        {
+            FormStateService.Instancia.RegistrarSeccion("Quiniela",
+                leer: () =>
+                {
+                    var d = new Dictionary<string, string>
+                    {
+                        ["Fecha"]           = TxtFecha.Text,
+                        ["Jornada"]         = TxtJornada.Text,
+                        ["AcertantesPleno"] = TxtAcertantesPleno.Text,
+                        ["BotePleno"]       = TxtBotePleno.Text,
+                    };
+                    for (int i = 0; i < 15; i++)
+                    {
+                        d[$"Local{i}"]     = _localBoxes[i].Text;
+                        d[$"Visitante{i}"] = _visitanteBoxes[i].Text;
+                        d[$"Resultado{i}"] = _resultadoBoxes[i].Text;
+                        d[$"Jugado{i}"]    = (_jugadoChecks[i].IsChecked == true).ToString();
+                    }
+                    return d;
+                },
+                escribir: d =>
+                {
+                    TxtFecha.Text           = d.Gv("Fecha");
+                    TxtJornada.Text         = d.Gv("Jornada");
+                    TxtAcertantesPleno.Text = d.Gv("AcertantesPleno");
+                    TxtBotePleno.Text       = d.Gv("BotePleno");
+                    for (int i = 0; i < 15; i++)
+                    {
+                        _localBoxes[i].Text        = d.Gv($"Local{i}");
+                        _visitanteBoxes[i].Text    = d.Gv($"Visitante{i}");
+                        _resultadoBoxes[i].Text    = d.Gv($"Resultado{i}");
+                        _jugadoChecks[i].IsChecked = d.Gv($"Jugado{i}") == "True";
+                    }
+                });
         }
 
         // ── Grid programático ────────────────────────────────────────────────
@@ -214,8 +254,8 @@ namespace LoteriaTwo.Views
             UltimoElemento = el;
             LogService.Instancia.Registrar(LogNivel.Accion, el.Tipo.ToString(),
                 "P → " + el.ToLogString());
-            PlaylistService.Instancia.AgregarElemento(el.Tipo, el.Tipo.ToString());
-            PlaylistService.Instancia.AgregarLogo(el.Tipo.ToString(), el.Tipo);
+            PlaylistService.Instancia.AgregarElemento(el.Tipo, el.ToPlaylistNombre());
+            PlaylistService.Instancia.AgregarLogo("Quiniela", el.Tipo);
         }
 
         private void EntraQuiniela_Click(object sender, RoutedEventArgs e) { }

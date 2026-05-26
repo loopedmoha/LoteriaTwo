@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using LoteriaTwo.Models;
@@ -79,9 +80,22 @@ namespace LoteriaTwo.Views
         private void ElemSig_Click(object sender, RoutedEventArgs e)
         {
             if (LstElementos.ItemsSource is not ObservableCollection<PlaylistItem> col) return;
-            int next = LstElementos.SelectedIndex + 1;
+
+            int prev = LstElementos.SelectedIndex;
+            int next = prev + 1;
+
             if (next < col.Count)
+            {
                 LstElementos.SelectedIndex = next;
+                var item     = col[next];
+                var snapshot = LiveDataService.Instancia.GetSnapshot(item.Tipo);
+                var datos    = snapshot.Length > 0 ? $"  |  {snapshot}" : string.Empty;
+                Debug.WriteLine($"[Playlist] Siguiente → [{next + 1}/{col.Count}] {item.Nombre}{datos}");
+            }
+            else
+            {
+                Debug.WriteLine($"[Playlist] Siguiente → fin de lista ({col.Count} elementos)");
+            }
         }
 
         // ── Guardar / Cargar ──────────────────────────────────────────────────

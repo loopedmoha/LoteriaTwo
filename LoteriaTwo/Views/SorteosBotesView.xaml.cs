@@ -33,6 +33,144 @@ namespace LoteriaTwo.Views
         {
             InitializeComponent();
             BuildPremiados();
+            RegistrarLiveData();
+            RegistrarFormState();
+        }
+
+        private void RegistrarFormState()
+        {
+            FormStateService.Instancia.RegistrarSeccion("SorteosBotes",
+                leer: () =>
+                {
+                    var d = new Dictionary<string, string>
+                    {
+                        ["LogoCombo"]          = (CmbLogos.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? string.Empty,
+                        ["BoteGame"]           = GetCheckedRadio(this, "BoteGame"),
+                        ["CantBonoloto"]       = TxtCantBonoloto.Text,
+                        ["CantQuinigol"]       = TxtCantQuinigol.Text,
+                        ["CantEuromillones"]   = TxtCantEuromillones.Text,
+                        ["CantLoteria"]        = TxtCantLoteria.Text,
+                        ["CantPrimitiva"]      = TxtCantPrimitiva.Text,
+                        ["CantQuiniela"]       = TxtCantQuiniela.Text,
+                        ["CantElGordo"]        = TxtCantElGordo.Text,
+                        ["CantLototurf"]       = TxtCantLototurf.Text,
+                        ["CantJoker"]          = TxtCantJoker.Text,
+                        ["CantEurodreams"]     = TxtCantEurodreams.Text,
+                        ["FechaBonoloto"]      = TxtFechaBoteBonoloto.Text,
+                        ["FechaQuinigol"]      = TxtFechaBoteQuinigol.Text,
+                        ["FechaEuromillones"]  = TxtFechaBoteEuromillones.Text,
+                        ["FechaLoteria"]       = TxtFechaBoteLoteria.Text,
+                        ["FechaPrimitiva"]     = TxtFechaBotePrimitiva.Text,
+                        ["FechaQuiniela"]      = TxtFechaBoteQuiniela.Text,
+                        ["FechaElGordo"]       = TxtFechaBoteElGordo.Text,
+                        ["FechaLototurf"]      = TxtFechaBoteLototurf.Text,
+                        ["FechaJoker"]         = TxtFechaBoteJoker.Text,
+                        ["FechaEurodreams"]    = TxtFechaBoteEurodreams.Text,
+                        ["MillonMartes"]       = TxtMillonMartes.Text,
+                        ["JokerJueves"]        = TxtJokerJueves.Text,
+                        ["EuromillonesMillon"] = TxtEuromillonesMillon.Text,
+                        ["EurodreamsDia"]      = TxtEurodreamsDia.Text,
+                        ["EurodreamsMes"]      = TxtEurodreamsMes.Text,
+                        ["EurodreamsDiaField"] = _eurodreamsDia,
+                        ["ChkSeguridad"]       = (ChkSeguridad.IsChecked    == true).ToString(),
+                        ["ChkPasarGanador"]    = (ChkPasarGanador.IsChecked == true).ToString(),
+                    };
+                    for (int i = 0; i < JuegosPremiados.Length; i++)
+                    {
+                        var pre = $"P{i}_";
+                        d[$"{pre}Sel"]   = (_rdbPremiado[i].IsChecked    == true).ToString();
+                        d[$"{pre}Bote"]  = (_chkBotePremiado[i].IsChecked == true).ToString();
+                        d[$"{pre}Fecha"] = _txtFechaPremiado[i].Text;
+                        for (int j = 0; j < _txtNumeros[i].Length; j++)
+                            d[$"{pre}N{j}"] = _txtNumeros[i][j].Text;
+                        for (int j = 0; j < _txtOtros[i].Length; j++)
+                            d[$"{pre}O{j}"] = _txtOtros[i][j].Text;
+                    }
+                    return d;
+                },
+                escribir: d =>
+                {
+                    FormHelper.RestoreCombo(CmbLogos, d.Gv("LogoCombo"));
+                    FormHelper.SetCheckedRadio(this, "BoteGame", d.Gv("BoteGame"));
+                    TxtCantBonoloto.Text      = d.Gv("CantBonoloto");
+                    TxtCantQuinigol.Text      = d.Gv("CantQuinigol");
+                    TxtCantEuromillones.Text  = d.Gv("CantEuromillones");
+                    TxtCantLoteria.Text       = d.Gv("CantLoteria");
+                    TxtCantPrimitiva.Text     = d.Gv("CantPrimitiva");
+                    TxtCantQuiniela.Text      = d.Gv("CantQuiniela");
+                    TxtCantElGordo.Text       = d.Gv("CantElGordo");
+                    TxtCantLototurf.Text      = d.Gv("CantLototurf");
+                    TxtCantJoker.Text         = d.Gv("CantJoker");
+                    TxtCantEurodreams.Text    = d.Gv("CantEurodreams");
+                    TxtFechaBoteBonoloto.Text     = d.Gv("FechaBonoloto");
+                    TxtFechaBoteQuinigol.Text     = d.Gv("FechaQuinigol");
+                    TxtFechaBoteEuromillones.Text = d.Gv("FechaEuromillones");
+                    TxtFechaBoteLoteria.Text      = d.Gv("FechaLoteria");
+                    TxtFechaBotePrimitiva.Text    = d.Gv("FechaPrimitiva");
+                    TxtFechaBoteQuiniela.Text     = d.Gv("FechaQuiniela");
+                    TxtFechaBoteElGordo.Text      = d.Gv("FechaElGordo");
+                    TxtFechaBoteLototurf.Text     = d.Gv("FechaLototurf");
+                    TxtFechaBoteJoker.Text        = d.Gv("FechaJoker");
+                    TxtFechaBoteEurodreams.Text   = d.Gv("FechaEurodreams");
+                    TxtMillonMartes.Text       = d.Gv("MillonMartes");
+                    TxtJokerJueves.Text        = d.Gv("JokerJueves");
+                    TxtEuromillonesMillon.Text = d.Gv("EuromillonesMillon");
+                    TxtEurodreamsDia.Text      = d.Gv("EurodreamsDia");
+                    TxtEurodreamsMes.Text      = d.Gv("EurodreamsMes");
+                    _eurodreamsDia             = d.Gv("EurodreamsDiaField");
+                    ChkSeguridad.IsChecked    = d.Gv("ChkSeguridad")    == "True";
+                    ChkPasarGanador.IsChecked = d.Gv("ChkPasarGanador") == "True";
+                    for (int i = 0; i < JuegosPremiados.Length; i++)
+                    {
+                        var pre = $"P{i}_";
+                        _rdbPremiado[i].IsChecked     = d.Gv($"{pre}Sel")  == "True";
+                        _chkBotePremiado[i].IsChecked = d.Gv($"{pre}Bote") == "True";
+                        _txtFechaPremiado[i].Text     = d.Gv($"{pre}Fecha");
+                        for (int j = 0; j < _txtNumeros[i].Length; j++)
+                            _txtNumeros[i][j].Text = d.Gv($"{pre}N{j}");
+                        for (int j = 0; j < _txtOtros[i].Length; j++)
+                            _txtOtros[i][j].Text = d.Gv($"{pre}O{j}");
+                    }
+                });
+        }
+
+        private void RegistrarLiveData()
+        {
+            LiveDataService.Instancia.Registrar(TipoElemento.Bote, () =>
+            {
+                var juego = GetCheckedRadio(this, "BoteGame");
+                var (cant, fecha) = juego switch
+                {
+                    "BONOLOTO"     => (TxtCantBonoloto.Text,     TxtFechaBoteBonoloto.Text),
+                    "QUINIGOL"     => (TxtCantQuinigol.Text,     TxtFechaBoteQuinigol.Text),
+                    "EUROMILLONES" => (TxtCantEuromillones.Text,  TxtFechaBoteEuromillones.Text),
+                    "LOTERIA"      => (TxtCantLoteria.Text,      TxtFechaBoteLoteria.Text),
+                    "PRIMITIVA"    => (TxtCantPrimitiva.Text,    TxtFechaBotePrimitiva.Text),
+                    "QUINIELA"     => (TxtCantQuiniela.Text,     TxtFechaBoteQuiniela.Text),
+                    "EL GORDO"     => (TxtCantElGordo.Text,      TxtFechaBoteElGordo.Text),
+                    "LOTOTURF"     => (TxtCantLototurf.Text,     TxtFechaBoteLototurf.Text),
+                    "JOKER"        => (TxtCantJoker.Text,        TxtFechaBoteJoker.Text),
+                    "Eurodreams"   => (TxtCantEurodreams.Text,   TxtFechaBoteEurodreams.Text),
+                    _              => (string.Empty, string.Empty)
+                };
+                return $"Juego: {juego}  Cant: {cant}  Fecha: {fecha}";
+            });
+
+            LiveDataService.Instancia.Registrar(TipoElemento.Premiado, () =>
+            {
+                int idx = Array.FindIndex(_rdbPremiado, r => r.IsChecked == true);
+                if (idx < 0) return "sin selección";
+                return $"Juego: {JuegosPremiados[idx].Nombre}  " +
+                       $"Nums: {string.Join("-", _txtNumeros[idx].Select(t => t.Text))}  " +
+                       $"Extras: {string.Join("-", _txtOtros[idx].Select(t => t.Text))}  " +
+                       $"Fecha: {_txtFechaPremiado[idx].Text}";
+            });
+
+            LiveDataService.Instancia.Registrar(TipoElemento.ElMillon,
+                () => $"Número: {TxtMillonMartes.Text}");
+
+            LiveDataService.Instancia.Registrar(TipoElemento.EuromillonesMosca,
+                () => $"Número: {TxtEuromillonesMillon.Text}");
         }
 
         // ── Construcción programática de filas PREMIADOS ─────────────────────
@@ -265,9 +403,46 @@ namespace LoteriaTwo.Views
             UltimoElemento = el;
             LogService.Instancia.Registrar(LogNivel.Accion, el.Tipo.ToString(),
                 "P → " + el.ToLogString());
-            PlaylistService.Instancia.AgregarElemento(el.Tipo, el.Tipo.ToString());
-            PlaylistService.Instancia.AgregarLogo(el.Tipo.ToString(), el.Tipo);
+            PlaylistService.Instancia.AgregarElemento(el.Tipo, el.ToPlaylistNombre());
+            PlaylistService.Instancia.AgregarLogo(GetLogoNombre(el), el.Tipo);
         }
+
+        private static string GetLogoNombre(Elemento el) => el.Tipo switch
+        {
+            TipoElemento.Logo              => el["Logo"],
+            TipoElemento.Bote              => BoteALogo(el["Juego"]),
+            TipoElemento.Premiado          => PremiadoALogo(el["Juego"]),
+            TipoElemento.ElMillon          => "ElMillon",
+            TipoElemento.EuromillonesMosca => "Euromillones",
+            TipoElemento.Eurodreams        => "Eurodreams",
+            _                              => el.Tipo.ToString(),
+        };
+
+        private static string BoteALogo(string juego) => juego switch
+        {
+            "BONOLOTO"     => "Bonoloto",
+            "QUINIGOL"     => "Quinigol",
+            "EUROMILLONES" => "Euromillones",
+            "LOTERIA"      => "LoteriaNacional",
+            "PRIMITIVA"    => "Primitiva",
+            "QUINIELA"     => "Quiniela",
+            "EL GORDO"     => "El Gordo",
+            "LOTOTURF"     => "LotoTurf",
+            "JOKER"        => "Joker",
+            "Eurodreams"   => "Eurodreams",
+            _              => juego,
+        };
+
+        private static string PremiadoALogo(string juego) => juego switch
+        {
+            "BONOLOTO"       => "Bonoloto",
+            "EUROMILLONES M" => "EuromillonesMillon",
+            "PRIMITIVA"      => "Primitiva",
+            "EL GORDO"       => "El Gordo",
+            "LOTOTURF"       => "LotoTurf",
+            "EURODREAMS"     => "Eurodreams",
+            _                => juego,
+        };
 
         private static string GetCheckedRadio(DependencyObject root, string groupName)
         {

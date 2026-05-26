@@ -27,6 +27,7 @@ namespace LoteriaTwo
             this.AddHandler(Button.ClickEvent, new RoutedEventHandler(OnAnyButtonClick));
 
             LogService.Instancia.Registrar(LogNivel.Info, "App", "Aplicación iniciada");
+            FormStateService.Instancia.Cargar();
         }
 
         // ── Conexión ─────────────────────────────────────────────────────────
@@ -90,7 +91,11 @@ namespace LoteriaTwo
 
         private void SaleUltimo_Click(object sender, RoutedEventArgs e) { }
         private void LimpiarFormulario_Click(object sender, RoutedEventArgs e) { }
-        private void Guardar_Click(object sender, RoutedEventArgs e) { }
+        private void Guardar_Click(object sender, RoutedEventArgs e)
+        {
+            try { FormStateService.Instancia.Guardar(); }
+            catch { MessageBox.Show("Error al guardar el estado.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); }
+        }
         private void EntrarFondo_Click(object sender, RoutedEventArgs e) { }
         private void SaleFondo_Click(object sender, RoutedEventArgs e) { }
         private void AbrirPlaylist_Click(object sender, RoutedEventArgs e) { }

@@ -14,6 +14,56 @@ namespace LoteriaTwo.Views
         public DecimosView()
         {
             InitializeComponent();
+            RegistrarFormState();
+            LiveDataService.Instancia.Registrar(TipoElemento.PremioEspecial,
+                () => $"Num: {TxtNumeroEspecial.Text}  Cant: {TxtCantidadEspecial.Text}  Serie: {TxtSerieEspecial.Text}  Fracc: {TxtFraccEspecial.Text}");
+            LiveDataService.Instancia.Registrar(TipoElemento.PrimerPremio,
+                () => $"Num: {TxtNumeroPrimero.Text}  Cant: {TxtCantidadPrimero.Text}  Rein: {TxtReintegro1.Text}/{TxtReintegro2.Text}/{TxtReintegro3.Text}");
+            LiveDataService.Instancia.Registrar(TipoElemento.SegundoPremio,
+                () => $"Num: {TxtNumeroSegundo.Text}  Cant: {TxtCantidadSegundo.Text}");
+            LiveDataService.Instancia.Registrar(TipoElemento.TercerPremio,
+                () => $"Num: {TxtNumeroTercero.Text}  Cant: {TxtCantidadTercero.Text}");
+        }
+
+        private void RegistrarFormState()
+        {
+            FormStateService.Instancia.RegistrarSeccion("Decimos",
+                leer: () => new Dictionary<string, string>
+                {
+                    ["Fecha"]             = TxtFecha.Text,
+                    ["NumeroEspecial"]    = TxtNumeroEspecial.Text,
+                    ["CantidadEspecial"]  = TxtCantidadEspecial.Text,
+                    ["SerieEspecial"]     = TxtSerieEspecial.Text,
+                    ["FraccEspecial"]     = TxtFraccEspecial.Text,
+                    ["NumeroPrimero"]     = TxtNumeroPrimero.Text,
+                    ["CantidadPrimero"]   = TxtCantidadPrimero.Text,
+                    ["Reintegro1"]        = TxtReintegro1.Text,
+                    ["Reintegro2"]        = TxtReintegro2.Text,
+                    ["Reintegro3"]        = TxtReintegro3.Text,
+                    ["ReintegroPrimero"]  = (ChkReintegroPrimero.IsChecked == true).ToString(),
+                    ["NumeroSegundo"]     = TxtNumeroSegundo.Text,
+                    ["CantidadSegundo"]   = TxtCantidadSegundo.Text,
+                    ["NumeroTercero"]     = TxtNumeroTercero.Text,
+                    ["CantidadTercero"]   = TxtCantidadTercero.Text,
+                },
+                escribir: d =>
+                {
+                    TxtFecha.Text            = d.Gv("Fecha");
+                    TxtNumeroEspecial.Text   = d.Gv("NumeroEspecial");
+                    TxtCantidadEspecial.Text = d.Gv("CantidadEspecial");
+                    TxtSerieEspecial.Text    = d.Gv("SerieEspecial");
+                    TxtFraccEspecial.Text    = d.Gv("FraccEspecial");
+                    TxtNumeroPrimero.Text    = d.Gv("NumeroPrimero");
+                    TxtCantidadPrimero.Text  = d.Gv("CantidadPrimero");
+                    TxtReintegro1.Text       = d.Gv("Reintegro1");
+                    TxtReintegro2.Text       = d.Gv("Reintegro2");
+                    TxtReintegro3.Text       = d.Gv("Reintegro3");
+                    ChkReintegroPrimero.IsChecked = d.Gv("ReintegroPrimero") == "True";
+                    TxtNumeroSegundo.Text    = d.Gv("NumeroSegundo");
+                    TxtCantidadSegundo.Text  = d.Gv("CantidadSegundo");
+                    TxtNumeroTercero.Text    = d.Gv("NumeroTercero");
+                    TxtCantidadTercero.Text  = d.Gv("CantidadTercero");
+                });
         }
 
         private void PEspecial_Click(object sender, RoutedEventArgs e)
@@ -94,8 +144,8 @@ namespace LoteriaTwo.Views
             UltimoElemento = el;
             LogService.Instancia.Registrar(LogNivel.Accion, el.Tipo.ToString(),
                 "P → " + el.ToLogString());
-            PlaylistService.Instancia.AgregarElemento(el.Tipo, el.Tipo.ToString());
-            PlaylistService.Instancia.AgregarLogo(el.Tipo.ToString(), el.Tipo);
+            PlaylistService.Instancia.AgregarElemento(el.Tipo, el.ToPlaylistNombre());
+            PlaylistService.Instancia.AgregarLogo("LoteriaNacional", el.Tipo);
         }
     }
 }

@@ -41,6 +41,112 @@ namespace LoteriaTwo.Views
             PopulateLogosImagenes();
             CargarMapa(0);
             _ready = true;
+            RegistrarLiveData();
+            RegistrarFormState();
+        }
+
+        private void RegistrarFormState()
+        {
+            FormStateService.Instancia.RegistrarSeccion("LoteriayRotulos",
+                leer: () =>
+                {
+                    GuardarMapaActual();
+                    var d = new Dictionary<string, string>
+                    {
+                        ["TxtF1"]          = TxtF1.Text,
+                        ["TxtF2"]          = TxtF2.Text,
+                        ["TxtF3"]          = TxtF3.Text,
+                        ["TxtF4"]          = TxtF4.Text,
+                        ["TxtF5"]          = TxtF5.Text,
+                        ["LogoFoto1"]      = CmbLogoFoto1.SelectedItem?.ToString()     ?? string.Empty,
+                        ["LogoFoto2"]      = CmbLogoFoto2.SelectedItem?.ToString()     ?? string.Empty,
+                        ["LogoFoto3"]      = CmbLogoFoto3.SelectedItem?.ToString()     ?? string.Empty,
+                        ["LogoFoto4"]      = CmbLogoFoto4.SelectedItem?.ToString()     ?? string.Empty,
+                        ["LogoFoto5"]      = CmbLogoFoto5.SelectedItem?.ToString()     ?? string.Empty,
+                        ["LogoFotoVideo"]  = CmbLogoFotoVideo.SelectedItem?.ToString() ?? string.Empty,
+                        ["TipoRotulo"]     = GetCheckedRadio(this, "TipoRotulo"),
+                        ["Imagenes"]       = GetCheckedRadio(this, "Imagenes"),
+                        ["Linea1Primera"]  = TxtLinea1Primera.Text,
+                        ["Linea1Segunda"]  = TxtLinea1Segunda.Text,
+                        ["Linea2"]         = TxtLinea2.Text,
+                        ["MapaActual"]     = _mapaActual.ToString(),
+                    };
+                    for (int i = 0; i < _mapas.Length; i++)
+                    {
+                        var m = _mapas[i];
+                        var pre = $"M{i}_";
+                        d[$"{pre}Fecha"]      = m.Fecha;
+                        d[$"{pre}Ciudad1"]    = m.Ciudad1;
+                        d[$"{pre}Ciudad2"]    = m.Ciudad2;
+                        d[$"{pre}Ciudad3"]    = m.Ciudad3;
+                        d[$"{pre}Ciudad4"]    = m.Ciudad4;
+                        d[$"{pre}Ciudad5"]    = m.Ciudad5;
+                        d[$"{pre}Comunidad1"] = m.Comunidad1;
+                        d[$"{pre}Comunidad2"] = m.Comunidad2;
+                        d[$"{pre}Comunidad3"] = m.Comunidad3;
+                        d[$"{pre}Comunidad4"] = m.Comunidad4;
+                        d[$"{pre}Comunidad5"] = m.Comunidad5;
+                        d[$"{pre}Logo"]       = m.Logo;
+                        d[$"{pre}Texto1"]     = m.Texto1;
+                        d[$"{pre}Texto2"]     = m.Texto2;
+                    }
+                    return d;
+                },
+                escribir: d =>
+                {
+                    TxtF1.Text           = d.Gv("TxtF1");
+                    TxtF2.Text           = d.Gv("TxtF2");
+                    TxtF3.Text           = d.Gv("TxtF3");
+                    TxtF4.Text           = d.Gv("TxtF4");
+                    TxtF5.Text           = d.Gv("TxtF5");
+                    FormHelper.RestoreCombo(CmbLogoFoto1,     d.Gv("LogoFoto1"));
+                    FormHelper.RestoreCombo(CmbLogoFoto2,     d.Gv("LogoFoto2"));
+                    FormHelper.RestoreCombo(CmbLogoFoto3,     d.Gv("LogoFoto3"));
+                    FormHelper.RestoreCombo(CmbLogoFoto4,     d.Gv("LogoFoto4"));
+                    FormHelper.RestoreCombo(CmbLogoFoto5,     d.Gv("LogoFoto5"));
+                    FormHelper.RestoreCombo(CmbLogoFotoVideo, d.Gv("LogoFotoVideo"));
+                    FormHelper.SetCheckedRadio(this, "TipoRotulo", d.Gv("TipoRotulo"));
+                    FormHelper.SetCheckedRadio(this, "Imagenes",   d.Gv("Imagenes"));
+                    TxtLinea1Primera.Text = d.Gv("Linea1Primera");
+                    TxtLinea1Segunda.Text = d.Gv("Linea1Segunda");
+                    TxtLinea2.Text        = d.Gv("Linea2");
+                    for (int i = 0; i < _mapas.Length; i++)
+                    {
+                        var m   = _mapas[i];
+                        var pre = $"M{i}_";
+                        m.Fecha      = d.Gv($"{pre}Fecha");
+                        m.Ciudad1    = d.Gv($"{pre}Ciudad1");
+                        m.Ciudad2    = d.Gv($"{pre}Ciudad2");
+                        m.Ciudad3    = d.Gv($"{pre}Ciudad3");
+                        m.Ciudad4    = d.Gv($"{pre}Ciudad4");
+                        m.Ciudad5    = d.Gv($"{pre}Ciudad5");
+                        m.Comunidad1 = d.Gv($"{pre}Comunidad1");
+                        m.Comunidad2 = d.Gv($"{pre}Comunidad2");
+                        m.Comunidad3 = d.Gv($"{pre}Comunidad3");
+                        m.Comunidad4 = d.Gv($"{pre}Comunidad4");
+                        m.Comunidad5 = d.Gv($"{pre}Comunidad5");
+                        m.Logo       = d.Gv($"{pre}Logo");
+                        m.Texto1     = d.Gv($"{pre}Texto1");
+                        m.Texto2     = d.Gv($"{pre}Texto2");
+                    }
+                    int idx = int.TryParse(d.Gv("MapaActual"), out int v) && v >= 0 && v < _mapas.Length ? v : 0;
+                    _mapaActual = idx;
+                    CargarMapa(idx);
+                });
+        }
+
+        private void RegistrarLiveData()
+        {
+            LiveDataService.Instancia.Registrar(TipoElemento.Rotulo,
+                () => $"Tipo: {GetCheckedRadio(this, "TipoRotulo")}  " +
+                      $"L1: {TxtLinea1Primera.Text} {TxtLinea1Segunda.Text}  L2: {TxtLinea2.Text}");
+
+            LiveDataService.Instancia.Registrar(TipoElemento.LogoCiudades, () =>
+            {
+                var m = _mapas[_mapaActual];
+                return $"Logo: {m.Logo}  Fecha: {m.Fecha}  " +
+                       $"{m.Ciudad1} {m.Ciudad2} {m.Ciudad3} {m.Ciudad4} {m.Ciudad5}";
+            });
         }
 
         // ── Logos de imágenes ────────────────────────────────────────────────
@@ -251,12 +357,20 @@ namespace LoteriaTwo.Views
 
         private static void AgregarAPlaylist(Elemento el)
         {
-            PlaylistService.Instancia.AgregarElemento(el.Tipo, el.Tipo.ToString());
-            var logo = el.LogoId is { } id
-                ? LogoRepository.Instancia.Get(id)?.Nombre ?? el.Tipo.ToString()
-                : el.Tipo.ToString();
-            PlaylistService.Instancia.AgregarLogo(logo, el.Tipo);
+            PlaylistService.Instancia.AgregarElemento(el.Tipo, el.ToPlaylistNombre());
+            PlaylistService.Instancia.AgregarLogo(GetLogoNombre(el), el.Tipo);
         }
+
+        private static string GetLogoNombre(Elemento el) => el.Tipo switch
+        {
+            TipoElemento.Web          => "GenericoLAE",
+            TipoElemento.Imagen       => el.LogoId is { } id
+                                             ? LogoRepository.Instancia.Get(id)?.Nombre ?? "GenericoLAE"
+                                             : "GenericoLAE",
+            TipoElemento.Rotulo       => el["Tipo"] is { Length: > 0 } t ? t : "GenericoLAE",
+            TipoElemento.LogoCiudades => el["Logo"] is { Length: > 0 } l ? l : "GenericoLAE",
+            _                         => "GenericoLAE",
+        };
 
         private static string GetCheckedRadio(DependencyObject root, string groupName)
         {
