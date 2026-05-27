@@ -361,7 +361,7 @@ namespace LoteriaTwo.Services
             else
                 sb.Append(Run("Premiados/Tipos/Premiados", D));
 
-            sb.Append(Set("Premiados/BoteCantidad", "TEXT_STRING", "", D));
+            sb.Append(Set("Premiados/BoteCantidad", "TEXT_STRING", bote ? el["BoteCantidad"] : "", D));
 
             sb.Append(Set("HD/Premiados/Bote",              "OBJ_CULL", !bote, D));
             sb.Append(Set("HD_PantallaPlato/Premiados/Bote","OBJ_CULL", !bote, D));

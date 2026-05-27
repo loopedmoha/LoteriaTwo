@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -235,7 +236,9 @@ namespace LoteriaTwo.Views
                 };
                 _chkBotePremiado[i].Checked += (_, _) =>
                 {
-                    var cantidad = GetCantidadBoteParaJuego(JuegosPremiados[idx].Nombre);
+                    var juego   = JuegosPremiados[idx].Nombre;
+                    var cantidad = GetCantidadBoteParaJuego(juego);
+                    Debug.WriteLine($"[Bote] Checked — juego={juego}  cantidad='{cantidad}'");
                     BrainstormService.Instancia.SetBoteCantidad(cantidad);
                 };
                 PlaceP(_chkBotePremiado[i], row, 2);
@@ -372,11 +375,12 @@ namespace LoteriaTwo.Views
             if (idx < 0) return null;
 
             var el = new Elemento { Tipo = TipoElemento.Premiado };
-            el["Juego"]   = JuegosPremiados[idx].Nombre;
-            el["Bote"]    = (_chkBotePremiado[idx].IsChecked == true).ToString();
-            el["Numeros"] = string.Join(",", _txtNumeros[idx].Select(t => t.Text));
-            el["Extras"]  = string.Join(",", _txtOtros[idx].Select(t => t.Text));
-            el["Fecha"]   = _txtFechaPremiado[idx].Text;
+            el["Juego"]         = JuegosPremiados[idx].Nombre;
+            el["Bote"]          = (_chkBotePremiado[idx].IsChecked == true).ToString();
+            el["BoteCantidad"]  = GetCantidadBoteParaJuego(JuegosPremiados[idx].Nombre);
+            el["Numeros"]       = string.Join(",", _txtNumeros[idx].Select(t => t.Text));
+            el["Extras"]        = string.Join(",", _txtOtros[idx].Select(t => t.Text));
+            el["Fecha"]         = _txtFechaPremiado[idx].Text;
             return el;
         }
         private void PremiadosEntra_Click(object sender, RoutedEventArgs e)
