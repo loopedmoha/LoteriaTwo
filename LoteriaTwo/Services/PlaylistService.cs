@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using LoteriaTwo.Models;
 
 namespace LoteriaTwo.Services
@@ -34,32 +35,47 @@ namespace LoteriaTwo.Services
 
         private PlaylistService() { }
 
-        public void AgregarElemento(TipoElemento tipo, string nombre)
-            => Activa.Elementos.Add(new PlaylistItem { Tipo = tipo, Nombre = nombre });
+        public void AgregarElemento(Elemento el)
+            => Activa.Elementos.Add(new PlaylistItem { ElementoId = el.Id, Tipo = el.Tipo, Nombre = el.ToPlaylistNombre() });
 
         public void AgregarLogo(string nombre, TipoElemento tipo)
             => Activa.Logos.Add(new PlaylistItem { Tipo = tipo, Nombre = nombre });
 
         // ── Save / Load ───────────────────────────────────────────────────────
 
+        private static readonly JsonSerializerOptions _jsonOpts = new()
+        {
+            WriteIndented = true,
+            PropertyNameCaseInsensitive = true,
+        };
+
         public void Guardar(string ruta)
         {
             var dto = Playlists.Select(p => new PlaylistFileDto
             {
                 Nombre    = p.Nombre,
-                Elementos = p.Elementos.Select(i => new PlaylistItemDto { Tipo = i.Tipo.ToString(), Nombre = i.Nombre }).ToList(),
-                Logos     = p.Logos    .Select(i => new PlaylistItemDto { Tipo = i.Tipo.ToString(), Nombre = i.Nombre }).ToList(),
+                Elementos = p.Elementos.Select(i =>
+                {
+                    var el = ElementoRepository.Instancia.Get(i.ElementoId);
+                    return new PlaylistItemDto
+                    {
+                        ElementoId    = i.ElementoId.ToString(),
+                        Tipo          = i.Tipo.ToString(),
+                        Nombre        = i.Nombre,
+                        Datos         = el?.Datos         ?? new(),
+                        DatosQuiniela = el?.DatosQuiniela,
+                    };
+                }).ToList(),
+                Logos = p.Logos.Select(i => new PlaylistItemDto { Tipo = i.Tipo.ToString(), Nombre = i.Nombre }).ToList(),
             }).ToList();
 
-            File.WriteAllText(ruta, JsonSerializer.Serialize(dto,
-                new JsonSerializerOptions { WriteIndented = true }));
+            File.WriteAllText(ruta, JsonSerializer.Serialize(dto, _jsonOpts));
         }
 
         public bool Cargar(string ruta)
         {
             var json = File.ReadAllText(ruta);
-            var dtos = JsonSerializer.Deserialize<List<PlaylistFileDto>>(json,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var dtos = JsonSerializer.Deserialize<List<PlaylistFileDto>>(json, _jsonOpts);
             if (dtos is null) return false;
 
             for (int i = 0; i < Math.Min(dtos.Count, Playlists.Length); i++)
@@ -67,8 +83,13 @@ namespace LoteriaTwo.Services
                 Playlists[i].Elementos.Clear();
                 Playlists[i].Logos.Clear();
                 foreach (var it in dtos[i].Elementos)
-                    if (Enum.TryParse<TipoElemento>(it.Tipo, out var tipo))
-                        Playlists[i].Elementos.Add(new PlaylistItem { Tipo = tipo, Nombre = it.Nombre });
+                {
+                    if (!Enum.TryParse<TipoElemento>(it.Tipo, out var tipo)) continue;
+                    var elId = Guid.TryParse(it.ElementoId, out var g) ? g : Guid.NewGuid();
+                    var el = new Elemento { Id = elId, Tipo = tipo, Datos = it.Datos ?? new(), DatosQuiniela = it.DatosQuiniela };
+                    ElementoRepository.Instancia.Add(el);
+                    Playlists[i].Elementos.Add(new PlaylistItem { ElementoId = elId, Tipo = tipo, Nombre = it.Nombre });
+                }
                 foreach (var it in dtos[i].Logos)
                     if (Enum.TryParse<TipoElemento>(it.Tipo, out var tipo))
                         Playlists[i].Logos.Add(new PlaylistItem { Tipo = tipo, Nombre = it.Nombre });
@@ -81,8 +102,11 @@ namespace LoteriaTwo.Services
 
     internal class PlaylistItemDto
     {
-        public string Tipo   { get; set; } = string.Empty;
-        public string Nombre { get; set; } = string.Empty;
+        public string                         ElementoId    { get; set; } = string.Empty;
+        public string                         Tipo          { get; set; } = string.Empty;
+        public string                         Nombre        { get; set; } = string.Empty;
+        public Dictionary<string, string>?    Datos         { get; set; }
+        public Quiniela?                      DatosQuiniela { get; set; }
     }
 
     internal class PlaylistFileDto

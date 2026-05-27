@@ -13,7 +13,7 @@ namespace LoteriaTwo.Services
         private BrainstormConnection? _conn;
         private string _bd = "LoteriasTotal/LoteriaApuestas";
 
-        private const double D = 0.5;
+        private const double D = 0.2;
 
         private BrainstormService() { }
 
@@ -56,15 +56,95 @@ namespace LoteriaTwo.Services
 
         public bool ModoQuiniela { get; set; }
 
-        public bool Entra(Elemento el)  => Enviar(BuildEntra(el));
-        public bool Sale(Elemento el)   => Enviar(BuildSale(el));
+        private Elemento? _elementoActivo;
+        private bool      _faldonActivo;
+
+        public bool Entra(Elemento el)
+        {
+            var cmd = new StringBuilder();
+            if (_faldonActivo)
+            {
+                cmd.Append(Run("SaleFaldon"));
+                cmd.Append(Run($"Fondo/{FondoColor(el)}"));
+                cmd.Append(Run("Fondo/Entra"));
+                if (_elementoActivo is not null)
+                    cmd.Append(BuildSale(_elementoActivo));
+                cmd.Append(BuildContenido(el));
+                _faldonActivo = false;
+            }
+            else
+            {
+                if (_elementoActivo is not null)
+                    cmd.Append(BuildSale(_elementoActivo));
+                cmd.Append(BuildEntra(el));
+            }
+            var ok = Enviar(cmd.ToString());
+            if (ok) _elementoActivo = el;
+            return ok;
+        }
+
+        public bool Sale(Elemento el)
+        {
+            var ok = Enviar(BuildSale(el));
+            if (ok) _elementoActivo = null;
+            return ok;
+        }
+
+        public bool SaleActivo()
+        {
+            if (_elementoActivo is null) return false;
+            return Sale(_elementoActivo);
+        }
         public bool EntraFondo()                 => Enviar(Run("Fondo/Entra"));
         public bool SaleFondo()                  => Enviar(Run("Fondo/Sale"));
         public string CambiarFondo(string color) => Run($"Fondo/{color}");
         public bool EnviarTexFile(string obj, string path)
             => Enviar($"itemset('<{_bd}>{obj}','TEX_FILE','{path}');");
-        public bool EntraFaldon(Elemento el) => Enviar(BuildEntraFaldon(el));
-        public bool SaleFaldon()             => Enviar(Run("SaleFaldon"));
+
+        public bool SetBoteCantidad(string cantidad)
+            => Enviar(Set("Premiados/BoteCantidad", "TEXT_STRING", cantidad));
+
+        public bool EntraFaldon(Elemento el)
+        {
+            var ok = Enviar(BuildEntraFaldon(el));
+            if (ok) _faldonActivo = true;
+            return ok;
+        }
+
+        public bool SaleFaldon()
+        {
+            var ok = Enviar(Run("SaleFaldon"));
+            if (ok) _faldonActivo = false;
+            return ok;
+        }
+        public bool EntraFaldonCifra(int pos, string valor)
+        {
+            var sb = new StringBuilder();
+            sb.Append(Set($"cifra_Faldones_{pos:D2}", "TEXT_STRING", valor));
+            sb.Append(Run($"EntraFaldon/cifra{pos:D2}"));
+            return Enviar(sb.ToString());
+        }
+
+        public bool EntraLogos() => Enviar(Run("EntraLogos"));
+        public bool SaleLogos()  => Enviar(Run("SaleLogo"));
+
+        public bool NextLogo(string logoNombre)
+        {
+            var sb = new StringBuilder();
+            sb.Append(Set("nlogo", "MAP_STRING_PAR", logoNombre));
+            sb.Append(Run("NextLogo", D));
+            return Enviar(sb.ToString());
+        }
+
+        public bool SyncLogo(string logoNombre)
+        {
+            var sb = new StringBuilder();
+            sb.Append(Run("SaleLogo"));
+            sb.Append(Set("nlogo", "MAP_STRING_PAR", logoNombre, D));
+            sb.Append(Run("NextLogo", D));
+            sb.Append(Run("EntraLogos", D));
+            return Enviar(sb.ToString());
+        }
 
         private string FondoColor(Elemento el)
         {
@@ -90,8 +170,14 @@ namespace LoteriaTwo.Services
         {
             if (el.Tipo is TipoElemento.Quiniela or TipoElemento.Pleno15)
                 ModoQuiniela = true;
-            var fondo = Run($"Fondo/{FondoColor(el)}");
-            var contenido = el.Tipo switch
+            return Run($"Fondo/{FondoColor(el)}") + BuildContenido(el);
+        }
+
+        private string BuildContenido(Elemento el)
+        {
+            if (el.Tipo is TipoElemento.Quiniela or TipoElemento.Pleno15)
+                ModoQuiniela = true;
+            return el.Tipo switch
             {
                 TipoElemento.Logo              => EntraLogo(el),
                 TipoElemento.Bote              => EntraBote(el),
@@ -109,9 +195,8 @@ namespace LoteriaTwo.Services
                 TipoElemento.LogoCiudades      => EntraMapa(el),
                 TipoElemento.Imagen            => EntraImagen(el),
                 TipoElemento.Web               => Run("CartonWeb/Entra", 0.1),
-                _ => string.Empty,
+                _                              => string.Empty,
             };
-            return fondo + contenido;
         }
 
         private string BuildSale(Elemento el) => el.Tipo switch
@@ -208,9 +293,13 @@ namespace LoteriaTwo.Services
             var sb = new StringBuilder();
             sb.Append(Set("SorteosYBotes/BoteCantidad", "TEXT_STRING", $"{cantidad}€", D));
             sb.Append(Set("SorteosYBotes/Fecha", "TEXT_STRING", fecha, D));
-            sb.Append(Set($"HD/SorteosYBotes/Bote/Logo",             "OBJ_OVERMAT", $"Logo{logo}", D));
+            sb.Append(Set($"HD/SorteosYBotes/Bote/Logo",               "OBJ_OVERMAT", $"Logo{logo}", D));
             sb.Append(Set($"HD_PantallaPlato/SorteosYBotes/Bote/Logo", "OBJ_OVERMAT", $"Logo{logo}", D));
-            sb.Append(Set($"9_16/SorteosYBotes/Bote/Logo",           "OBJ_OVERMAT", $"Logo{logo}", D));
+            sb.Append(Set($"9_16/SorteosYBotes/LogoSorteo",             "OBJ_OVERMAT", $"Logo{logo}", D));
+            var tipoBote = juego.Equals("LOTERIA", StringComparison.OrdinalIgnoreCase)
+                ? "SorteosYBotes/Bote/PremioLoteriaNacional"
+                : "SorteosYBotes/Bote/Botes";
+            sb.Append(Run(tipoBote, D));
             sb.Append(Run("SorteosYBotes/Bote/Entra", 0.1));
             return sb.ToString();
         }
@@ -289,6 +378,7 @@ namespace LoteriaTwo.Services
         {
             var sb = new StringBuilder();
             sb.Append(Set("ElMillon/TxtElMillon", "TEXT_STRING", el["Numero"].ToUpper(), D));
+            sb.Append(Set("ElMillon/Fecha",       "TEXT_STRING", el["Fecha"], D));
             sb.Append(Run("ElMillon/Entra", 0.3));
             return sb.ToString();
         }

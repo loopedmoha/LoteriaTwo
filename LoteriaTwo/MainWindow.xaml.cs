@@ -73,11 +73,28 @@ namespace LoteriaTwo
             var current = el;
             while (current != null)
             {
-                if (current is TabItem ti && ti.Header is string h && !string.IsNullOrEmpty(h))
-                    return h;
+                // Sidebar nav: look for named content views
+                if (current is FrameworkElement fe && fe.Visibility == Visibility.Visible)
+                {
+                    if (current is Views.LoteriayRotulosView) return "Lotería y Rótulos";
+                    if (current is Views.DecimosView)         return "Décimos";
+                    if (current is Views.QuinielaView)        return "Quiniela";
+                    if (current is Views.SorteosBotesView)    return "Sorteos y Botes";
+                }
                 current = VisualTreeHelper.GetParent(current);
             }
             return null;
+        }
+
+        // ── Navegación lateral ────────────────────────────────────────────────
+
+        private void Nav_Checked(object sender, RoutedEventArgs e)
+        {
+            if (ViewLoteria is null) return;
+            ViewLoteria.Visibility  = NavLoteria.IsChecked  == true ? Visibility.Visible : Visibility.Collapsed;
+            ViewDecimos.Visibility  = NavDecimos.IsChecked  == true ? Visibility.Visible : Visibility.Collapsed;
+            ViewQuiniela.Visibility = NavQuiniela.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+            ViewSorteos.Visibility  = NavSorteos.IsChecked  == true ? Visibility.Visible : Visibility.Collapsed;
         }
 
         // ── Debug ─────────────────────────────────────────────────────────────

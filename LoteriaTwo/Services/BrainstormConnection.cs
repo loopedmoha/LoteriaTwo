@@ -73,7 +73,7 @@ namespace LoteriaTwo.Services
             if (_client is null || !_client.Connected) return false;
             try
             {
-                var bytes = System.Text.Encoding.ASCII.GetBytes(command);
+                var bytes = System.Text.Encoding.UTF8.GetBytes(command);
                 _client.GetStream().Write(bytes, 0, bytes.Length);
                 return true;
             }

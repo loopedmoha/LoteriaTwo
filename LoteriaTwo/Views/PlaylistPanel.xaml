@@ -15,8 +15,11 @@
                             FontSize="10" Padding="6,3" Margin="0,0,4,0"
                             Click="Guardar_Click"/>
                     <Button Content="Cargar"  Style="{StaticResource BtnBlue}"
-                            FontSize="10" Padding="6,3"
+                            FontSize="10" Padding="6,3" Margin="0,0,4,0"
                             Click="Cargar_Click"/>
+                    <Button Content="Limpiar" Style="{StaticResource BtnReset}"
+                            FontSize="10" Padding="6,3"
+                            Click="LimpiarPlaylist_Click"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <TextBlock Text="PLAYLIST" FontWeight="Bold" FontSize="11"
@@ -66,7 +69,11 @@
                         <Button Content="▼" Style="{StaticResource BtnFlat}"
                                 FontSize="11" Width="26" Height="22" Padding="0"
                                 HorizontalContentAlignment="Center"
-                                Click="LogoDown_Click"/>
+                                Margin="0,0,2,0" Click="LogoDown_Click"/>
+                        <Button Content="✕" Style="{StaticResource BtnReset}"
+                                FontSize="11" Width="26" Height="22" Padding="0"
+                                HorizontalContentAlignment="Center"
+                                Click="LogoEliminar_Click"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Button Content="Entra Logo" Style="{StaticResource BtnEntra}"
@@ -123,7 +130,11 @@
                         <Button Content="▼" Style="{StaticResource BtnFlat}"
                                 FontSize="11" Width="26" Height="22" Padding="0"
                                 HorizontalContentAlignment="Center"
-                                Click="ElemDown_Click"/>
+                                Margin="0,0,2,0" Click="ElemDown_Click"/>
+                        <Button Content="✕" Style="{StaticResource BtnReset}"
+                                FontSize="11" Width="26" Height="22" Padding="0"
+                                HorizontalContentAlignment="Center"
+                                Click="ElemEliminar_Click"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Button Content="Sale"      Style="{StaticResource BtnSale}"
@@ -141,7 +152,8 @@
                              BorderThickness="0"
                              Background="Transparent"
                              FontSize="11"
-                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             SelectionChanged="LstElementos_SelectionChanged">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Nombre}"

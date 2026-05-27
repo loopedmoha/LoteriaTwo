@@ -387,7 +387,7 @@ namespace LoteriaTwo.Views
 
         private static void AgregarAPlaylist(Elemento el)
         {
-            PlaylistService.Instancia.AgregarElemento(el.Tipo, el.ToPlaylistNombre());
+            PlaylistService.Instancia.AgregarElemento(el);
             PlaylistService.Instancia.AgregarLogo(GetLogoNombre(el), el.Tipo);
         }
 

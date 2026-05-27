@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using LoteriaTwo.Models;
 using LoteriaTwo.Services;
@@ -12,7 +13,7 @@ namespace LoteriaTwo.Views
         // Configuración de cada juego en PREMIADOS: nombre, bolas principales, bolas extra
         private static readonly (string Nombre, int Bolas, int Extras)[] JuegosPremiados =
         {
-            ("BONOLOTO",       6, 1),  // 6 números + 1 complementario
+            ("BONOLOTO",       6, 2),  // 6 números + complementario + reintegro
             ("EUROMILLONES M", 5, 2),  // 5 números + 2 estrellas
             ("PRIMITIVA",      6, 2),  // 6 números + complementario + reintegro
             ("EL GORDO",       5, 1),  // 5 números + 1 clave
@@ -66,6 +67,7 @@ namespace LoteriaTwo.Views
                         ["FechaLototurf"]      = TxtFechaBoteLototurf.Text,
                         ["FechaJoker"]         = TxtFechaBoteJoker.Text,
                         ["FechaEurodreams"]    = TxtFechaBoteEurodreams.Text,
+                        ["MillonFecha"]        = TxtMillonFecha.Text,
                         ["MillonMartes"]       = TxtMillonMartes.Text,
                         ["JokerJueves"]        = TxtJokerJueves.Text,
                         ["EuromillonesMillon"] = TxtEuromillonesMillon.Text,
@@ -112,6 +114,7 @@ namespace LoteriaTwo.Views
                     TxtFechaBoteLototurf.Text     = d.Gv("FechaLototurf");
                     TxtFechaBoteJoker.Text        = d.Gv("FechaJoker");
                     TxtFechaBoteEurodreams.Text   = d.Gv("FechaEurodreams");
+                    TxtMillonFecha.Text        = d.Gv("MillonFecha");
                     TxtMillonMartes.Text       = d.Gv("MillonMartes");
                     TxtJokerJueves.Text        = d.Gv("JokerJueves");
                     TxtEuromillonesMillon.Text = d.Gv("EuromillonesMillon");
@@ -167,7 +170,7 @@ namespace LoteriaTwo.Views
             });
 
             LiveDataService.Instancia.Registrar(TipoElemento.ElMillon,
-                () => $"Número: {TxtMillonMartes.Text}");
+                () => $"Fecha: {TxtMillonFecha.Text}  Número: {TxtMillonMartes.Text}");
 
             LiveDataService.Instancia.Registrar(TipoElemento.EuromillonesMosca,
                 () => $"Número: {TxtEuromillonesMillon.Text}");
@@ -230,6 +233,11 @@ namespace LoteriaTwo.Views
                     Margin = new Thickness(0, 2, 4, 2),
                     FontSize = 10
                 };
+                _chkBotePremiado[i].Checked += (_, _) =>
+                {
+                    var cantidad = GetCantidadBoteParaJuego(JuegosPremiados[idx].Nombre);
+                    BrainstormService.Instancia.SetBoteCantidad(cantidad);
+                };
                 PlaceP(_chkBotePremiado[i], row, 2);
 
                 // Cajas de números premiados
@@ -243,6 +251,12 @@ namespace LoteriaTwo.Views
                         MaxLength = 2,
                         HorizontalContentAlignment = HorizontalAlignment.Center,
                         Margin = new Thickness(0, 2, 3, 2)
+                    };
+                    int pos = j + 1;
+                    tb.PreviewKeyDown += (_, args) =>
+                    {
+                        if (args.Key == Key.Tab && ChkPasarGanador.IsChecked == true)
+                            BrainstormService.Instancia.EntraFaldonCifra(pos, tb.Text);
                     };
                     _txtNumeros[i][j] = tb;
                     spNums.Children.Add(tb);
@@ -260,6 +274,12 @@ namespace LoteriaTwo.Views
                         MaxLength = 2,
                         HorizontalContentAlignment = HorizontalAlignment.Center,
                         Margin = new Thickness(0, 2, 3, 2)
+                    };
+                    int posExtra = bolas + j + 1;
+                    tb.PreviewKeyDown += (_, args) =>
+                    {
+                        if (args.Key == Key.Tab && ChkPasarGanador.IsChecked == true)
+                            BrainstormService.Instancia.EntraFaldonCifra(posExtra, tb.Text);
                     };
                     _txtOtros[i][j] = tb;
                     spOtros.Children.Add(tb);
@@ -385,18 +405,17 @@ namespace LoteriaTwo.Views
 
         // ── Handlers — EL MILLÓN / JOKER ─────────────────────────────────────
 
+        private Elemento BuildMillonElemento()
+        {
+            var el = new Elemento { Tipo = TipoElemento.ElMillon };
+            el["Fecha"]  = TxtMillonFecha.Text;
+            el["Numero"] = TxtMillonMartes.Text;
+            return el;
+        }
         private void MillonP_Click(object sender, RoutedEventArgs e)
-        {
-            var el = new Elemento { Tipo = TipoElemento.ElMillon };
-            el["Numero"] = TxtMillonMartes.Text;
-            Previsualizar(el);
-        }
+            => Previsualizar(BuildMillonElemento());
         private void MillonEntra_Click(object sender, RoutedEventArgs e)
-        {
-            var el = new Elemento { Tipo = TipoElemento.ElMillon };
-            el["Numero"] = TxtMillonMartes.Text;
-            BrainstormService.Instancia.Entra(el);
-        }
+            => BrainstormService.Instancia.Entra(BuildMillonElemento());
         private void MillonSale_Click(object sender, RoutedEventArgs e)
         {
             BrainstormService.Instancia.Sale(new Elemento { Tipo = TipoElemento.ElMillon });
@@ -458,7 +477,7 @@ namespace LoteriaTwo.Views
             UltimoElemento = el;
             LogService.Instancia.Registrar(LogNivel.Accion, el.Tipo.ToString(),
                 "P → " + el.ToLogString());
-            PlaylistService.Instancia.AgregarElemento(el.Tipo, el.ToPlaylistNombre());
+            PlaylistService.Instancia.AgregarElemento(el);
             PlaylistService.Instancia.AgregarLogo(GetLogoNombre(el), el.Tipo);
         }
 
@@ -486,6 +505,17 @@ namespace LoteriaTwo.Views
             "JOKER"        => "Joker",
             "Eurodreams"   => "Eurodreams",
             _              => juego,
+        };
+
+        private string GetCantidadBoteParaJuego(string juego) => juego switch
+        {
+            "BONOLOTO"       => TxtCantBonoloto.Text,
+            "EUROMILLONES M" => TxtCantEuromillones.Text,
+            "PRIMITIVA"      => TxtCantPrimitiva.Text,
+            "EL GORDO"       => TxtCantElGordo.Text,
+            "LOTOTURF"       => TxtCantLototurf.Text,
+            "EURODREAMS"     => TxtCantEurodreams.Text,
+            _                => string.Empty,
         };
 
         private static string PremiadoALogo(string juego) => juego switch

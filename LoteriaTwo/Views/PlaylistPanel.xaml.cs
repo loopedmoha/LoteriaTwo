@@ -86,65 +86,107 @@ namespace LoteriaTwo.Views
         // ── Acciones LOGOS ────────────────────────────────────────────────────
 
         private void EntraLogo_Click(object sender, RoutedEventArgs e)
-        {
-            if (LstLogos.SelectedItem is not PlaylistItem item) return;
-            var el = ElementoRepository.Instancia.GetByTipo(item.Tipo)
-                  ?? new Elemento { Tipo = item.Tipo };
-            BrainstormService.Instancia.Entra(el);
-        }
+            => BrainstormService.Instancia.EntraLogos();
+
         private void SaleLogo_Click(object sender, RoutedEventArgs e)
-        {
-            if (LstLogos.SelectedItem is not PlaylistItem item) return;
-            BrainstormService.Instancia.Sale(new Elemento { Tipo = item.Tipo });
-        }
+            => BrainstormService.Instancia.SaleLogos();
 
         // ── Acciones ELEMENTOS ────────────────────────────────────────────────
 
         private void ElemSale_Click(object sender, RoutedEventArgs e)
         {
-            if (LstElementos.ItemsSource is not ObservableCollection<PlaylistItem> col) return;
-            int i = LstElementos.SelectedIndex;
-            if (i < 0) return;
-            col.RemoveAt(i);
-            if (col.Count > 0)
-                LstElementos.SelectedIndex = Math.Min(i, col.Count - 1);
+            Debug.WriteLine("[Playlist] SALE activo");
+            BrainstormService.Instancia.SaleActivo();
         }
+
+        private bool _actualizandoIndice;
 
         private void ElemSig_Click(object sender, RoutedEventArgs e)
         {
             if (LstElementos.ItemsSource is not ObservableCollection<PlaylistItem> col) return;
 
-            int current = LstElementos.SelectedIndex < 0 ? -1 : LstElementos.SelectedIndex;
+            int current = LstElementos.SelectedIndex;
+            if (current < 0 || current >= col.Count) return;
+
+            var item     = col[current];
+            var snapshot = LiveDataService.Instancia.GetSnapshot(item.Tipo);
+            var datos    = snapshot.Length > 0 ? $"  |  {snapshot}" : string.Empty;
+            Debug.WriteLine($"[Playlist] ENTRA [{current + 1}/{col.Count}] {item.Nombre}{datos}");
+
+            var el = ElementoRepository.Instancia.Get(item.ElementoId);
+            if (el is not null)
+                BrainstormService.Instancia.Entra(el);
+
+            var logoNombre = GetLogoEnIndice(current);
+            if (logoNombre is not null)
+            {
+                Debug.WriteLine($"[Playlist] NEXT LOGO [{current + 1}] Logo{logoNombre}");
+                BrainstormService.Instancia.NextLogo(logoNombre);
+            }
+
             int next = current + 1;
-            int prev = current - 1;
-
-            if (prev >= 0 && prev < col.Count)
-            {
-                Debug.WriteLine($"[Playlist] SALE  [{prev + 1}/{col.Count}] {col[prev].Nombre}");
-                BrainstormService.Instancia.Sale(new Elemento { Tipo = col[prev].Tipo });
-            }
-
-            if (current >= 0 && current < col.Count)
-            {
-                var item     = col[current];
-                var snapshot = LiveDataService.Instancia.GetSnapshot(item.Tipo);
-                var datos    = snapshot.Length > 0 ? $"  |  {snapshot}" : string.Empty;
-                Debug.WriteLine($"[Playlist] ENTRA [{current + 1}/{col.Count}] {item.Nombre}{datos}");
-
-                var el = ElementoRepository.Instancia.GetByTipo(item.Tipo);
-                if (el is not null)
-                    BrainstormService.Instancia.Entra(el);
-            }
-
+            _actualizandoIndice = true;
             if (next < col.Count)
             {
                 LstElementos.SelectedIndex = next;
-                Debug.WriteLine($"[Playlist] Siguiente → [{next + 1}/{col.Count}] {col[next].Nombre}");
+                LstLogos.SelectedIndex     = next;
+                Debug.WriteLine($"[Playlist] → [{next + 1}/{col.Count}] {col[next].Nombre}");
             }
             else
             {
-                Debug.WriteLine($"[Playlist] Siguiente → fin de lista ({col.Count} elementos)");
+                Debug.WriteLine($"[Playlist] → fin de lista ({col.Count} elementos)");
             }
+            _actualizandoIndice = false;
+        }
+
+        private string? GetLogoEnIndice(int idx)
+        {
+            if (LstLogos.ItemsSource is not ObservableCollection<PlaylistItem> logos) return null;
+            if (idx < 0 || idx >= logos.Count) return null;
+            return logos[idx].Nombre;
+        }
+
+        private void LstElementos_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_actualizandoIndice) return;
+
+            int idx = LstElementos.SelectedIndex;
+            if (idx < 0) return;
+
+            _actualizandoIndice = true;
+            LstLogos.SelectedIndex = idx;
+            _actualizandoIndice = false;
+
+            var logoNombre = GetLogoEnIndice(idx);
+            if (logoNombre is null) return;
+
+            Debug.WriteLine($"[Playlist] SYNC LOGO [{idx + 1}] Logo{logoNombre}");
+            BrainstormService.Instancia.SyncLogo(logoNombre);
+        }
+
+        // ── Eliminar / Limpiar ────────────────────────────────────────────────
+
+        private static void EliminarSeleccionado(ListBox lst)
+        {
+            if (lst.ItemsSource is not ObservableCollection<PlaylistItem> col) return;
+            int i = lst.SelectedIndex;
+            if (i < 0 || i >= col.Count) return;
+            col.RemoveAt(i);
+            if (col.Count > 0)
+                lst.SelectedIndex = Math.Min(i, col.Count - 1);
+        }
+
+        private void LogoEliminar_Click(object sender, RoutedEventArgs e)
+            => EliminarSeleccionado(LstLogos);
+
+        private void ElemEliminar_Click(object sender, RoutedEventArgs e)
+            => EliminarSeleccionado(LstElementos);
+
+        private void LimpiarPlaylist_Click(object sender, RoutedEventArgs e)
+        {
+            var activa = PlaylistService.Instancia.Activa;
+            activa.Logos.Clear();
+            activa.Elementos.Clear();
         }
 
         // ── Guardar / Cargar ──────────────────────────────────────────────────

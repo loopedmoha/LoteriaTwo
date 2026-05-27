@@ -254,7 +254,7 @@ namespace LoteriaTwo.Views
             UltimoElemento = el;
             LogService.Instancia.Registrar(LogNivel.Accion, el.Tipo.ToString(),
                 "P → " + el.ToLogString());
-            PlaylistService.Instancia.AgregarElemento(el.Tipo, el.ToPlaylistNombre());
+            PlaylistService.Instancia.AgregarElemento(el);
             PlaylistService.Instancia.AgregarLogo("Quiniela", el.Tipo);
         }
 

@@ -1,7 +1,7 @@
 <UserControl x:Class="LoteriaTwo.Views.SorteosBotesView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <Grid Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -100,70 +100,100 @@
                                      GroupName="BoteGame" x:Name="RdbBoteBonoloto"
                                      Foreground="{StaticResource BrushTextPrimary}"
                                      IsChecked="True" Margin="0,2"/>
-                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="TxtCantBonoloto"   Margin="3,2"/>
+                        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox x:Name="TxtCantBonoloto" Margin="3,2" MinWidth="70"/>
+                            <TextBlock Text="€" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{StaticResource BrushTextSecondary}" FontSize="11"/>
+                        </StackPanel>
                         <TextBox Grid.Row="1" Grid.Column="2" x:Name="TxtFechaBoteBonoloto" Margin="3,2"/>
 
                         <!-- QUINIGOL -->
                         <RadioButton Grid.Row="2" Grid.Column="0" Content="QUINIGOL"
                                      GroupName="BoteGame" x:Name="RdbBoteQuinigol"
                                      Foreground="{StaticResource BrushTextPrimary}" Margin="0,2"/>
-                        <TextBox Grid.Row="2" Grid.Column="1" x:Name="TxtCantQuinigol"   Margin="3,2"/>
+                        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox x:Name="TxtCantQuinigol" Margin="3,2" MinWidth="70"/>
+                            <TextBlock Text="€" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{StaticResource BrushTextSecondary}" FontSize="11"/>
+                        </StackPanel>
                         <TextBox Grid.Row="2" Grid.Column="2" x:Name="TxtFechaBoteQuinigol" Margin="3,2"/>
 
                         <!-- EUROMILLONES -->
                         <RadioButton Grid.Row="3" Grid.Column="0" Content="EUROMILLONES"
                                      GroupName="BoteGame" x:Name="RdbBoteEuromillones"
                                      Foreground="{StaticResource BrushTextPrimary}" Margin="0,2"/>
-                        <TextBox Grid.Row="3" Grid.Column="1" x:Name="TxtCantEuromillones"   Margin="3,2"/>
+                        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox x:Name="TxtCantEuromillones" Margin="3,2" MinWidth="70"/>
+                            <TextBlock Text="€" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{StaticResource BrushTextSecondary}" FontSize="11"/>
+                        </StackPanel>
                         <TextBox Grid.Row="3" Grid.Column="2" x:Name="TxtFechaBoteEuromillones" Margin="3,2"/>
 
                         <!-- LOTERIA -->
                         <RadioButton Grid.Row="4" Grid.Column="0" Content="LOTERIA"
                                      GroupName="BoteGame" x:Name="RdbBoteLoteria"
                                      Foreground="{StaticResource BrushTextPrimary}" Margin="0,2"/>
-                        <TextBox Grid.Row="4" Grid.Column="1" x:Name="TxtCantLoteria"   Margin="3,2"/>
+                        <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox x:Name="TxtCantLoteria" Margin="3,2" MinWidth="70"/>
+                            <TextBlock Text="€" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{StaticResource BrushTextSecondary}" FontSize="11"/>
+                        </StackPanel>
                         <TextBox Grid.Row="4" Grid.Column="2" x:Name="TxtFechaBoteLoteria" Margin="3,2"/>
 
                         <!-- PRIMITIVA -->
                         <RadioButton Grid.Row="5" Grid.Column="0" Content="PRIMITIVA"
                                      GroupName="BoteGame" x:Name="RdbBotePrimitiva"
                                      Foreground="{StaticResource BrushTextPrimary}" Margin="0,2"/>
-                        <TextBox Grid.Row="5" Grid.Column="1" x:Name="TxtCantPrimitiva"   Margin="3,2"/>
+                        <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox x:Name="TxtCantPrimitiva" Margin="3,2" MinWidth="70"/>
+                            <TextBlock Text="€" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{StaticResource BrushTextSecondary}" FontSize="11"/>
+                        </StackPanel>
                         <TextBox Grid.Row="5" Grid.Column="2" x:Name="TxtFechaBotePrimitiva" Margin="3,2"/>
 
                         <!-- QUINIELA -->
                         <RadioButton Grid.Row="6" Grid.Column="0" Content="QUINIELA"
                                      GroupName="BoteGame" x:Name="RdbBoteQuiniela"
                                      Foreground="{StaticResource BrushTextPrimary}" Margin="0,2"/>
-                        <TextBox Grid.Row="6" Grid.Column="1" x:Name="TxtCantQuiniela"   Margin="3,2"/>
+                        <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox x:Name="TxtCantQuiniela" Margin="3,2" MinWidth="70"/>
+                            <TextBlock Text="€" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{StaticResource BrushTextSecondary}" FontSize="11"/>
+                        </StackPanel>
                         <TextBox Grid.Row="6" Grid.Column="2" x:Name="TxtFechaBoteQuiniela" Margin="3,2"/>
 
                         <!-- EL GORDO -->
                         <RadioButton Grid.Row="7" Grid.Column="0" Content="EL GORDO"
                                      GroupName="BoteGame" x:Name="RdbBoteElGordo"
                                      Foreground="{StaticResource BrushTextPrimary}" Margin="0,2"/>
-                        <TextBox Grid.Row="7" Grid.Column="1" x:Name="TxtCantElGordo"   Margin="3,2"/>
+                        <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox x:Name="TxtCantElGordo" Margin="3,2" MinWidth="70"/>
+                            <TextBlock Text="€" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{StaticResource BrushTextSecondary}" FontSize="11"/>
+                        </StackPanel>
                         <TextBox Grid.Row="7" Grid.Column="2" x:Name="TxtFechaBoteElGordo" Margin="3,2"/>
 
                         <!-- LOTOTURF -->
                         <RadioButton Grid.Row="8" Grid.Column="0" Content="LOTOTURF"
                                      GroupName="BoteGame" x:Name="RdbBoteLototurf"
                                      Foreground="{StaticResource BrushTextPrimary}" Margin="0,2"/>
-                        <TextBox Grid.Row="8" Grid.Column="1" x:Name="TxtCantLototurf"   Margin="3,2"/>
+                        <StackPanel Grid.Row="8" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox x:Name="TxtCantLototurf" Margin="3,2" MinWidth="70"/>
+                            <TextBlock Text="€" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{StaticResource BrushTextSecondary}" FontSize="11"/>
+                        </StackPanel>
                         <TextBox Grid.Row="8" Grid.Column="2" x:Name="TxtFechaBoteLototurf" Margin="3,2"/>
 
                         <!-- JOKER -->
                         <RadioButton Grid.Row="9" Grid.Column="0" Content="JOKER"
                                      GroupName="BoteGame" x:Name="RdbBoteJoker"
                                      Foreground="{StaticResource BrushTextPrimary}" Margin="0,2"/>
-                        <TextBox Grid.Row="9" Grid.Column="1" x:Name="TxtCantJoker"   Margin="3,2"/>
+                        <StackPanel Grid.Row="9" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox x:Name="TxtCantJoker" Margin="3,2" MinWidth="70"/>
+                            <TextBlock Text="€" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{StaticResource BrushTextSecondary}" FontSize="11"/>
+                        </StackPanel>
                         <TextBox Grid.Row="9" Grid.Column="2" x:Name="TxtFechaBoteJoker" Margin="3,2"/>
 
                         <!-- EURODREAMS -->
                         <RadioButton Grid.Row="10" Grid.Column="0" Content="Eurodreams"
                                      GroupName="BoteGame" x:Name="RdbBoteEurodreams"
                                      Foreground="{StaticResource BrushTextPrimary}" Margin="0,2"/>
-                        <TextBox Grid.Row="10" Grid.Column="1" x:Name="TxtCantEurodreams"   Margin="3,2"/>
+                        <StackPanel Grid.Row="10" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox x:Name="TxtCantEurodreams" Margin="3,2" MinWidth="70"/>
+                            <TextBlock Text="€" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{StaticResource BrushTextSecondary}" FontSize="11"/>
+                        </StackPanel>
                         <TextBox Grid.Row="10" Grid.Column="2" x:Name="TxtFechaBoteEurodreams" Margin="3,2"/>
 
                         <!-- Botones BOTES -->
@@ -220,10 +250,12 @@
                                     Margin="0,0,16,0" Click="FaldonCorregir_Click"/>
                             <CheckBox x:Name="ChkSeguridad"
                                       Content="Seguridad"
+                                      IsChecked="True"
                                       Foreground="{StaticResource BrushTextPrimary}"
                                       VerticalAlignment="Center" Margin="0,0,16,0"/>
                             <CheckBox x:Name="ChkPasarGanador"
                                       Content="Pasar ganador con TAB"
+                                      IsChecked="True"
                                       Foreground="{StaticResource BrushTextPrimary}"
                                       VerticalAlignment="Center"/>
                         </StackPanel>
@@ -249,6 +281,13 @@
                                     Grid.Column="1" MinWidth="44"
                                     Click="MillonP_Click"/>
                         </Grid>
+                        <TextBlock Text="Fecha" FontSize="10"
+                                   Foreground="{StaticResource BrushTextSecondary}"
+                                   Margin="0,0,0,2"/>
+                        <TextBox x:Name="TxtMillonFecha" Margin="0,0,0,4"/>
+                        <TextBlock Text="Número" FontSize="10"
+                                   Foreground="{StaticResource BrushTextSecondary}"
+                                   Margin="0,0,0,2"/>
                         <TextBox x:Name="TxtMillonMartes" Margin="0,0,0,4"/>
                         <Grid Margin="0,0,0,10">
                             <Grid.ColumnDefinitions>

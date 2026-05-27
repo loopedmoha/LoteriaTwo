@@ -44,13 +44,60 @@
             <Setter Property="Template"                   Value="{StaticResource FlatButtonTemplate}"/>
             <Setter Property="FontFamily"                 Value="Segoe UI"/>
             <Setter Property="FontWeight"                 Value="SemiBold"/>
-            <Setter Property="FontSize"                   Value="12"/>
+            <Setter Property="FontSize"                   Value="11"/>
             <Setter Property="Cursor"                     Value="Hand"/>
-            <Setter Property="Padding"                    Value="10,6"/>
+            <Setter Property="Padding"                    Value="14,8"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment"   Value="Center"/>
             <Setter Property="BorderThickness"            Value="0"/>
-            <Setter Property="MinHeight"                  Value="30"/>
+            <Setter Property="MinHeight"                  Value="36"/>
+        </Style>
+
+        <!-- ── Sidebar nav button (RadioButton) ── -->
+        <Style x:Key="NavBtn" TargetType="RadioButton">
+            <Setter Property="Background"               Value="Transparent"/>
+            <Setter Property="Foreground"               Value="{StaticResource BrushTextSecondary}"/>
+            <Setter Property="FontFamily"               Value="Segoe UI"/>
+            <Setter Property="FontSize"                 Value="13"/>
+            <Setter Property="FontWeight"               Value="Normal"/>
+            <Setter Property="Cursor"                   Value="Hand"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment"   Value="Center"/>
+            <Setter Property="Margin"                   Value="8,2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="bg" Background="Transparent" CornerRadius="6"
+                                Padding="12,10">
+                            <Grid>
+                                <Border x:Name="accentBar" Width="3" CornerRadius="2"
+                                        HorizontalAlignment="Left" Margin="-12,0,0,0"
+                                        Background="{StaticResource BrushAccent}"
+                                        Visibility="Collapsed"/>
+                                <ContentPresenter Margin="4,0,0,0"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="bg"        Property="Background"  Value="#EFF6FF"/>
+                                <Setter TargetName="accentBar" Property="Visibility"  Value="Visible"/>
+                                <Setter Property="Foreground"  Value="{StaticResource BrushAccent}"/>
+                                <Setter Property="FontWeight"  Value="SemiBold"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                    <Condition Property="IsChecked"   Value="False"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="bg"       Property="Background" Value="#F3F4F6"/>
+                                <Setter Property="Foreground" Value="{StaticResource BrushTextPrimary}"/>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <Style x:Key="BtnEntra"   TargetType="Button" BasedOn="{StaticResource BaseBtn}">
@@ -106,9 +153,9 @@
         <!-- ── GroupBox ── -->
         <Style TargetType="GroupBox">
             <Setter Property="BorderBrush"     Value="{StaticResource BrushBorder}"/>
-            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Padding"         Value="0"/>
-            <Setter Property="Margin"          Value="0,0,0,4"/>
+            <Setter Property="Margin"          Value="0,0,0,6"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="GroupBox">
@@ -117,24 +164,19 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <Border Grid.RowSpan="2"
-                                    Background="{StaticResource BrushSurface}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                    CornerRadius="6"/>
                             <StackPanel Grid.Row="0" Orientation="Horizontal"
-                                        Margin="10,0,0,0" VerticalAlignment="Center">
+                                        Margin="0,0,0,5">
                                 <Border Width="3" CornerRadius="2"
                                         Background="{StaticResource BrushAccent}"
-                                        Margin="0,6,6,6"/>
+                                        Margin="0,0,7,0"/>
                                 <ContentPresenter ContentSource="Header"
                                                   RecognizesAccessKey="True"
                                                   VerticalAlignment="Center"
-                                                  Margin="0,6,8,6"
                                                   TextBlock.FontSize="10"
                                                   TextBlock.FontWeight="Bold"
                                                   TextBlock.FontFamily="Segoe UI"
-                                                  TextBlock.Foreground="{StaticResource BrushTextSecondary}"/>
+                                                  TextBlock.Foreground="{StaticResource BrushTextSecondary}"
+                                                  />
                             </StackPanel>
                             <ContentPresenter Grid.Row="1"
                                               Margin="{TemplateBinding Padding}"/>

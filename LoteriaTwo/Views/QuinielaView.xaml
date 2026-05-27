@@ -87,7 +87,11 @@
                 <TextBlock Text="BOTE PLENO" FontWeight="Bold" FontSize="11"
                            Foreground="{StaticResource BrushTextPrimary}"
                            VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBox x:Name="TxtBotePleno" Grid.Column="1"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBox x:Name="TxtBotePleno"/>
+                    <TextBlock Text=" €" VerticalAlignment="Center"
+                               Foreground="{StaticResource BrushTextSecondary}" FontSize="12"/>
+                </StackPanel>
             </Grid>
 
             <!-- PLENO 15 -->
