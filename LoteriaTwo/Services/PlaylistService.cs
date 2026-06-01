@@ -43,11 +43,16 @@ namespace LoteriaTwo.Services
 
         // ── Save / Load ───────────────────────────────────────────────────────
 
+        private static readonly string _rutaFija =
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Playlist.json");
+
         private static readonly JsonSerializerOptions _jsonOpts = new()
         {
             WriteIndented = true,
             PropertyNameCaseInsensitive = true,
         };
+
+        public void Guardar() => Guardar(_rutaFija);
 
         public void Guardar(string ruta)
         {
@@ -71,6 +76,8 @@ namespace LoteriaTwo.Services
 
             File.WriteAllText(ruta, JsonSerializer.Serialize(dto, _jsonOpts));
         }
+
+        public bool Cargar() => File.Exists(_rutaFija) && Cargar(_rutaFija);
 
         public bool Cargar(string ruta)
         {

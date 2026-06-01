@@ -10,16 +10,16 @@ namespace LoteriaTwo.Services
     {
         public static readonly BrainstormService Instancia = new();
 
-        private BrainstormConnection? _conn;
+        private BrainstormConnection[] _conns = [];
         private string _bd = "LoteriasTotal/LoteriaApuestas";
 
         private const double D = 0.2;
 
         private BrainstormService() { }
 
-        public void Inicializar(BrainstormConnection conn, string bd)
+        public void Inicializar(BrainstormConnection[] conns, string bd)
         {
-            _conn = conn;
+            _conns = conns;
             _bd = bd;
         }
 
@@ -44,9 +44,11 @@ namespace LoteriaTwo.Services
 
         public bool Enviar(string cmd)
         {
-            if (_conn is null || string.IsNullOrEmpty(cmd)) return false;
+            if (_conns.Length == 0 || string.IsNullOrEmpty(cmd)) return false;
             Debug.WriteLine($"[IPF] >>> {cmd}");
-            var ok = _conn.Send(cmd);
+            bool ok = true;
+            foreach (var conn in _conns)
+                ok &= conn.Send(cmd);
             var nivel = ok ? LogNivel.Accion : LogNivel.Error;
             LogService.Instancia.Registrar(nivel, "IPF", ok ? cmd : $"ERROR al enviar: {cmd}");
             return ok;
@@ -102,7 +104,7 @@ namespace LoteriaTwo.Services
             => Enviar($"itemset('<{_bd}>{obj}','TEX_FILE','{path}');");
 
         public bool SetBoteCantidad(string cantidad)
-            => Enviar(Set("Premiados/BoteCantidad", "TEXT_STRING", cantidad));
+            => Enviar(Set("Premiados/BoteCantidad", "TEXT_STRING", $"{cantidad}€"));
 
         public bool EntraFaldon(Elemento el)
         {
@@ -361,7 +363,7 @@ namespace LoteriaTwo.Services
             else
                 sb.Append(Run("Premiados/Tipos/Premiados", D));
 
-            sb.Append(Set("Premiados/BoteCantidad", "TEXT_STRING", bote ? el["BoteCantidad"] : "", D));
+            sb.Append(Set("Premiados/BoteCantidad", "TEXT_STRING", bote ? $"{el["BoteCantidad"]}€" : "", D));
 
             sb.Append(Set("HD/Premiados/Bote",              "OBJ_CULL", !bote, D));
             sb.Append(Set("HD_PantallaPlato/Premiados/Bote","OBJ_CULL", !bote, D));
@@ -421,7 +423,7 @@ namespace LoteriaTwo.Services
 
             sb.Append(Set("LoteriaPremio/TipoPremio",   "TEXT_STRING", tipoPremio, D));
             sb.Append(Set("LoteriaPremio/NumeroPremio", "TEXT_STRING", el["Numero"], D));
-            sb.Append(Set("LoteriaPremio/CantidadPremio", "TEXT_STRING", el["Cantidad"], D));
+            sb.Append(Set("LoteriaPremio/CantidadPremio", "TEXT_STRING", $"{el["Cantidad"]}€", D));
             sb.Append(Set("LoteriaPremio/FechaPremio",  "TEXT_STRING", el["Fecha"].Replace('/', '-'), D));
 
             if (el.Tipo is TipoElemento.PrimerPremio or TipoElemento.PremioEspecial)

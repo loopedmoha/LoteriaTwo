@@ -4,13 +4,20 @@ using System.Text.Json;
 
 namespace LoteriaTwo.Config
 {
+    public enum ModoEstudio { Prado, Torre }
+
     public class AppConfig
     {
         private static readonly string ConfigPath =
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json");
 
-        public string BrainstormIP { get; set; } = "127.0.0.1";
-        public string BrainstormDB { get; set; } = "LoteriasTotal/LoteriaApuestas";
+        public string BrainstormDB  { get; set; } = "LoteriasTotal/LoteriaApuestas";
+        public string PradoIP       { get; set; } = "127.0.0.1";
+        public string TorreIP1      { get; set; } = "127.0.0.1";
+        public string TorreIP2      { get; set; } = "127.0.0.1";
+        public string FotosShare    { get; set; } = @"\\172.28.51.61\FotosLoteria";
+        public string FotosUser     { get; set; } = "Administrador";
+        public string FotosPassword { get; set; } = "Auto1041";
 
         public static AppConfig Load()
         {

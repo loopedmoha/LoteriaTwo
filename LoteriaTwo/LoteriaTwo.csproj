@@ -10,4 +10,11 @@
     <RootNamespace>LoteriaTwo</RootNamespace>
   </PropertyGroup>
 
+
+  <ItemGroup>
+    <Content Include="config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

@@ -4,35 +4,35 @@
 
     <DockPanel Background="{StaticResource BrushSurface}">
 
-        <!-- ── Cabecera: selector de playlist + guardar / cargar ── -->
+        <!-- ── Cabecera: selector + guardar/cargar/limpiar ── -->
         <Border DockPanel.Dock="Top"
                 BorderBrush="{StaticResource BrushBorder}"
                 BorderThickness="1,0,0,1"
-                Padding="6,6,6,6">
+                Padding="8,7">
             <DockPanel>
                 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                     <Button Content="Guardar" Style="{StaticResource BtnBlue}"
-                            FontSize="10" Padding="6,3" Margin="0,0,4,0"
+                            FontSize="10" Padding="8,3" Margin="0,0,4,0"
                             Click="Guardar_Click"/>
-                    <Button Content="Cargar"  Style="{StaticResource BtnBlue}"
-                            FontSize="10" Padding="6,3" Margin="0,0,4,0"
+                    <Button Content="Cargar" Style="{StaticResource BtnBlue}"
+                            FontSize="10" Padding="8,3" Margin="0,0,4,0"
                             Click="Cargar_Click"/>
                     <Button Content="Limpiar" Style="{StaticResource BtnReset}"
-                            FontSize="10" Padding="6,3"
+                            FontSize="10" Padding="8,3"
                             Click="LimpiarPlaylist_Click"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="PLAYLIST" FontWeight="Bold" FontSize="11"
+                    <TextBlock Text="PLAYLIST" FontWeight="Bold" FontSize="12"
                                Foreground="{StaticResource BrushTextPrimary}"
-                               VerticalAlignment="Center" Margin="0,0,10,0"/>
+                               VerticalAlignment="Center" Margin="0,0,12,0"/>
                     <RadioButton x:Name="RbPl1" Content="1" GroupName="PLSel" Tag="0"
                                  IsChecked="True" VerticalAlignment="Center"
-                                 Margin="0,0,8,0" Checked="PlSel_Checked"/>
+                                 Margin="0,0,10,0" Checked="PlSel_Checked"/>
                     <RadioButton x:Name="RbPl2" Content="2" GroupName="PLSel" Tag="1"
-                                 VerticalAlignment="Center" Margin="0,0,8,0"
+                                 VerticalAlignment="Center" Margin="0,0,10,0"
                                  Checked="PlSel_Checked"/>
                     <RadioButton x:Name="RbPl3" Content="3" GroupName="PLSel" Tag="2"
-                                 VerticalAlignment="Center" Margin="0,0,8,0"
+                                 VerticalAlignment="Center" Margin="0,0,10,0"
                                  Checked="PlSel_Checked"/>
                     <RadioButton x:Name="RbPl4" Content="4" GroupName="PLSel" Tag="3"
                                  VerticalAlignment="Center"
@@ -41,56 +41,69 @@
             </DockPanel>
         </Border>
 
-        <!-- ── Dos listas lado a lado ── -->
+        <!-- ── Pie: SALE + SIGUIENTE (siempre visibles) ── -->
+        <Border DockPanel.Dock="Bottom"
+                BorderBrush="{StaticResource BrushBorder}"
+                BorderThickness="1,1,0,0"
+                Padding="8,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Content="SALE" Style="{StaticResource BtnSale}"
+                        Grid.Column="0" Padding="20,10" FontSize="12" FontWeight="Bold"
+                        Margin="0,0,8,0" Click="ElemSale_Click"/>
+                <Button Content="▶   SIGUIENTE" Style="{StaticResource BtnEntra}"
+                        Grid.Column="1" FontSize="14" FontWeight="Bold" Padding="0,10"
+                        Click="ElemSig_Click"/>
+            </Grid>
+        </Border>
+
+        <!-- ── Cuerpo: dos columnas (logos fijo | elementos flex) ── -->
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- ── LOGOS ─────────────────────────────────── -->
-            <DockPanel Grid.Column="0"
-                       Margin="6,6,3,6"
-                       LastChildFill="True">
+            <!-- ── LOGOS ── -->
+            <DockPanel Grid.Column="0" Margin="8,8,6,8" LastChildFill="True">
 
-                <TextBlock x:Name="TxtHeaderLogos"
-                           DockPanel.Dock="Top"
+                <TextBlock x:Name="TxtHeaderLogos" DockPanel.Dock="Top"
                            Text="LOGOS (0)" FontWeight="Bold" FontSize="10"
                            Foreground="{StaticResource BrushTextSecondary}"
-                           Margin="0,0,0,4"/>
+                           Margin="0,0,0,5"/>
 
-                <!-- Botones de acción logos -->
-                <StackPanel DockPanel.Dock="Bottom" Margin="0,4,0,0">
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
-                        <Button Content="▲" Style="{StaticResource BtnFlat}"
-                                FontSize="11" Width="26" Height="22" Padding="0"
-                                HorizontalContentAlignment="Center"
-                                Margin="0,0,2,0" Click="LogoUp_Click"/>
-                        <Button Content="▼" Style="{StaticResource BtnFlat}"
-                                FontSize="11" Width="26" Height="22" Padding="0"
-                                HorizontalContentAlignment="Center"
-                                Margin="0,0,2,0" Click="LogoDown_Click"/>
-                        <Button Content="✕" Style="{StaticResource BtnReset}"
-                                FontSize="11" Width="26" Height="22" Padding="0"
-                                HorizontalContentAlignment="Center"
-                                Click="LogoEliminar_Click"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Button Content="Entra Logo" Style="{StaticResource BtnEntra}"
-                                FontSize="9" Padding="4,2" Margin="0,0,2,0"
-                                Click="EntraLogo_Click"/>
-                        <Button Content="Sale Logo"  Style="{StaticResource BtnSale}"
-                                FontSize="9" Padding="4,2"
-                                Click="SaleLogo_Click"/>
-                    </StackPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,4">
+                    <Button Content="▲" Style="{StaticResource BtnFlat}"
+                            Width="26" Height="24" FontSize="11" Padding="0"
+                            HorizontalContentAlignment="Center"
+                            Margin="0,0,2,0" Click="LogoUp_Click"/>
+                    <Button Content="▼" Style="{StaticResource BtnFlat}"
+                            Width="26" Height="24" FontSize="11" Padding="0"
+                            HorizontalContentAlignment="Center"
+                            Margin="0,0,2,0" Click="LogoDown_Click"/>
+                    <Button Content="✕" Style="{StaticResource BtnReset}"
+                            Width="26" Height="24" FontSize="11" Padding="0"
+                            HorizontalContentAlignment="Center"
+                            Click="LogoEliminar_Click"/>
                 </StackPanel>
 
-                <Border BorderBrush="{StaticResource BrushBorder}" BorderThickness="1"
-                        CornerRadius="4">
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,6">
+                    <Button Content="Entra" Style="{StaticResource BtnEntra}"
+                            FontSize="10" Padding="6,4" Margin="0,0,3,0"
+                            Click="EntraLogo_Click"/>
+                    <Button Content="Sale" Style="{StaticResource BtnSale}"
+                            FontSize="10" Padding="6,4"
+                            Click="SaleLogo_Click"/>
+                </StackPanel>
+
+                <Border BorderBrush="{StaticResource BrushBorder}" BorderThickness="1" CornerRadius="4">
                     <ListBox x:Name="LstLogos"
-                             BorderThickness="0"
-                             Background="Transparent"
-                             FontSize="11"
+                             BorderThickness="0" Background="Transparent"
+                             FontSize="12"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -101,7 +114,7 @@
                         </ListBox.ItemTemplate>
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
-                                <Setter Property="Padding" Value="4,2"/>
+                                <Setter Property="Padding" Value="5,4"/>
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                             </Style>
                         </ListBox.ItemContainerStyle>
@@ -109,49 +122,38 @@
                 </Border>
             </DockPanel>
 
-            <!-- ── ELEMENTOS ──────────────────────────────── -->
-            <DockPanel Grid.Column="1"
-                       Margin="3,6,6,6"
-                       LastChildFill="True">
+            <!-- Separador vertical -->
+            <Border Grid.Column="1" Width="1"
+                    Background="{StaticResource BrushBorder}"
+                    Margin="0,8,0,8"/>
 
-                <TextBlock x:Name="TxtHeaderElementos"
-                           DockPanel.Dock="Top"
+            <!-- ── ELEMENTOS ── -->
+            <DockPanel Grid.Column="2" Margin="6,8,8,8" LastChildFill="True">
+
+                <TextBlock x:Name="TxtHeaderElementos" DockPanel.Dock="Top"
                            Text="ELEMENTOS (0)" FontWeight="Bold" FontSize="10"
                            Foreground="{StaticResource BrushTextSecondary}"
-                           Margin="0,0,0,4"/>
+                           Margin="0,0,0,5"/>
 
-                <!-- Botones de acción elementos -->
-                <StackPanel DockPanel.Dock="Bottom" Margin="0,4,0,0">
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
-                        <Button Content="▲" Style="{StaticResource BtnFlat}"
-                                FontSize="11" Width="26" Height="22" Padding="0"
-                                HorizontalContentAlignment="Center"
-                                Margin="0,0,2,0" Click="ElemUp_Click"/>
-                        <Button Content="▼" Style="{StaticResource BtnFlat}"
-                                FontSize="11" Width="26" Height="22" Padding="0"
-                                HorizontalContentAlignment="Center"
-                                Margin="0,0,2,0" Click="ElemDown_Click"/>
-                        <Button Content="✕" Style="{StaticResource BtnReset}"
-                                FontSize="11" Width="26" Height="22" Padding="0"
-                                HorizontalContentAlignment="Center"
-                                Click="ElemEliminar_Click"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Button Content="Sale"      Style="{StaticResource BtnSale}"
-                                FontSize="9" Padding="4,2" Margin="0,0,4,0"
-                                Click="ElemSale_Click"/>
-                        <Button Content="▶  SIGUIENTE" Style="{StaticResource BtnEntra}"
-                                FontSize="11" Padding="8,4" FontWeight="Bold"
-                                Click="ElemSig_Click"/>
-                    </StackPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,6">
+                    <Button Content="▲" Style="{StaticResource BtnFlat}"
+                            Width="26" Height="24" FontSize="11" Padding="0"
+                            HorizontalContentAlignment="Center"
+                            Margin="0,0,2,0" Click="ElemUp_Click"/>
+                    <Button Content="▼" Style="{StaticResource BtnFlat}"
+                            Width="26" Height="24" FontSize="11" Padding="0"
+                            HorizontalContentAlignment="Center"
+                            Margin="0,0,2,0" Click="ElemDown_Click"/>
+                    <Button Content="✕" Style="{StaticResource BtnReset}"
+                            Width="26" Height="24" FontSize="11" Padding="0"
+                            HorizontalContentAlignment="Center"
+                            Click="ElemEliminar_Click"/>
                 </StackPanel>
 
-                <Border BorderBrush="{StaticResource BrushBorder}" BorderThickness="1"
-                        CornerRadius="4">
+                <Border BorderBrush="{StaticResource BrushBorder}" BorderThickness="1" CornerRadius="4">
                     <ListBox x:Name="LstElementos"
-                             BorderThickness="0"
-                             Background="Transparent"
-                             FontSize="11"
+                             BorderThickness="0" Background="Transparent"
+                             FontSize="12"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                              SelectionChanged="LstElementos_SelectionChanged">
                         <ListBox.ItemTemplate>
@@ -163,7 +165,7 @@
                         </ListBox.ItemTemplate>
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
-                                <Setter Property="Padding" Value="4,2"/>
+                                <Setter Property="Padding" Value="5,4"/>
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                             </Style>
                         </ListBox.ItemContainerStyle>
@@ -171,5 +173,6 @@
                 </Border>
             </DockPanel>
         </Grid>
+
     </DockPanel>
 </UserControl>

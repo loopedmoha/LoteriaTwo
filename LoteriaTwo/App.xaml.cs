@@ -10,21 +10,36 @@ namespace LoteriaTwo
         protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            ShutdownMode = ShutdownMode.OnMainWindowClose;
+            ShutdownMode = ShutdownMode.OnExplicitShutdown;
+
+            var selector = new ModoSelectorWindow();
+            if (selector.ShowDialog() != true)
+            {
+                Shutdown();
+                return;
+            }
 
             var config = AppConfig.Load();
-            var connection = new BrainstormConnection(config.BrainstormIP);
-            BrainstormService.Instancia.Inicializar(connection, config.BrainstormDB);
+            var modo   = selector.ModoSeleccionado;
 
-            // Registrar el MainWindow ANTES del splash para que WPF
-            // no cierre la app cuando el splash se cierre.
-            var mainWindow = new MainWindow(config, connection);
+            BrainstormConnection[] connections = modo == ModoEstudio.Prado
+                ? [new BrainstormConnection(config.PradoIP)]
+                : [new BrainstormConnection(config.TorreIP1),
+                   new BrainstormConnection(config.TorreIP2)];
+
+            BrainstormService.Instancia.Inicializar(connections, config.BrainstormDB);
+            RemoteShareService.Instancia.Inicializar(config.FotosShare, config.FotosUser, config.FotosPassword);
+
+            var mainWindow = new MainWindow(config, modo, connections);
             MainWindow = mainWindow;
+            ShutdownMode = ShutdownMode.OnMainWindowClose;
 
             var splash = new SplashWindow();
             splash.Show();
 
-            bool connected = await connection.ConnectAsync();
+            bool connected = true;
+            foreach (var conn in connections)
+                connected &= await conn.ConnectAsync();
 
             splash.Close();
             mainWindow.Show();
@@ -32,7 +47,7 @@ namespace LoteriaTwo
             if (!connected)
             {
                 MessageBox.Show(
-                    $"Error al conectar a IPF ({config.BrainstormIP})",
+                    "Error al conectar a uno o más IPF.",
                     "Error de conexión",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);

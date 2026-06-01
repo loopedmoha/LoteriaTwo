@@ -281,8 +281,15 @@ namespace LoteriaTwo.Views
         }
         private void ImagenesEntra_Click(object sender, RoutedEventArgs e)
         {
-            if (UltimoElemento?.Tipo == TipoElemento.Imagen)
-                BrainstormService.Instancia.Entra(UltimoElemento);
+            var fotoActiva = GetCheckedRadio(this, "Imagenes");
+            var el = new Elemento { Tipo = TipoElemento.Imagen };
+            el["Foto"]      = fotoActiva;
+            el["RutaFoto1"] = TxtF1.Text;
+            el["RutaFoto2"] = TxtF2.Text;
+            el["RutaFoto3"] = TxtF3.Text;
+            el["RutaFoto4"] = TxtF4.Text;
+            el["RutaFoto5"] = TxtF5.Text;
+            BrainstormService.Instancia.Entra(el);
         }
         private void ImagenesSale_Click(object sender, RoutedEventArgs e)
             => BrainstormService.Instancia.Sale(new Elemento { Tipo = TipoElemento.Imagen });
@@ -300,9 +307,24 @@ namespace LoteriaTwo.Views
                 Filter = "Imágenes|*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.tiff;*.webp|Todos los archivos|*.*"
             };
             if (dlg.ShowDialog() != true) return;
-            destino.Text = dlg.FileName;
+
+            string path = dlg.FileName;
+            if (RemoteShareService.Instancia.Configurado)
+            {
+                try
+                {
+                    path = RemoteShareService.Instancia.CopiarImagen(dlg.FileName);
+                }
+                catch (System.Exception ex)
+                {
+                    LogService.Instancia.Registrar(LogNivel.Error, "Imágenes",
+                        $"Error al copiar a carpeta remota: {ex.Message}");
+                }
+            }
+
+            destino.Text = path;
             LogService.Instancia.Registrar(LogNivel.Cambio, "Imágenes",
-                $"Imagen cargada: {System.IO.Path.GetFileName(dlg.FileName)}");
+                $"Imagen cargada: {System.IO.Path.GetFileName(dlg.FileName)} → {path}");
         }
 
         // ── RÓTULOS ──────────────────────────────────────────────────────────

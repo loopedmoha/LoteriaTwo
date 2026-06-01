@@ -193,19 +193,10 @@ namespace LoteriaTwo.Views
 
         private void Guardar_Click(object sender, RoutedEventArgs e)
         {
-            var dlg = new Microsoft.Win32.SaveFileDialog
-            {
-                Title      = "Guardar playlist",
-                Filter     = "Playlist JSON|*.json|Todos los archivos|*.*",
-                DefaultExt = ".json",
-                FileName   = $"playlist_{DateTime.Now:yyyy-MM-dd}"
-            };
-            if (dlg.ShowDialog() != true) return;
             try
             {
-                PlaylistService.Instancia.Guardar(dlg.FileName);
-                LogService.Instancia.Registrar(LogNivel.Accion, "Playlist",
-                    $"Guardada → {System.IO.Path.GetFileName(dlg.FileName)}");
+                PlaylistService.Instancia.Guardar();
+                LogService.Instancia.Registrar(LogNivel.Accion, "Playlist", "Guardada → Playlist.json");
             }
             catch
             {
@@ -216,24 +207,16 @@ namespace LoteriaTwo.Views
 
         private void Cargar_Click(object sender, RoutedEventArgs e)
         {
-            var dlg = new Microsoft.Win32.OpenFileDialog
-            {
-                Title      = "Cargar playlist",
-                Filter     = "Playlist JSON|*.json|Todos los archivos|*.*",
-                DefaultExt = ".json"
-            };
-            if (dlg.ShowDialog() != true) return;
             try
             {
-                if (PlaylistService.Instancia.Cargar(dlg.FileName))
+                if (PlaylistService.Instancia.Cargar())
                 {
                     BindListas();
-                    LogService.Instancia.Registrar(LogNivel.Accion, "Playlist",
-                        $"Cargada ← {System.IO.Path.GetFileName(dlg.FileName)}");
+                    LogService.Instancia.Registrar(LogNivel.Accion, "Playlist", "Cargada ← Playlist.json");
                 }
                 else
-                    MessageBox.Show("Formato de playlist no válido.", "Error",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("No se encontró el fichero Playlist.json.", "Cargar playlist",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch
             {

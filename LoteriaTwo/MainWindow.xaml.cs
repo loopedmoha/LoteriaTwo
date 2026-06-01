@@ -1,7 +1,10 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using LoteriaTwo.Config;
 using LoteriaTwo.Models;
 using LoteriaTwo.Services;
@@ -11,19 +14,25 @@ namespace LoteriaTwo
 {
     public partial class MainWindow : Window
     {
-        private AppConfig _config = new();
-        private BrainstormConnection? _connection;
-        private ConnectionState _estadoAnterior = ConnectionState.Disconnected;
+        private AppConfig              _config;
+        private ModoEstudio            _modo;
+        private BrainstormConnection[] _connections;
+        private bool                   _conectadoAnterior;
 
-        public MainWindow(AppConfig config, BrainstormConnection connection)
+        private readonly List<(Ellipse Dot, TextBlock Label)> _indicadores = new();
+
+        public MainWindow(AppConfig config, ModoEstudio modo, BrainstormConnection[] connections)
         {
             InitializeComponent();
-            _config = config;
-            _connection = connection;
-            _connection.StateChanged += state => Dispatcher.BeginInvoke(() => ActualizarIndicador(state));
-            ActualizarIndicador(_connection.State);
+            _config      = config;
+            _modo        = modo;
+            _connections = connections;
 
-            // Captura global de pulsaciones de botones en toda la ventana
+            foreach (var conn in _connections)
+                conn.StateChanged += _ => Dispatcher.BeginInvoke(ActualizarIndicador);
+
+            Loaded += (_, _) => { BuildIndicadores(); ActualizarIndicador(); };
+
             this.AddHandler(Button.ClickEvent, new RoutedEventHandler(OnAnyButtonClick));
 
             LogService.Instancia.Registrar(LogNivel.Info, "App", "Aplicación iniciada");
@@ -32,27 +41,108 @@ namespace LoteriaTwo
 
         // ── Conexión ─────────────────────────────────────────────────────────
 
-        private void ActualizarIndicador(ConnectionState state)
+        private void BuildIndicadores()
         {
-            bool ok = state == ConnectionState.Connected;
-            EllipseConexion.Fill = new SolidColorBrush(ok
-                ? Color.FromRgb(0x16, 0xA3, 0x4A)
-                : Color.FromRgb(0xDC, 0x26, 0x26));
-            TxtConexion.Text = ok ? $"IPF conectado ({_config.BrainstormIP})" : "Sin conexión IPF";
+            var secondary = (Brush)Application.Current.Resources["BrushTextSecondary"];
+            var border    = (Brush)Application.Current.Resources["BrushBorder"];
 
-            if (state == _estadoAnterior) return;
-            _estadoAnterior = state;
+            PnlConexion.Children.Clear();
+            _indicadores.Clear();
+
+            for (int i = 0; i < _connections.Length; i++)
+            {
+                if (i > 0)
+                {
+                    PnlConexion.Children.Add(new Border
+                    {
+                        Width = 1,
+                        Background = border,
+                        Margin = new Thickness(14, 2, 14, 2)
+                    });
+                }
+
+                var dot = new Ellipse
+                {
+                    Width = 10, Height = 10,
+                    Fill = new SolidColorBrush(Color.FromRgb(0xDC, 0x26, 0x26)),
+                    Margin = new Thickness(0, 0, 6, 0),
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+
+                var lbl = new TextBlock
+                {
+                    FontFamily = new FontFamily("Segoe UI"),
+                    FontSize = 12,
+                    FontWeight = FontWeights.SemiBold,
+                    Foreground = secondary,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+
+                var sp = new StackPanel { Orientation = Orientation.Horizontal };
+                sp.Children.Add(dot);
+                sp.Children.Add(lbl);
+                PnlConexion.Children.Add(sp);
+
+                _indicadores.Add((dot, lbl));
+            }
+        }
+
+        private void ActualizarIndicador()
+        {
+            if (_indicadores.Count == 0) return;
+
+            bool todosOk = true;
+            for (int i = 0; i < _connections.Length; i++)
+            {
+                bool ok = _connections[i].State == ConnectionState.Connected;
+                if (!ok) todosOk = false;
+
+                _indicadores[i].Dot.Fill = new SolidColorBrush(ok
+                    ? Color.FromRgb(0x16, 0xA3, 0x4A)
+                    : Color.FromRgb(0xDC, 0x26, 0x26));
+
+                _indicadores[i].Label.Text = ok
+                    ? (_connections.Length > 1 ? $"IPF {i + 1} — {_connections[i].Ip}" : $"IPF conectado — {_connections[i].Ip}")
+                    : (_connections.Length > 1 ? $"IPF {i + 1} sin conexión" : "Sin conexión IPF");
+            }
+
+            if (todosOk == _conectadoAnterior) return;
+            _conectadoAnterior = todosOk;
             LogService.Instancia.Registrar(LogNivel.Conexion, "IPF",
-                ok ? $"Conectado — {_config.BrainstormIP}" : "Conexión perdida");
+                todosOk
+                    ? $"Conectado ({string.Join(", ", _connections.Select(c => c.Ip))})"
+                    : "Conexión perdida");
         }
 
         private async void ReconectarIPF_Click(object sender, RoutedEventArgs e)
         {
-            if (_connection is null) return;
+            var selector = new Views.ModoSelectorWindow { Owner = this };
+            if (selector.ShowDialog() != true) return;
+
+            foreach (var conn in _connections)
+                conn.Dispose();
+
+            _modo = selector.ModoSeleccionado;
+            _connections = _modo == ModoEstudio.Prado
+                ? [new BrainstormConnection(_config.PradoIP)]
+                : [new BrainstormConnection(_config.TorreIP1),
+                   new BrainstormConnection(_config.TorreIP2)];
+
+            foreach (var conn in _connections)
+                conn.StateChanged += _ => Dispatcher.BeginInvoke(ActualizarIndicador);
+
+            BrainstormService.Instancia.Inicializar(_connections, _config.BrainstormDB);
+
+            BuildIndicadores();
+            ActualizarIndicador();
+
             LogService.Instancia.Registrar(LogNivel.Conexion, "IPF", "Reconectando…");
-            bool ok = await _connection.ConnectAsync();
+            bool ok = true;
+            foreach (var conn in _connections)
+                ok &= await conn.ConnectAsync();
+
             if (!ok)
-                MessageBox.Show($"Error al conectar a IPF ({_config.BrainstormIP})",
+                MessageBox.Show("Error al conectar a uno o más IPF.",
                                 "Error de conexión", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
@@ -73,7 +163,6 @@ namespace LoteriaTwo
             var current = el;
             while (current != null)
             {
-                // Sidebar nav: look for named content views
                 if (current is FrameworkElement fe && fe.Visibility == Visibility.Visible)
                 {
                     if (current is Views.LoteriayRotulosView) return "Lotería y Rótulos";
@@ -98,6 +187,10 @@ namespace LoteriaTwo
         }
 
         // ── Debug ─────────────────────────────────────────────────────────────
+
+        private void CalendarioSoporte_Click(object sender, RoutedEventArgs e)
+            => System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(
+                "https://trd-rtve.github.io/Calendario-de-Soporte/") { UseShellExecute = true });
 
         private void DebugElementos_Click(object sender, RoutedEventArgs e)
         {

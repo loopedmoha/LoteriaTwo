@@ -165,10 +165,24 @@ namespace LoteriaTwo.Views
             ImgDecimo.Visibility = Visibility.Visible;
             TxtDecimoPlaceholder.Visibility = Visibility.Collapsed;
 
-            BrainstormService.Instancia.EnviarTexFile("LoteriaDecimo", dlg.FileName);
+            string path = dlg.FileName;
+            if (RemoteShareService.Instancia.Configurado)
+            {
+                try
+                {
+                    path = RemoteShareService.Instancia.CopiarDecimo(dlg.FileName);
+                }
+                catch (Exception ex)
+                {
+                    LogService.Instancia.Registrar(LogNivel.Error, "Décimos",
+                        $"Error al copiar a carpeta remota: {ex.Message}");
+                }
+            }
+
+            BrainstormService.Instancia.EnviarTexFile("LoteriaDecimo", path);
 
             LogService.Instancia.Registrar(LogNivel.Cambio, "Décimos",
-                $"Décimo cargado: {System.IO.Path.GetFileName(dlg.FileName)}");
+                $"Décimo cargado: {System.IO.Path.GetFileName(dlg.FileName)} → {path}");
         }
 
         private void PosicionJueves_Click(object sender, RoutedEventArgs e) { }
