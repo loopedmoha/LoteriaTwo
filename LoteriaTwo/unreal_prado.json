@@ -1,0 +1,88 @@
+{
+  "SocketOptions": {
+    "IPs": [
+      "172.17.35.235",
+      "172.17.35.236",
+      "172.17.35.237",
+      "172.17.35.238"
+    ],
+    "Port": "30010"
+  },
+  "UnrealSettings": {
+    "IDRemoteControl": "RCP_RemoteControl",
+    "ListaNiveles": [
+      {
+        "Nivel": "Loterias_v2",
+        "RemoteControl": "RCP_Loterias_v2",
+        "Funciones": {
+          "SubirPantalla": "D2E0B8BF4B7FDF5769A8A3AD16CD5532",
+          "BajarPantalla": "571813BC41D871E33CA3879551E7707B",
+          "EncenderLuces": "37A930AF453FF0C0DD8F87AD332CF666",
+          "ApagarLuces": "3E15A46C4DE9344D0B51B989CD9E6720",
+          "PantallaNDI": "0BF30FB946AC79B6C18545A2450C04D5",
+          "PantallaSDI": "63D9AE0C42EFC906434BC8AB8ED6A713"
+        },
+        "Propiedades": {
+          "Hora": "42E345B946EB7D0187B204967D303C4B",
+          "HoraAutom": "895DCDB24FD2CB1562B54EAB672EFE2B",
+          "Clima": "C16BA18C4C01A1E8ACC0F683143164D1",
+          "FaseLunar": "294FC5484A7640521FEAE7AFA61D7634",
+          "IntensidadLuna": "875B3FCE4A0C6ED20CD33BBC63DE67FF",
+          "IntensidadSol": "17EA9177436FD40DA5FE6FA18BDB234A"
+        }
+      },
+      {
+        "Nivel": "Quiniela_v2",
+        "RemoteControl": "RCP_Quiniela_v2",
+        "Funciones": {
+          "SubirPantalla": "76088D19470A6381283677A498003FA8",
+          "BajarPantalla": "ADCB679E49086577B3E139A4FD2C03E9",
+          "EncenderLuces": "5DE4F40742570649BA79FE830D0471AD",
+          "ApagarLuces": "9C350D9C42F0B3C50365C6A0E10F07BE"
+        },
+        "Propiedades": {
+          "Hora": "4BD1E5094548D0B2B17E51983A5B520F",
+          "HoraAutom": "DB0149114237F6CE2E65DABCE0171965",
+          "Clima": "3A0F31444A1D88935EC373BE26CE9903",
+          "FaseLunar": "7529F22045B580012F04039C95EBABA8"
+        }
+      }
+    ],
+    "ListaClima": {
+      "Despejado": "/Game/UltraDynamicSky/Blueprints/Weather_Effects/Weather_Presets/Clear_Skies.Clear_Skies",
+      "Claros y nubes": "/Game/UltraDynamicSky/Blueprints/Weather_Effects/Weather_Presets/Partly_Cloudy.Partly_Cloudy",
+      "Nubes": "/Game/UltraDynamicSky/Blueprints/Weather_Effects/Weather_Presets/Cloudy.Cloudy",
+      "Nublado": "/Game/UltraDynamicSky/Blueprints/Weather_Effects/Weather_Presets/Overcast.Overcast",
+      "Lluvia suave": "/Game/UltraDynamicSky/Blueprints/Weather_Effects/Weather_Presets/Rain_Light.Rain_Light",
+      "Lluvia": "/Game/UltraDynamicSky/Blueprints/Weather_Effects/Weather_Presets/Rain.Rain",
+      "Tormenta con rayos": "/Game/UltraDynamicSky/Blueprints/Weather_Effects/Weather_Presets/Rain_Thunderstorm.Rain_Thunderstorm",
+      "Nieve suave": "/Game/UltraDynamicSky/Blueprints/Weather_Effects/Weather_Presets/Snow_Light.Snow_Light",
+      "Nieve": "/Game/UltraDynamicSky/Blueprints/Weather_Effects/Weather_Presets/Snow.Snow"
+    },
+    "HorasPredefinidas": {
+      "Amanecer": "07:00",
+      "Mañana": "10:00",
+      "Mediodía": "14:00",
+      "Tarde": "19:00",
+      "Puesta de sol": "21:38",
+      "Noche": "22:00"
+
+    },
+    "FasesLunares": {
+      "Luna Llena": 0.0,
+      "Luna Menguante convexa": 3.5,
+      "Luna Cuarto Menguante": 7.0,
+      "Luna Menguante cóncava": 10.5,
+      "Luna Nueva": 14.0,
+      "Luna Creciente cóncava": 19.0,
+      "Luna Cuarto Creciente": 22.0,
+      "Luna Creciente convexa": 25.0
+    },
+    "Intensidades": {
+      "LunaDespejado": 0.15,
+      "LunaNublado": 5.0,
+      "SolDespejado": 5.0,
+      "SolNublado": 15.0
+    }
+  }
+}

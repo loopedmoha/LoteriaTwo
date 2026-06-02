@@ -93,10 +93,33 @@ namespace LoteriaTwo.Views
 
         // ── Acciones ELEMENTOS ────────────────────────────────────────────────
 
+        private bool _colasActivas = false;
+
         private void ElemSale_Click(object sender, RoutedEventArgs e)
         {
             Debug.WriteLine("[Playlist] SALE activo");
-            BrainstormService.Instancia.SaleActivo();
+            if (_colasActivas)
+            {
+                _colasActivas = false;
+                SceneController.Instancia.PantallaNDI();
+            }
+            else
+            {
+                BrainstormService.Instancia.SaleActivo();
+            }
+        }
+
+        private bool _pantallaBajada = false;
+
+        private void BtnPantalla_Click(object sender, RoutedEventArgs e)
+        {
+            _pantallaBajada     = !_pantallaBajada;
+            BtnPantalla.Content = _pantallaBajada ? "Subir Pantalla" : "Bajar Pantalla";
+
+            if (_pantallaBajada)
+                SceneController.Instancia.BajarPantalla();
+            else
+                SceneController.Instancia.SubirPantalla();
         }
 
         private bool _actualizandoIndice;
@@ -115,7 +138,19 @@ namespace LoteriaTwo.Views
 
             var el = ElementoRepository.Instancia.Get(item.ElementoId);
             if (el is not null)
-                BrainstormService.Instancia.Entra(el);
+            {
+                bool esColas = el.Tipo == TipoElemento.Imagen && el["Foto"] == "Colas";
+
+                if (_colasActivas && !esColas)
+                    SceneController.Instancia.PantallaNDI();
+
+                _colasActivas = esColas;
+
+                if (esColas)
+                    SceneController.Instancia.PantallaSDI();
+                else
+                    BrainstormService.Instancia.Entra(el);
+            }
 
             var logoNombre = GetLogoEnIndice(current);
             if (logoNombre is not null)

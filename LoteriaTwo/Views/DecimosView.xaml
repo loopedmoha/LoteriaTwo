@@ -72,13 +72,13 @@
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                         <Button Content="ENTRA" Style="{StaticResource BtnEntra}"
-                                MinWidth="120" MinHeight="42" Margin="0,0,8,0"
+                                MinWidth="120" MinHeight="28" Margin="0,0,8,0"
                                 Click="EntraPrimero_Click"/>
                         <Button Content="SALE"  Style="{StaticResource BtnSale}"
-                                MinWidth="120" MinHeight="42" Margin="0,0,8,0"
+                                MinWidth="120" MinHeight="28" Margin="0,0,8,0"
                                 Click="SalePrimero_Click"/>
                         <Button Content="P"     Style="{StaticResource BtnPreview}"
-                                MinWidth="120" MinHeight="42"
+                                MinWidth="120" MinHeight="28"
                                 Click="PPrimero_Click"/>
                     </StackPanel>
                 </Grid>
@@ -124,13 +124,13 @@
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                         <Button Content="ENTRA" Style="{StaticResource BtnEntra}"
-                                MinWidth="120" MinHeight="42" Margin="0,0,8,0"
+                                MinWidth="120" MinHeight="28" Margin="0,0,8,0"
                                 Click="EntraEspecial_Click"/>
                         <Button Content="SALE"  Style="{StaticResource BtnSale}"
-                                MinWidth="120" MinHeight="42" Margin="0,0,8,0"
+                                MinWidth="120" MinHeight="28" Margin="0,0,8,0"
                                 Click="SaleEspecial_Click"/>
                         <Button Content="P"     Style="{StaticResource BtnPreview}"
-                                MinWidth="120" MinHeight="42"
+                                MinWidth="120" MinHeight="28"
                                 Click="PEspecial_Click"/>
                     </StackPanel>
                 </Grid>
@@ -164,13 +164,13 @@
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                         <Button Content="ENTRA" Style="{StaticResource BtnEntra}"
-                                MinWidth="120" MinHeight="42" Margin="0,0,8,0"
+                                MinWidth="120" MinHeight="28" Margin="0,0,8,0"
                                 Click="EntraSegundo_Click"/>
                         <Button Content="SALE"  Style="{StaticResource BtnSale}"
-                                MinWidth="120" MinHeight="42" Margin="0,0,8,0"
+                                MinWidth="120" MinHeight="28" Margin="0,0,8,0"
                                 Click="SaleSegundo_Click"/>
                         <Button Content="P"     Style="{StaticResource BtnPreview}"
-                                MinWidth="120" MinHeight="42"
+                                MinWidth="120" MinHeight="28"
                                 Click="PSegundo_Click"/>
                     </StackPanel>
                 </Grid>
@@ -204,13 +204,13 @@
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                         <Button Content="ENTRA" Style="{StaticResource BtnEntra}"
-                                MinWidth="120" MinHeight="42" Margin="0,0,8,0"
+                                MinWidth="120" MinHeight="28" Margin="0,0,8,0"
                                 Click="EntraTercero_Click"/>
                         <Button Content="SALE"  Style="{StaticResource BtnSale}"
-                                MinWidth="120" MinHeight="42" Margin="0,0,8,0"
+                                MinWidth="120" MinHeight="28" Margin="0,0,8,0"
                                 Click="SaleTercero_Click"/>
                         <Button Content="P"     Style="{StaticResource BtnPreview}"
-                                MinWidth="120" MinHeight="42"
+                                MinWidth="120" MinHeight="28"
                                 Click="PTercero_Click"/>
                     </StackPanel>
                 </Grid>

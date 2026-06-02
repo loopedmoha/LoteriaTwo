@@ -132,6 +132,7 @@ namespace LoteriaTwo
                 conn.StateChanged += _ => Dispatcher.BeginInvoke(ActualizarIndicador);
 
             BrainstormService.Instancia.Inicializar(_connections, _config.BrainstormDB);
+            SceneController.Instancia.Inicializar(UnrealConfig.Load(_modo));
 
             BuildIndicadores();
             ActualizarIndicador();
@@ -180,10 +181,11 @@ namespace LoteriaTwo
         private void Nav_Checked(object sender, RoutedEventArgs e)
         {
             if (ViewLoteria is null) return;
-            ViewLoteria.Visibility  = NavLoteria.IsChecked  == true ? Visibility.Visible : Visibility.Collapsed;
-            ViewDecimos.Visibility  = NavDecimos.IsChecked  == true ? Visibility.Visible : Visibility.Collapsed;
-            ViewQuiniela.Visibility = NavQuiniela.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
-            ViewSorteos.Visibility  = NavSorteos.IsChecked  == true ? Visibility.Visible : Visibility.Collapsed;
+            ViewLoteria.Visibility      = NavLoteria.IsChecked      == true ? Visibility.Visible : Visibility.Collapsed;
+            ViewDecimos.Visibility      = NavDecimos.IsChecked      == true ? Visibility.Visible : Visibility.Collapsed;
+            ViewQuiniela.Visibility     = NavQuiniela.IsChecked     == true ? Visibility.Visible : Visibility.Collapsed;
+            ViewSorteos.Visibility      = NavSorteos.IsChecked      == true ? Visibility.Visible : Visibility.Collapsed;
+            ViewControlMundo.Visibility = NavControlMundo.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
         }
 
         // ── Debug ─────────────────────────────────────────────────────────────

@@ -2,8 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:views="clr-namespace:LoteriaTwo.Views"
-        Title="LoteriaTwo" Height="800" Width="1540"
-        MinWidth="1100" MinHeight="600"
+        Title="LoteriaTwo" Height="720" Width="1280"
+        MinWidth="1000" MinHeight="540"
         WindowStartupLocation="CenterScreen"
         Background="{StaticResource BrushBg}"
         Foreground="{StaticResource BrushTextPrimary}"
@@ -29,7 +29,7 @@
                 Background="{StaticResource BrushSurface}"
                 BorderBrush="{StaticResource BrushBorder}"
                 BorderThickness="0,1,0,0"
-                Padding="12,8">
+                Padding="8,5">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -72,7 +72,7 @@
 
                 <!-- RESET -->
                 <Button Content="RESET" Style="{StaticResource BtnReset}"
-                        Grid.Column="5" MinWidth="64" MinHeight="52"
+                        Grid.Column="5" MinWidth="52" MinHeight="34"
                         Click="Reset_Click"/>
             </Grid>
         </Border>
@@ -80,9 +80,9 @@
         <!-- ── Contenido principal ──────────────────────── -->
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="185"/>   <!-- Sidebar -->
+                <ColumnDefinition Width="145"/>   <!-- Sidebar -->
                 <ColumnDefinition Width="*"/>     <!-- Contenido -->
-                <ColumnDefinition Width="480"/>   <!-- Playlist -->
+                <ColumnDefinition Width="330"/>   <!-- Playlist -->
             </Grid.ColumnDefinitions>
 
             <!-- ── Sidebar nav ── -->
@@ -92,10 +92,10 @@
                     BorderThickness="0,0,1,0">
                 <DockPanel>
                     <!-- Logo / título -->
-                    <StackPanel DockPanel.Dock="Top" Margin="16,18,16,12">
-                        <TextBlock Text="LOTERÍAS" FontSize="15" FontWeight="Bold"
+                    <StackPanel DockPanel.Dock="Top" Margin="10,12,10,8">
+                        <TextBlock Text="LOTERÍAS" FontSize="13" FontWeight="Bold"
                                    Foreground="{StaticResource BrushAccent}"/>
-                        <TextBlock Text="Control IPF" FontSize="11"
+                        <TextBlock Text="Control IPF" FontSize="10"
                                    Foreground="{StaticResource BrushTextSecondary}"
                                    Margin="0,2,0,0"/>
                     </StackPanel>
@@ -128,6 +128,11 @@
                                      Style="{StaticResource NavBtn}"
                                      GroupName="MainNav"
                                      Checked="Nav_Checked"/>
+                        <RadioButton x:Name="NavControlMundo"
+                                     Content="Control de mundo"
+                                     Style="{StaticResource NavBtn}"
+                                     GroupName="MainNav"
+                                     Checked="Nav_Checked"/>
                     </StackPanel>
                 </DockPanel>
             </Border>
@@ -135,9 +140,10 @@
             <!-- ── Área de contenido ── -->
             <Grid Grid.Column="1" Margin="0">
                 <views:LoteriayRotulosView x:Name="ViewLoteria"/>
-                <views:DecimosView         x:Name="ViewDecimos"  Visibility="Collapsed"/>
-                <views:QuinielaView        x:Name="ViewQuiniela" Visibility="Collapsed"/>
-                <views:SorteosBotesView    x:Name="ViewSorteos"  Visibility="Collapsed"/>
+                <views:DecimosView         x:Name="ViewDecimos"      Visibility="Collapsed"/>
+                <views:QuinielaView        x:Name="ViewQuiniela"     Visibility="Collapsed"/>
+                <views:SorteosBotesView    x:Name="ViewSorteos"      Visibility="Collapsed"/>
+                <views:ControlMundoView    x:Name="ViewControlMundo" Visibility="Collapsed"/>
             </Grid>
 
             <!-- ── Panel playlist ── -->

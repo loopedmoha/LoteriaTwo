@@ -1,0 +1,131 @@
+<UserControl x:Class="LoteriaTwo.Views.ControlMundoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24" MaxWidth="480">
+
+            <TextBlock Text="CONTROL DE MUNDO VIRTUAL"
+                       FontSize="15" FontWeight="Bold"
+                       Foreground="{StaticResource BrushAccent}"
+                       Margin="0,0,0,20"/>
+
+            <!-- NIVEL -->
+            <TextBlock Text="NIVEL" FontWeight="Bold" FontSize="11"
+                       Foreground="{StaticResource BrushTextSecondary}" Margin="0,0,0,6"/>
+            <StackPanel x:Name="PnlNiveles" Orientation="Horizontal" Margin="0,0,0,24"/>
+
+            <!-- CLIMA -->
+            <TextBlock Text="CLIMA" FontWeight="Bold" FontSize="11"
+                       Foreground="{StaticResource BrushTextSecondary}" Margin="0,0,0,5"/>
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ComboBox x:Name="CmbClima" FontSize="13" Padding="8,6"
+                          Grid.Column="0" Margin="0,0,8,0"
+                          SelectionChanged="CmbClima_SelectionChanged">
+                    <ComboBoxItem Content="Despejado"          IsSelected="True"/>
+                    <ComboBoxItem Content="Claros y nubes"/>
+                    <ComboBoxItem Content="Nubes"/>
+                    <ComboBoxItem Content="Nublado"/>
+                    <ComboBoxItem Content="Lluvia suave"/>
+                    <ComboBoxItem Content="Lluvia"/>
+                    <ComboBoxItem Content="Tormenta con rayos"/>
+                    <ComboBoxItem Content="Nieve suave"/>
+                    <ComboBoxItem Content="Nieve"/>
+                </ComboBox>
+                <Button Content="APLICAR" Grid.Column="1"
+                        Style="{StaticResource BtnEntra}"
+                        Padding="14,6" FontSize="12" FontWeight="Bold"
+                        Click="AplicarClima_Click"/>
+            </Grid>
+
+            <!-- HORA DEL DÍA (presets) -->
+            <TextBlock Text="HORA DEL DÍA" FontWeight="Bold" FontSize="11"
+                       Foreground="{StaticResource BrushTextSecondary}" Margin="0,0,0,5"/>
+            <ComboBox x:Name="CmbHoraDia" FontSize="13" Padding="8,6" Margin="0,0,0,12"
+                      SelectionChanged="CmbHoraDia_SelectionChanged">
+                <ComboBoxItem Content="Amanecer"      IsSelected="True"/>
+                <ComboBoxItem Content="Mañana"/>
+                <ComboBoxItem Content="Mediodía"/>
+                <ComboBoxItem Content="Tarde"/>
+                <ComboBoxItem Content="Puesta de sol"/>
+                <ComboBoxItem Content="Noche"/>
+            </ComboBox>
+
+            <!-- HORA EXACTA (slider) -->
+            <Grid Margin="0,0,0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="HORA EXACTA" FontWeight="Bold" FontSize="11"
+                           Foreground="{StaticResource BrushTextSecondary}"
+                           Grid.Column="0" Grid.Row="0" Margin="0,0,0,5"/>
+
+                <TextBlock x:Name="TxtHoraExacta" Text="06:00"
+                           FontSize="20" FontWeight="Bold"
+                           Foreground="{StaticResource BrushAccent}"
+                           Grid.Column="1" Grid.Row="0" Grid.RowSpan="3"
+                           VerticalAlignment="Center" Margin="16,0,0,0"/>
+
+                <Slider x:Name="SliderHora"
+                        Grid.Row="1" Grid.Column="0"
+                        Minimum="0" Maximum="2359" Value="360"
+                        SmallChange="1" LargeChange="60"
+                        ValueChanged="SliderHora_ValueChanged"
+                        Margin="0,4,0,2"/>
+
+                <Grid Grid.Row="2" Grid.Column="0">
+                    <TextBlock Text="00:00" FontSize="10"
+                               Foreground="{StaticResource BrushTextSecondary}"
+                               HorizontalAlignment="Left"/>
+                    <TextBlock Text="23:59" FontSize="10"
+                               Foreground="{StaticResource BrushTextSecondary}"
+                               HorizontalAlignment="Right"/>
+                </Grid>
+            </Grid>
+            <Button Content="Ajustar hora"
+                    Style="{StaticResource BtnEntra}"
+                    Padding="14,6" FontSize="12" FontWeight="Bold"
+                    HorizontalAlignment="Stretch"
+                    Margin="0,0,0,24"
+                    Click="AplicarHora_Click"/>
+
+            <!-- FASE LUNAR -->
+            <TextBlock Text="FASE LUNAR" FontWeight="Bold" FontSize="11"
+                       Foreground="{StaticResource BrushTextSecondary}" Margin="0,0,0,5"/>
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ComboBox x:Name="CmbFaseLunar" FontSize="13" Padding="8,6"
+                          Grid.Column="0" Margin="0,0,8,0"
+                          SelectionChanged="CmbFaseLunar_SelectionChanged">
+                    <ComboBoxItem Content="Luna Llena"               IsSelected="True"/>
+                    <ComboBoxItem Content="Luna Menguante convexa"/>
+                    <ComboBoxItem Content="Luna Cuarto Menguante"/>
+                    <ComboBoxItem Content="Luna Menguante cóncava"/>
+                    <ComboBoxItem Content="Luna Nueva"/>
+                    <ComboBoxItem Content="Luna Creciente cóncava"/>
+                    <ComboBoxItem Content="Luna Cuarto Creciente"/>
+                    <ComboBoxItem Content="Luna Creciente convexa"/>
+                </ComboBox>
+                <Button Content="APLICAR" Grid.Column="1"
+                        Style="{StaticResource BtnEntra}"
+                        Padding="14,6" FontSize="12" FontWeight="Bold"
+                        Click="AplicarFaseLunar_Click"/>
+            </Grid>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

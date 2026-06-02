@@ -36,7 +36,7 @@ namespace LoteriaTwo.Views
         {
             InitializeComponent();
             _cmbLogosImagenes = new[] { CmbLogoFoto1, CmbLogoFoto2, CmbLogoFoto3,
-                                        CmbLogoFoto4, CmbLogoFoto5, CmbLogoFotoVideo };
+                                        CmbLogoFoto4, CmbLogoFoto5, CmbLogoColas };
             PopulateComunidades();
             PopulateLogosImagenes();
             CargarMapa(0);
@@ -63,7 +63,7 @@ namespace LoteriaTwo.Views
                         ["LogoFoto3"]      = CmbLogoFoto3.SelectedItem?.ToString()     ?? string.Empty,
                         ["LogoFoto4"]      = CmbLogoFoto4.SelectedItem?.ToString()     ?? string.Empty,
                         ["LogoFoto5"]      = CmbLogoFoto5.SelectedItem?.ToString()     ?? string.Empty,
-                        ["LogoFotoVideo"]  = CmbLogoFotoVideo.SelectedItem?.ToString() ?? string.Empty,
+                        ["LogoColas"]      = CmbLogoColas.SelectedItem?.ToString()     ?? string.Empty,
                         ["TipoRotulo"]     = GetCheckedRadio(this, "TipoRotulo"),
                         ["Imagenes"]       = GetCheckedRadio(this, "Imagenes"),
                         ["Linea1Primera"]  = TxtLinea1Primera.Text,
@@ -104,7 +104,7 @@ namespace LoteriaTwo.Views
                     FormHelper.RestoreCombo(CmbLogoFoto3,     d.Gv("LogoFoto3"));
                     FormHelper.RestoreCombo(CmbLogoFoto4,     d.Gv("LogoFoto4"));
                     FormHelper.RestoreCombo(CmbLogoFoto5,     d.Gv("LogoFoto5"));
-                    FormHelper.RestoreCombo(CmbLogoFotoVideo, d.Gv("LogoFotoVideo"));
+                    FormHelper.RestoreCombo(CmbLogoColas,     d.Gv("LogoColas"));
                     FormHelper.SetCheckedRadio(this, "TipoRotulo", d.Gv("TipoRotulo"));
                     FormHelper.SetCheckedRadio(this, "Imagenes",   d.Gv("Imagenes"));
                     TxtLinea1Primera.Text = d.Gv("Linea1Primera");
@@ -261,18 +261,16 @@ namespace LoteriaTwo.Views
             el["LogoFoto3"]     = CmbLogoFoto3.SelectedItem?.ToString()     ?? string.Empty;
             el["LogoFoto4"]     = CmbLogoFoto4.SelectedItem?.ToString()     ?? string.Empty;
             el["LogoFoto5"]     = CmbLogoFoto5.SelectedItem?.ToString()     ?? string.Empty;
-            el["LogoFotoVideo"] = CmbLogoFotoVideo.SelectedItem?.ToString() ?? string.Empty;
 
             // Logo del slot activo → guardado en LogoRepository
             var logoNombre = fotoActiva switch
             {
-                "Foto 1"     => CmbLogoFoto1.SelectedItem?.ToString(),
-                "Foto 2"     => CmbLogoFoto2.SelectedItem?.ToString(),
-                "Foto 3"     => CmbLogoFoto3.SelectedItem?.ToString(),
-                "Foto 4"     => CmbLogoFoto4.SelectedItem?.ToString(),
-                "Foto 5"     => CmbLogoFoto5.SelectedItem?.ToString(),
-                "Video vivo" => CmbLogoFotoVideo.SelectedItem?.ToString(),
-                _            => null
+                "Foto 1" => CmbLogoFoto1.SelectedItem?.ToString(),
+                "Foto 2" => CmbLogoFoto2.SelectedItem?.ToString(),
+                "Foto 3" => CmbLogoFoto3.SelectedItem?.ToString(),
+                "Foto 4" => CmbLogoFoto4.SelectedItem?.ToString(),
+                "Foto 5" => CmbLogoFoto5.SelectedItem?.ToString(),
+                _        => null
             };
             if (!string.IsNullOrEmpty(logoNombre))
                 el.LogoId = LogoRepository.Instancia.GetOrCreate(logoNombre).Id;
@@ -293,6 +291,24 @@ namespace LoteriaTwo.Views
         }
         private void ImagenesSale_Click(object sender, RoutedEventArgs e)
             => BrainstormService.Instancia.Sale(new Elemento { Tipo = TipoElemento.Imagen });
+        // ── COLAS ────────────────────────────────────────────────────────────
+
+        private void ColasPreview_Click(object sender, RoutedEventArgs e)
+        {
+            var el = new Elemento { Tipo = TipoElemento.Imagen };
+            el["Foto"] = "Colas";
+            var logoNombre = CmbLogoColas.SelectedItem?.ToString();
+            if (!string.IsNullOrEmpty(logoNombre))
+                el.LogoId = LogoRepository.Instancia.GetOrCreate(logoNombre).Id;
+            Previsualizar(el);
+        }
+
+        private void ColasEntra_Click(object sender, RoutedEventArgs e)
+            => SceneController.Instancia.PantallaSDI();
+
+        private void ColasSale_Click(object sender, RoutedEventArgs e)
+            => SceneController.Instancia.PantallaNDI();
+
         private void F1_Click(object sender, RoutedEventArgs e) => AbrirImagen(TxtF1);
         private void F2_Click(object sender, RoutedEventArgs e) => AbrirImagen(TxtF2);
         private void F3_Click(object sender, RoutedEventArgs e) => AbrirImagen(TxtF3);
