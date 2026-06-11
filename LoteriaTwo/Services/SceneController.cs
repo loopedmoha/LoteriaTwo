@@ -99,7 +99,7 @@ public class SceneController
 
     // ── Propiedades ─────────────────────────────────────────────────────────────
 
-    public async void CambiarHora(float hora)
+    public async void CambiarHora(int hora)
         => await _signals.EnviarPropiedadAsync(_currentLevel!, "Hora", hora);
 
     public async void CambiarHoraAutomatica(bool activar)

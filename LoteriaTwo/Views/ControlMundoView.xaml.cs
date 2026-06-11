@@ -9,7 +9,6 @@ namespace LoteriaTwo.Views
     public partial class ControlMundoView : UserControl
     {
         private bool _syncingSlider = false;
-        private int _horaDecimal = 0;
 
         public ControlMundoView()
         {
@@ -67,7 +66,7 @@ namespace LoteriaTwo.Views
         {
             if (TxtHoraExacta is null) return;
             int total = (int)SliderHora.Value;
-            TxtHoraExacta.Text = $"{total / 100:D2}:{total % 100:D2}";
+            TxtHoraExacta.Text = $"{total / 60:D2}:{total % 60:D2}";
         }
 
         private void SliderHora_DragCompleted(object sender, DragCompletedEventArgs e)
@@ -86,20 +85,17 @@ namespace LoteriaTwo.Views
             int minutes;
             var horasCfg = SceneController.Instancia.Config?.UnrealSettings.HorasPredefinidas;
             if (horasCfg?.TryGetValue(presetName, out var horaStr) == true)
-            {
-                minutes = HoraToMinutosDecimal(horaStr);
-                _horaDecimal = HoraToMinutosDecimal(horaStr);
-            }
+                minutes = HoraToMinutos(horaStr);
             else
                 minutes = presetName switch
                 {
-                    "Amanecer" => 7 * 100,
-                    "Mañana" => 10 * 100,
-                    "Mediodía" => 14 * 100,
-                    "Tarde" => 19 * 100,
-                    "Puesta de sol" => 21 * 100 + 38,
-                    "Noche" => 22 * 100,
-                    _ => 12 * 100,
+                    "Amanecer"      => 7  * 60,
+                    "Mañana"        => 10 * 60,
+                    "Mediodía"      => 14 * 60,
+                    "Tarde"         => 19 * 60,
+                    "Puesta de sol" => 21 * 60 + 38,
+                    "Noche"         => 22 * 60,
+                    _               => 12 * 60,
                 };
 
             _syncingSlider = true;
@@ -123,7 +119,10 @@ namespace LoteriaTwo.Views
 
         private void AplicarHora_Click(object sender, RoutedEventArgs e)
         {
-            SceneController.Instancia.CambiarHora(_horaDecimal);
+            int totalMinutos = (int)SliderHora.Value;
+            int horas   = totalMinutos / 60;
+            int minutos = totalMinutos % 60;
+            SceneController.Instancia.CambiarHora(horas * 100 + minutos);
         }
 
         private void AplicarFaseLunar_Click(object sender, RoutedEventArgs e)
@@ -146,14 +145,5 @@ namespace LoteriaTwo.Views
             return 720;
         }
 
-        private static int HoraToMinutosDecimal(string horaStr)
-        {
-            var parts = horaStr.Split(':');
-            if (parts.Length == 2
-                && int.TryParse(parts[0], out int h)
-                && int.TryParse(parts[1], out int m))
-                return h * 100 + m;
-            return 720;
-        }
     }
 }

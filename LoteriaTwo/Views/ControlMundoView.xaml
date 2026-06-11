@@ -79,7 +79,7 @@
 
                 <Slider x:Name="SliderHora"
                         Grid.Row="1" Grid.Column="0"
-                        Minimum="0" Maximum="2359" Value="360"
+                        Minimum="0" Maximum="1439" Value="420"
                         SmallChange="1" LargeChange="60"
                         ValueChanged="SliderHora_ValueChanged"
                         Margin="0,4,0,2"/>

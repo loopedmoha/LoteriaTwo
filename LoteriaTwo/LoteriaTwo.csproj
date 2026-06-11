@@ -6,8 +6,9 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-    <AssemblyName>LoteriaTwo</AssemblyName>
+    <AssemblyName>ControlLoterias</AssemblyName>
     <RootNamespace>LoteriaTwo</RootNamespace>
+    <Product>Control de Loterías</Product>
   </PropertyGroup>
 
 
