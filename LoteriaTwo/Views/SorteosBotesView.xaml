@@ -1,8 +1,7 @@
 <UserControl x:Class="LoteriaTwo.Views.SorteosBotesView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-        <Grid Margin="5">
+    <Grid Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -402,5 +401,4 @@
 
             </StackPanel>
         </Grid>
-    </ScrollViewer>
 </UserControl>

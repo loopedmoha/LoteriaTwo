@@ -176,6 +176,18 @@ namespace LoteriaTwo
             return null;
         }
 
+        // ── Sidebar toggle ────────────────────────────────────────────────────
+
+        private bool _sidebarOpen = true;
+
+        private void ToggleSidebar_Click(object sender, RoutedEventArgs e)
+        {
+            _sidebarOpen = !_sidebarOpen;
+            SidebarContent.Visibility = _sidebarOpen ? Visibility.Visible : Visibility.Collapsed;
+            SidebarColumn.Width       = new GridLength(_sidebarOpen ? 145 : 36);
+            BtnToggleSidebar.Content  = _sidebarOpen ? "◀" : "▶";
+        }
+
         // ── Navegación lateral ────────────────────────────────────────────────
 
         private void Nav_Checked(object sender, RoutedEventArgs e)
@@ -186,6 +198,21 @@ namespace LoteriaTwo
             ViewQuiniela.Visibility     = NavQuiniela.IsChecked     == true ? Visibility.Visible : Visibility.Collapsed;
             ViewSorteos.Visibility      = NavSorteos.IsChecked      == true ? Visibility.Visible : Visibility.Collapsed;
             ViewControlMundo.Visibility = NavControlMundo.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        // ── Menú Playlist ─────────────────────────────────────────────────────
+
+        private void GuardarPlaylist_Click(object sender, RoutedEventArgs e)
+            => ThePlaylist.GuardarPlaylist();
+
+        private void CargarPlaylist_Click(object sender, RoutedEventArgs e)
+            => ThePlaylist.CargarPlaylist();
+
+        private void LimpiarPlaylist_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("¿Limpiar la playlist activa?", "Confirmar",
+                    MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
+            ThePlaylist.LimpiarPlaylist();
         }
 
         // ── Debug ─────────────────────────────────────────────────────────────

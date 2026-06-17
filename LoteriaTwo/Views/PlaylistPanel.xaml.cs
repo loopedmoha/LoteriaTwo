@@ -147,7 +147,10 @@ namespace LoteriaTwo.Views
                 _colasActivas = esColas;
 
                 if (esColas)
+                {
+                    BrainstormService.Instancia.SaleActivo();
                     SceneController.Instancia.PantallaSDI();
+                }
                 else
                     BrainstormService.Instancia.Entra(el);
             }
@@ -217,7 +220,7 @@ namespace LoteriaTwo.Views
         private void ElemEliminar_Click(object sender, RoutedEventArgs e)
             => EliminarSeleccionado(LstElementos);
 
-        private void LimpiarPlaylist_Click(object sender, RoutedEventArgs e)
+        public void LimpiarPlaylist()
         {
             var activa = PlaylistService.Instancia.Activa;
             activa.Logos.Clear();
@@ -226,7 +229,7 @@ namespace LoteriaTwo.Views
 
         // ── Guardar / Cargar ──────────────────────────────────────────────────
 
-        private void Guardar_Click(object sender, RoutedEventArgs e)
+        public void GuardarPlaylist()
         {
             try
             {
@@ -240,7 +243,7 @@ namespace LoteriaTwo.Views
             }
         }
 
-        private void Cargar_Click(object sender, RoutedEventArgs e)
+        public void CargarPlaylist()
         {
             try
             {

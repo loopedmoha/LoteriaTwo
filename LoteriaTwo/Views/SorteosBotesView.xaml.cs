@@ -184,12 +184,12 @@ namespace LoteriaTwo.Views
             var primary   = (Brush)Application.Current.Resources["BrushTextPrimary"];
             var secondary = (Brush)Application.Current.Resources["BrushTextSecondary"];
 
-            GridPremiados.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(30) });   // radio
-            GridPremiados.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(155) });  // nombre
-            GridPremiados.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(60) });   // BOTE
-            GridPremiados.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(255) });  // números
-            GridPremiados.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(105) });  // otros
-            GridPremiados.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(115) }); // fecha
+            GridPremiados.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(30) });                          // radio
+            GridPremiados.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(155) });                         // nombre
+            GridPremiados.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(60) });                          // BOTE
+            GridPremiados.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) });        // números
+            GridPremiados.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });                             // otros
+            GridPremiados.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });        // fecha
 
             // Fila de cabeceras
             GridPremiados.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
@@ -250,7 +250,7 @@ namespace LoteriaTwo.Views
                 {
                     var tb = new TextBox
                     {
-                        Width = 33,
+                        Width = 40,
                         MaxLength = 2,
                         HorizontalContentAlignment = HorizontalAlignment.Center,
                         Margin = new Thickness(0, 2, 3, 2)
@@ -290,7 +290,7 @@ namespace LoteriaTwo.Views
                 PlaceP(spOtros, row, 4);
 
                 // Fecha
-                _txtFechaPremiado[i] = new TextBox { Margin = new Thickness(0, 2, 0, 2), VerticalAlignment = VerticalAlignment.Center, Width = 110 };
+                _txtFechaPremiado[i] = new TextBox { Margin = new Thickness(0, 2, 4, 2), VerticalAlignment = VerticalAlignment.Center };
                 PlaceP(_txtFechaPremiado[i], row, 5);
             }
         }

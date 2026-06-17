@@ -19,6 +19,12 @@
             <MenuItem Header="Ayuda">
                 <MenuItem Header="Calendario de Soporte" Click="CalendarioSoporte_Click"/>
             </MenuItem>
+            <MenuItem Header="Playlist">
+                <MenuItem Header="Guardar playlist" Click="GuardarPlaylist_Click"/>
+                <MenuItem Header="Cargar playlist"  Click="CargarPlaylist_Click"/>
+                <Separator/>
+                <MenuItem Header="Limpiar playlist activa" Click="LimpiarPlaylist_Click"/>
+            </MenuItem>
             <MenuItem Header="Debug">
                 <MenuItem Header="Repositorio de Elementos" Click="DebugElementos_Click"/>
             </MenuItem>
@@ -80,7 +86,7 @@
         <!-- ── Contenido principal ──────────────────────── -->
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="145"/>   <!-- Sidebar -->
+                <ColumnDefinition x:Name="SidebarColumn" Width="145"/>   <!-- Sidebar -->
                 <ColumnDefinition Width="*"/>     <!-- Contenido -->
                 <ColumnDefinition Width="330"/>   <!-- Playlist -->
             </Grid.ColumnDefinitions>
@@ -91,24 +97,36 @@
                     BorderBrush="{StaticResource BrushBorder}"
                     BorderThickness="0,0,1,0">
                 <DockPanel>
-                    <!-- Logo / título -->
-                    <StackPanel DockPanel.Dock="Top" Margin="10,12,10,8">
-                        <TextBlock Text="CONTROL DE" FontSize="13" FontWeight="Bold"
-                                   Foreground="{StaticResource BrushAccent}"/>
-                        <TextBlock Text="LOTERÍAS" FontSize="13" FontWeight="Bold"
-                                   Foreground="{StaticResource BrushAccent}"/>
-                        <TextBlock Text="Control IPF" FontSize="10"
-                                   Foreground="{StaticResource BrushTextSecondary}"
-                                   Margin="0,2,0,0"/>
-                    </StackPanel>
+                    <!-- Botón toggle siempre visible -->
+                    <Button x:Name="BtnToggleSidebar"
+                            DockPanel.Dock="Top"
+                            Content="◀"
+                            Style="{StaticResource BtnFlat}"
+                            HorizontalAlignment="Right"
+                            Width="28" Height="22"
+                            FontSize="10" Padding="0"
+                            Margin="2,4,2,0"
+                            Click="ToggleSidebar_Click"/>
 
-                    <!-- Separador -->
-                    <Border DockPanel.Dock="Top" Height="1"
-                            Background="{StaticResource BrushBorder}"
-                            Margin="16,0,16,10"/>
+                    <!-- Contenido colapsable -->
+                    <StackPanel x:Name="SidebarContent">
+                        <!-- Logo / título -->
+                        <StackPanel Margin="10,6,10,8">
+                            <TextBlock Text="CONTROL DE" FontSize="13" FontWeight="Bold"
+                                       Foreground="{StaticResource BrushAccent}"/>
+                            <TextBlock Text="LOTERÍAS" FontSize="13" FontWeight="Bold"
+                                       Foreground="{StaticResource BrushAccent}"/>
+                            <TextBlock Text="Control IPF" FontSize="10"
+                                       Foreground="{StaticResource BrushTextSecondary}"
+                                       Margin="0,2,0,0"/>
+                        </StackPanel>
 
-                    <!-- Items de navegación -->
-                    <StackPanel DockPanel.Dock="Top">
+                        <!-- Separador -->
+                        <Border Height="1"
+                                Background="{StaticResource BrushBorder}"
+                                Margin="16,0,16,10"/>
+
+                        <!-- Items de navegación -->
                         <RadioButton x:Name="NavLoteria"
                                      Content="Lotería y Rótulos"
                                      Style="{StaticResource NavBtn}"
@@ -149,7 +167,7 @@
             </Grid>
 
             <!-- ── Panel playlist ── -->
-            <views:PlaylistPanel Grid.Column="2"/>
+            <views:PlaylistPanel x:Name="ThePlaylist" Grid.Column="2"/>
         </Grid>
 
     </DockPanel>

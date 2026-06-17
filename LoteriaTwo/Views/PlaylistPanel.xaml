@@ -9,19 +9,7 @@
                 BorderBrush="{StaticResource BrushBorder}"
                 BorderThickness="1,0,0,1"
                 Padding="6,4">
-            <DockPanel>
-                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                    <Button Content="Guardar" Style="{StaticResource BtnBlue}"
-                            FontSize="10" Padding="8,3" Margin="0,0,4,0"
-                            Click="Guardar_Click"/>
-                    <Button Content="Cargar" Style="{StaticResource BtnBlue}"
-                            FontSize="10" Padding="8,3" Margin="0,0,4,0"
-                            Click="Cargar_Click"/>
-                    <Button Content="Limpiar" Style="{StaticResource BtnReset}"
-                            FontSize="10" Padding="8,3"
-                            Click="LimpiarPlaylist_Click"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <TextBlock Text="PLAYLIST" FontWeight="Bold" FontSize="12"
                                Foreground="{StaticResource BrushTextPrimary}"
                                VerticalAlignment="Center" Margin="0,0,12,0"/>
@@ -37,8 +25,7 @@
                     <RadioButton x:Name="RbPl4" Content="4" GroupName="PLSel" Tag="3"
                                  VerticalAlignment="Center"
                                  Checked="PlSel_Checked"/>
-                </StackPanel>
-            </DockPanel>
+            </StackPanel>
         </Border>
 
         <!-- ── Pantalla virtual ── -->

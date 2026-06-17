@@ -16,10 +16,7 @@
                       Margin="28,8,0,0"
                       Checked="ChkModoQuiniela_Checked"
                       Unchecked="ChkModoQuiniela_Unchecked"/>
-            <ScrollViewer VerticalScrollBarVisibility="Auto"
-                          HorizontalScrollBarVisibility="Disabled">
-                <Grid x:Name="GridPartidos"/>
-            </ScrollViewer>
+            <Grid x:Name="GridPartidos"/>
         </DockPanel>
 
         <!-- ── Panel de control (columna derecha) ───────────────────── -->
