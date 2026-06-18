@@ -35,8 +35,8 @@ namespace LoteriaTwo.Services
 
         private PlaylistService() { }
 
-        public void AgregarElemento(Elemento el)
-            => Activa.Elementos.Add(new PlaylistItem { ElementoId = el.Id, Tipo = el.Tipo, Nombre = el.ToPlaylistNombre() });
+        public void AgregarElemento(Elemento el, Func<Elemento?>? buildActual = null)
+            => Activa.Elementos.Add(new PlaylistItem { ElementoId = el.Id, Tipo = el.Tipo, Nombre = el.ToPlaylistNombre(), BuildActual = buildActual });
 
         public void AgregarLogo(string nombre, TipoElemento tipo)
             => Activa.Logos.Add(new PlaylistItem { Tipo = tipo, Nombre = nombre });

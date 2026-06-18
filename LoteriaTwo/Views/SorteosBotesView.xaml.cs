@@ -321,7 +321,7 @@ namespace LoteriaTwo.Views
             => BrainstormService.Instancia.Sale(BuildLogoElemento());
         private void LogoEncadena_Click(object sender, RoutedEventArgs e) { }
         private void LogoP_Click(object sender, RoutedEventArgs e)
-            => Previsualizar(BuildLogoElemento());
+            => Previsualizar(BuildLogoElemento(), BuildLogoElemento);
 
         private Elemento BuildLogoElemento()
         {
@@ -338,7 +338,32 @@ namespace LoteriaTwo.Views
             => BrainstormService.Instancia.Sale(BuildBoteElemento());
         private void BoteEncadena_Click(object sender, RoutedEventArgs e) { }
         private void BoteP_Click(object sender, RoutedEventArgs e)
-            => Previsualizar(BuildBoteElemento());
+        {
+            var el    = BuildBoteElemento();
+            var juego = el["Juego"];
+            Previsualizar(el, () => BuildBoteElementoParaJuego(juego));
+        }
+
+        private Elemento BuildBoteElementoParaJuego(string juego)
+        {
+            var el = new Elemento { Tipo = TipoElemento.Bote };
+            el["Juego"] = juego;
+            (el["Cantidad"], el["Fecha"]) = juego switch
+            {
+                "BONOLOTO"     => (TxtCantBonoloto.Text,     TxtFechaBoteBonoloto.Text),
+                "QUINIGOL"     => (TxtCantQuinigol.Text,     TxtFechaBoteQuinigol.Text),
+                "EUROMILLONES" => (TxtCantEuromillones.Text, TxtFechaBoteEuromillones.Text),
+                "LOTERIA"      => (TxtCantLoteria.Text,      TxtFechaBoteLoteria.Text),
+                "PRIMITIVA"    => (TxtCantPrimitiva.Text,    TxtFechaBotePrimitiva.Text),
+                "QUINIELA"     => (TxtCantQuiniela.Text,     TxtFechaBoteQuiniela.Text),
+                "EL GORDO"     => (TxtCantElGordo.Text,      TxtFechaBoteElGordo.Text),
+                "LOTOTURF"     => (TxtCantLototurf.Text,     TxtFechaBoteLototurf.Text),
+                "JOKER"        => (TxtCantJoker.Text,        TxtFechaBoteJoker.Text),
+                "Eurodreams"   => (TxtCantEurodreams.Text,   TxtFechaBoteEurodreams.Text),
+                _              => (string.Empty, string.Empty)
+            };
+            return el;
+        }
 
         private Elemento BuildBoteElemento()
         {
@@ -365,15 +390,21 @@ namespace LoteriaTwo.Views
 
         private void PremiadosP_Click(object sender, RoutedEventArgs e)
         {
-            var el = BuildPremiadoElemento();
-            if (el is not null) Previsualizar(el);
+            int idx = Array.FindIndex(_rdbPremiado, r => r.IsChecked == true);
+            if (idx < 0) return;
+            var el = BuildPremiadoElemento(idx);
+            if (el is not null) Previsualizar(el, () => BuildPremiadoElemento(idx));
         }
 
         private Elemento? BuildPremiadoElemento()
         {
             int idx = Array.FindIndex(_rdbPremiado, r => r.IsChecked == true);
-            if (idx < 0) return null;
+            return idx < 0 ? null : BuildPremiadoElemento(idx);
+        }
 
+        private Elemento? BuildPremiadoElemento(int idx)
+        {
+            if (idx < 0 || idx >= JuegosPremiados.Length) return null;
             var el = new Elemento { Tipo = TipoElemento.Premiado };
             el["Juego"]         = JuegosPremiados[idx].Nombre;
             el["Bote"]          = (_chkBotePremiado[idx].IsChecked == true).ToString();
@@ -417,7 +448,7 @@ namespace LoteriaTwo.Views
             return el;
         }
         private void MillonP_Click(object sender, RoutedEventArgs e)
-            => Previsualizar(BuildMillonElemento());
+            => Previsualizar(BuildMillonElemento(), BuildMillonElemento);
         private void MillonEntra_Click(object sender, RoutedEventArgs e)
             => BrainstormService.Instancia.Entra(BuildMillonElemento());
         private void MillonSale_Click(object sender, RoutedEventArgs e)
@@ -443,7 +474,7 @@ namespace LoteriaTwo.Views
         {
             var el = new Elemento { Tipo = TipoElemento.EuromillonesMosca };
             el["Numero"] = TxtEuromillonesMillon.Text;
-            Previsualizar(el);
+            Previsualizar(el, () => { var e2 = new Elemento { Tipo = TipoElemento.EuromillonesMosca }; e2["Numero"] = TxtEuromillonesMillon.Text; return e2; });
         }
 
         // ── Handlers — EURODREAMS ────────────────────────────────────────────
@@ -468,20 +499,20 @@ namespace LoteriaTwo.Views
             el["DiaSemana"] = _eurodreamsDia;
             el["Dia"]       = TxtEurodreamsDia.Text;
             el["Mes"]       = TxtEurodreamsMes.Text;
-            Previsualizar(el);
+            Previsualizar(el, () => { var e2 = new Elemento { Tipo = TipoElemento.Eurodreams }; e2["DiaSemana"] = _eurodreamsDia; e2["Dia"] = TxtEurodreamsDia.Text; e2["Mes"] = TxtEurodreamsMes.Text; return e2; });
         }
         private void EurodreamsPremiado_Click(object sender, RoutedEventArgs e) { }
         private void EurodreamsProximo_Click(object sender, RoutedEventArgs e) { }
 
         // ── Helpers ──────────────────────────────────────────────────────────
 
-        private void Previsualizar(Elemento el)
+        private void Previsualizar(Elemento el, Func<Elemento?>? buildActual = null)
         {
             ElementoRepository.Instancia.Add(el);
             UltimoElemento = el;
             LogService.Instancia.Registrar(LogNivel.Accion, el.Tipo.ToString(),
                 "P → " + el.ToLogString());
-            PlaylistService.Instancia.AgregarElemento(el);
+            PlaylistService.Instancia.AgregarElemento(el, buildActual);
             PlaylistService.Instancia.AgregarLogo(GetLogoNombre(el), el.Tipo);
         }
 

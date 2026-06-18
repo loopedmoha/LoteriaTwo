@@ -235,9 +235,8 @@ namespace LoteriaTwo.Views
         // ── WEB ──────────────────────────────────────────────────────────────
 
         private void WebPreview_Click(object sender, RoutedEventArgs e)
-        {
-            Previsualizar(new Elemento { Tipo = TipoElemento.Web });
-        }
+            => Previsualizar(new Elemento { Tipo = TipoElemento.Web },
+                             () => new Elemento { Tipo = TipoElemento.Web });
         private void WebEntra_Click(object sender, RoutedEventArgs e)
             => BrainstormService.Instancia.Entra(new Elemento { Tipo = TipoElemento.Web });
         private void WebSale_Click(object sender, RoutedEventArgs e)
@@ -245,24 +244,21 @@ namespace LoteriaTwo.Views
 
         // ── IMÁGENES ─────────────────────────────────────────────────────────
 
-        private void ImagenesPreview_Click(object sender, RoutedEventArgs e)
+        private Elemento BuildImagenElemento()
         {
             var fotoActiva = GetCheckedRadio(this, "Imagenes");
-
             var el = new Elemento { Tipo = TipoElemento.Imagen };
-            el["Foto"]          = fotoActiva;
-            el["RutaFoto1"]     = TxtF1.Text;
-            el["RutaFoto2"]     = TxtF2.Text;
-            el["RutaFoto3"]     = TxtF3.Text;
-            el["RutaFoto4"]     = TxtF4.Text;
-            el["RutaFoto5"]     = TxtF5.Text;
-            el["LogoFoto1"]     = CmbLogoFoto1.SelectedItem?.ToString()     ?? string.Empty;
-            el["LogoFoto2"]     = CmbLogoFoto2.SelectedItem?.ToString()     ?? string.Empty;
-            el["LogoFoto3"]     = CmbLogoFoto3.SelectedItem?.ToString()     ?? string.Empty;
-            el["LogoFoto4"]     = CmbLogoFoto4.SelectedItem?.ToString()     ?? string.Empty;
-            el["LogoFoto5"]     = CmbLogoFoto5.SelectedItem?.ToString()     ?? string.Empty;
-
-            // Logo del slot activo → guardado en LogoRepository
+            el["Foto"]      = fotoActiva;
+            el["RutaFoto1"] = TxtF1.Text;
+            el["RutaFoto2"] = TxtF2.Text;
+            el["RutaFoto3"] = TxtF3.Text;
+            el["RutaFoto4"] = TxtF4.Text;
+            el["RutaFoto5"] = TxtF5.Text;
+            el["LogoFoto1"] = CmbLogoFoto1.SelectedItem?.ToString() ?? string.Empty;
+            el["LogoFoto2"] = CmbLogoFoto2.SelectedItem?.ToString() ?? string.Empty;
+            el["LogoFoto3"] = CmbLogoFoto3.SelectedItem?.ToString() ?? string.Empty;
+            el["LogoFoto4"] = CmbLogoFoto4.SelectedItem?.ToString() ?? string.Empty;
+            el["LogoFoto5"] = CmbLogoFoto5.SelectedItem?.ToString() ?? string.Empty;
             var logoNombre = fotoActiva switch
             {
                 "Foto 1" => CmbLogoFoto1.SelectedItem?.ToString(),
@@ -274,9 +270,11 @@ namespace LoteriaTwo.Views
             };
             if (!string.IsNullOrEmpty(logoNombre))
                 el.LogoId = LogoRepository.Instancia.GetOrCreate(logoNombre).Id;
-
-            Previsualizar(el);
+            return el;
         }
+
+        private void ImagenesPreview_Click(object sender, RoutedEventArgs e)
+            => Previsualizar(BuildImagenElemento(), BuildImagenElemento);
         private void ImagenesEntra_Click(object sender, RoutedEventArgs e)
         {
             var fotoActiva = GetCheckedRadio(this, "Imagenes");
@@ -293,15 +291,18 @@ namespace LoteriaTwo.Views
             => BrainstormService.Instancia.Sale(new Elemento { Tipo = TipoElemento.Imagen });
         // ── COLAS ────────────────────────────────────────────────────────────
 
-        private void ColasPreview_Click(object sender, RoutedEventArgs e)
+        private Elemento BuildColasElemento()
         {
             var el = new Elemento { Tipo = TipoElemento.Imagen };
             el["Foto"] = "Colas";
             var logoNombre = CmbLogoColas.SelectedItem?.ToString();
             if (!string.IsNullOrEmpty(logoNombre))
                 el.LogoId = LogoRepository.Instancia.GetOrCreate(logoNombre).Id;
-            Previsualizar(el);
+            return el;
         }
+
+        private void ColasPreview_Click(object sender, RoutedEventArgs e)
+            => Previsualizar(BuildColasElemento(), BuildColasElemento);
 
         private void ColasEntra_Click(object sender, RoutedEventArgs e)
             => SceneController.Instancia.PantallaSDI();
@@ -361,23 +362,25 @@ namespace LoteriaTwo.Views
         }
         private void SaleRotulo_Click(object sender, RoutedEventArgs e)
             => BrainstormService.Instancia.Sale(new Elemento { Tipo = TipoElemento.Rotulo });
-        private void PreviewRotulo_Click(object sender, RoutedEventArgs e)
+        private Elemento BuildRotuloElemento()
         {
             var el = new Elemento { Tipo = TipoElemento.Rotulo };
-            el["Tipo"]         = GetCheckedRadio(this, "TipoRotulo");
+            el["Tipo"]          = GetCheckedRadio(this, "TipoRotulo");
             el["Linea1Primera"] = TxtLinea1Primera.Text;
             el["Linea1Segunda"] = TxtLinea1Segunda.Text;
             el["Linea2"]        = TxtLinea2.Text;
-            Previsualizar(el);
+            return el;
         }
+
+        private void PreviewRotulo_Click(object sender, RoutedEventArgs e)
+            => Previsualizar(BuildRotuloElemento(), BuildRotuloElemento);
 
         // ── CIUDADES — LOGO ──────────────────────────────────────────────────
 
         private void LstLogos_SelectionChanged(object sender, SelectionChangedEventArgs e) { }
-        private void LogoPreview_Click(object sender, RoutedEventArgs e)
+        private Elemento BuildLogoCiudadesElemento(int mapaIdx)
         {
-            GuardarMapaActual();
-            var m = _mapas[_mapaActual];
+            var m  = _mapas[mapaIdx];
             var el = new Elemento { Tipo = TipoElemento.LogoCiudades };
             el["Logo"]       = m.Logo;
             el["Fecha"]      = m.Fecha;
@@ -393,7 +396,18 @@ namespace LoteriaTwo.Views
             el["Comunidad5"] = m.Comunidad5;
             el["Texto1"]     = m.Texto1;
             el["Texto2"]     = m.Texto2;
-            Previsualizar(el);
+            return el;
+        }
+
+        private void LogoPreview_Click(object sender, RoutedEventArgs e)
+        {
+            GuardarMapaActual();
+            int idx = _mapaActual;
+            Previsualizar(BuildLogoCiudadesElemento(idx), () =>
+            {
+                if (_mapaActual == idx) GuardarMapaActual();
+                return BuildLogoCiudadesElemento(idx);
+            });
         }
         private void LogoEntra_Click(object sender, RoutedEventArgs e)
         {
@@ -414,18 +428,18 @@ namespace LoteriaTwo.Views
 
         // ── Helpers ──────────────────────────────────────────────────────────
 
-        private void Previsualizar(Elemento el)
+        private void Previsualizar(Elemento el, Func<Elemento?>? buildActual = null)
         {
             ElementoRepository.Instancia.Add(el);
             UltimoElemento = el;
             LogService.Instancia.Registrar(LogNivel.Accion, el.Tipo.ToString(),
                 "P → " + el.ToLogString());
-            AgregarAPlaylist(el);
+            AgregarAPlaylist(el, buildActual);
         }
 
-        private static void AgregarAPlaylist(Elemento el)
+        private static void AgregarAPlaylist(Elemento el, Func<Elemento?>? buildActual = null)
         {
-            PlaylistService.Instancia.AgregarElemento(el);
+            PlaylistService.Instancia.AgregarElemento(el, buildActual);
             PlaylistService.Instancia.AgregarLogo(GetLogoNombre(el), el.Tipo);
         }
 

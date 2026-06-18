@@ -40,6 +40,12 @@ namespace LoteriaTwo.Services
                 ? $"itemset('<{_bd}>{obj}','EVENT_RUN');"
                 : $"itemgo('<{_bd}>{obj}','EVENT_RUN',0,{delay.ToString("0.00", CultureInfo.InvariantCulture)});";
 
+        private string Itemgo(string obj, string prop, string val, double duration, double delay)
+            => $"itemgo('<{_bd}>{obj}','{prop}','{val}',{duration.ToString("0.00", CultureInfo.InvariantCulture)},{delay.ToString("0.00", CultureInfo.InvariantCulture)});";
+
+        private string Itemgo(string obj, string prop, bool val, double duration, double delay)
+            => $"itemgo('<{_bd}>{obj}','{prop}',{val.ToString().ToLower()},{duration.ToString("0.00", CultureInfo.InvariantCulture)},{delay.ToString("0.00", CultureInfo.InvariantCulture)});";
+
         // ── Send ──────────────────────────────────────────────────────────────
 
         public bool Enviar(string cmd)
@@ -127,26 +133,19 @@ namespace LoteriaTwo.Services
             return Enviar(sb.ToString());
         }
 
-        public bool EntraLogos() => Enviar(Run("EntraLogos"));
-        public bool SaleLogos()  => Enviar(Run("SaleLogo"));
-
-        public bool NextLogo(string logoNombre)
+        public bool EntraLogos(string logoNombre)
         {
             var sb = new StringBuilder();
-            sb.Append(Set("nlogo", "MAP_STRING_PAR", logoNombre));
-            sb.Append(Run("NextLogo", D));
+            sb.Append(Set("HD/SorteosYBotes/LogoSorteo",               "OBJ_OVERMAT", $"Logo{logoNombre}"));
+            sb.Append(Set("HD_PantallaPlato/SorteosYBotes/LogoSorteo", "OBJ_OVERMAT", "LogoLoteriaNacional"));
+            sb.Append(Run("SorteosYBotes/LogoSorteo/Entra"));
             return Enviar(sb.ToString());
         }
 
-        public bool SyncLogo(string logoNombre)
-        {
-            var sb = new StringBuilder();
-            sb.Append(Run("SaleLogo"));
-            sb.Append(Set("nlogo", "MAP_STRING_PAR", logoNombre, D));
-            sb.Append(Run("NextLogo", D));
-            sb.Append(Run("EntraLogos", D));
-            return Enviar(sb.ToString());
-        }
+        public bool SaleLogos() => Enviar(Run("SorteosYBotes/LogoSorteo/Sale"));
+
+        public bool NextLogo(string logoNombre) => Enviar(CambiarLogo(logoNombre));
+        public bool SyncLogo(string logoNombre) => Enviar(CambiarLogo(logoNombre));
 
         private string FondoColor(Elemento el)
         {
@@ -270,16 +269,32 @@ namespace LoteriaTwo.Services
 
         // ── LOGO ──────────────────────────────────────────────────────────────
 
+        private static readonly string[] LogoPaths =
+        {
+            "HD/SorteosYBotes/LogoSorteo",
+            "HD_PantallaPlato/SorteosYBotes/LogoSorteo",
+            "9_16/SorteosYBotes/LogoSorteo",
+        };
+
+        private string CambiarLogo(string logo)
+        {
+            var sb = new StringBuilder();
+            foreach (var path in LogoPaths)
+            {
+                sb.Append(Itemgo(path, "OBJ_CULL",    true,          0.1, 0.0));
+                sb.Append(Itemgo(path, "OBJ_OVERMAT", $"Logo{logo}", 0.0, 0.5));
+                sb.Append(Itemgo(path, "OBJ_CULL",    false,         0.1, 0.6));
+            }
+            return sb.ToString();
+        }
+
         private string EntraLogo(Elemento el)
         {
             var logo = el["Logo"];
             var sb = new StringBuilder();
-            sb.Append(Set($"HD/SorteosYBotes/LogoSorteo",            "OBJ_OVERMAT", $"Logo{logo}", D));
-            sb.Append(Set($"HD_PantallaPlato/SorteosYBotes/LogoSorteo", "OBJ_OVERMAT", $"Logo{logo}", D));
-            sb.Append(Set($"Cuadrada/SorteosYBotes/LogoSorteo",      "OBJ_OVERMAT", $"Logo{logo}", D));
-            sb.Append(Set($"9_16/SorteosYBotes/LogoSorteo",          "OBJ_OVERMAT", $"Logo{logo}", D));
-            sb.Append(Set($"Horizontal/SorteosYBotes/LogoSorteo",    "OBJ_OVERMAT", $"Logo{logo}", D));
-            sb.Append(Run("SorteosYBotes/LogoSorteo/Entra", D));
+            sb.Append(Set("HD/SorteosYBotes/LogoSorteo",               "OBJ_OVERMAT", $"Logo{logo}"));
+            sb.Append(Set("HD_PantallaPlato/SorteosYBotes/LogoSorteo", "OBJ_OVERMAT", "LogoLoteriaNacional"));
+            sb.Append(Run("SorteosYBotes/LogoSorteo/Entra"));
             return sb.ToString();
         }
 
@@ -367,9 +382,7 @@ namespace LoteriaTwo.Services
 
             sb.Append(Set("HD/Premiados/Bote",              "OBJ_CULL", !bote, D));
             sb.Append(Set("HD_PantallaPlato/Premiados/Bote","OBJ_CULL", !bote, D));
-            sb.Append(Set("Cuadrada/Premiados/Bote",        "OBJ_CULL", !bote, D));
             sb.Append(Set("9_16/Premiados/Bote",            "OBJ_CULL", !bote, D));
-            sb.Append(Set("Horizontal/Premiados/Bote",      "OBJ_CULL", !bote, D));
             sb.Append(Run("Premiados/Entra", 0.3));
             return sb.ToString();
         }

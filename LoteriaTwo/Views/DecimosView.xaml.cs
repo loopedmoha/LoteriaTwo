@@ -66,7 +66,7 @@ namespace LoteriaTwo.Views
                 });
         }
 
-        private void PEspecial_Click(object sender, RoutedEventArgs e)
+        private Elemento BuildEspecialElemento()
         {
             var el = new Elemento { Tipo = TipoElemento.PremioEspecial };
             el["Fecha"]    = TxtFecha.Text;
@@ -74,8 +74,42 @@ namespace LoteriaTwo.Views
             el["Cantidad"] = TxtCantidadEspecial.Text;
             el["Serie"]    = TxtSerieEspecial.Text;
             el["Fraccion"] = TxtFraccEspecial.Text;
-            Previsualizar(el);
+            return el;
         }
+
+        private Elemento BuildPrimeroElemento()
+        {
+            var el = new Elemento { Tipo = TipoElemento.PrimerPremio };
+            el["Fecha"]          = TxtFecha.Text;
+            el["Numero"]         = TxtNumeroPrimero.Text;
+            el["Cantidad"]       = TxtCantidadPrimero.Text;
+            el["Reintegro1"]     = TxtReintegro1.Text;
+            el["Reintegro2"]     = TxtReintegro2.Text;
+            el["Reintegro3"]     = TxtReintegro3.Text;
+            el["ReintegroPremio"] = (ChkReintegroPrimero.IsChecked == true).ToString();
+            return el;
+        }
+
+        private Elemento BuildSegundoElemento()
+        {
+            var el = new Elemento { Tipo = TipoElemento.SegundoPremio };
+            el["Fecha"]    = TxtFecha.Text;
+            el["Numero"]   = TxtNumeroSegundo.Text;
+            el["Cantidad"] = TxtCantidadSegundo.Text;
+            return el;
+        }
+
+        private Elemento BuildTerceroElemento()
+        {
+            var el = new Elemento { Tipo = TipoElemento.TercerPremio };
+            el["Fecha"]    = TxtFecha.Text;
+            el["Numero"]   = TxtNumeroTercero.Text;
+            el["Cantidad"] = TxtCantidadTercero.Text;
+            return el;
+        }
+
+        private void PEspecial_Click(object sender, RoutedEventArgs e)
+            => Previsualizar(BuildEspecialElemento(), BuildEspecialElemento);
         private void EntraEspecial_Click(object sender, RoutedEventArgs e)
         {
             var el = new Elemento { Tipo = TipoElemento.PremioEspecial };
@@ -88,17 +122,7 @@ namespace LoteriaTwo.Views
             => BrainstormService.Instancia.Sale(new Elemento { Tipo = TipoElemento.PremioEspecial });
 
         private void PPrimero_Click(object sender, RoutedEventArgs e)
-        {
-            var el = new Elemento { Tipo = TipoElemento.PrimerPremio };
-            el["Fecha"]          = TxtFecha.Text;
-            el["Numero"]         = TxtNumeroPrimero.Text;
-            el["Cantidad"]       = TxtCantidadPrimero.Text;
-            el["Reintegro1"]     = TxtReintegro1.Text;
-            el["Reintegro2"]     = TxtReintegro2.Text;
-            el["Reintegro3"]     = TxtReintegro3.Text;
-            el["ReintegroPremio"] = (ChkReintegroPrimero.IsChecked == true).ToString();
-            Previsualizar(el);
-        }
+            => Previsualizar(BuildPrimeroElemento(), BuildPrimeroElemento);
         private void EntraPrimero_Click(object sender, RoutedEventArgs e)
         {
             var el = new Elemento { Tipo = TipoElemento.PrimerPremio };
@@ -114,13 +138,7 @@ namespace LoteriaTwo.Views
             => BrainstormService.Instancia.Sale(new Elemento { Tipo = TipoElemento.PrimerPremio });
 
         private void PSegundo_Click(object sender, RoutedEventArgs e)
-        {
-            var el = new Elemento { Tipo = TipoElemento.SegundoPremio };
-            el["Fecha"]    = TxtFecha.Text;
-            el["Numero"]   = TxtNumeroSegundo.Text;
-            el["Cantidad"] = TxtCantidadSegundo.Text;
-            Previsualizar(el);
-        }
+            => Previsualizar(BuildSegundoElemento(), BuildSegundoElemento);
         private void EntraSegundo_Click(object sender, RoutedEventArgs e)
         {
             var el = new Elemento { Tipo = TipoElemento.SegundoPremio };
@@ -132,13 +150,7 @@ namespace LoteriaTwo.Views
             => BrainstormService.Instancia.Sale(new Elemento { Tipo = TipoElemento.SegundoPremio });
 
         private void PTercero_Click(object sender, RoutedEventArgs e)
-        {
-            var el = new Elemento { Tipo = TipoElemento.TercerPremio };
-            el["Fecha"]    = TxtFecha.Text;
-            el["Numero"]   = TxtNumeroTercero.Text;
-            el["Cantidad"] = TxtCantidadTercero.Text;
-            Previsualizar(el);
-        }
+            => Previsualizar(BuildTerceroElemento(), BuildTerceroElemento);
         private void EntraTercero_Click(object sender, RoutedEventArgs e)
         {
             var el = new Elemento { Tipo = TipoElemento.TercerPremio };
@@ -188,13 +200,13 @@ namespace LoteriaTwo.Views
         private void PosicionJueves_Click(object sender, RoutedEventArgs e) { }
         private void PosicionSabado_Click(object sender, RoutedEventArgs e) { }
 
-        private void Previsualizar(Elemento el)
+        private void Previsualizar(Elemento el, Func<Elemento?>? buildActual = null)
         {
             ElementoRepository.Instancia.Add(el);
             UltimoElemento = el;
             LogService.Instancia.Registrar(LogNivel.Accion, el.Tipo.ToString(),
                 "P → " + el.ToLogString());
-            PlaylistService.Instancia.AgregarElemento(el);
+            PlaylistService.Instancia.AgregarElemento(el, buildActual);
             PlaylistService.Instancia.AgregarLogo("LoteriaNacional", el.Tipo);
         }
     }

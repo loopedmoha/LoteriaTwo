@@ -86,7 +86,10 @@ namespace LoteriaTwo.Views
         // ── Acciones LOGOS ────────────────────────────────────────────────────
 
         private void EntraLogo_Click(object sender, RoutedEventArgs e)
-            => BrainstormService.Instancia.EntraLogos();
+        {
+            if (LstLogos.SelectedItem is not PlaylistItem item) return;
+            BrainstormService.Instancia.EntraLogos(item.Nombre);
+        }
 
         private void SaleLogo_Click(object sender, RoutedEventArgs e)
             => BrainstormService.Instancia.SaleLogos();
@@ -136,7 +139,7 @@ namespace LoteriaTwo.Views
             var datos    = snapshot.Length > 0 ? $"  |  {snapshot}" : string.Empty;
             Debug.WriteLine($"[Playlist] ENTRA [{current + 1}/{col.Count}] {item.Nombre}{datos}");
 
-            var el = ElementoRepository.Instancia.Get(item.ElementoId);
+            var el = item.BuildActual?.Invoke() ?? ElementoRepository.Instancia.Get(item.ElementoId);
             if (el is not null)
             {
                 bool esColas = el.Tipo == TipoElemento.Imagen && el["Foto"] == "Colas";

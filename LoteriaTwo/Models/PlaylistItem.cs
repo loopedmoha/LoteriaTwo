@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 
 namespace LoteriaTwo.Models
 {
@@ -8,5 +9,8 @@ namespace LoteriaTwo.Models
         public Guid         ElementoId { get; set; }
         public TipoElemento Tipo       { get; set; }
         public string       Nombre     { get; set; } = string.Empty;
+
+        [JsonIgnore]
+        public Func<Elemento?>? BuildActual { get; set; }
     }
 }
