@@ -9,12 +9,14 @@ namespace LoteriaTwo.Models
         public string Ciudad3 { get; set; } = string.Empty;
         public string Ciudad4 { get; set; } = string.Empty;
         public string Ciudad5 { get; set; } = string.Empty;
+        public string Ciudad6 { get; set; } = string.Empty;
 
         public string Comunidad1 { get; set; } = string.Empty;
         public string Comunidad2 { get; set; } = string.Empty;
         public string Comunidad3 { get; set; } = string.Empty;
         public string Comunidad4 { get; set; } = string.Empty;
         public string Comunidad5 { get; set; } = string.Empty;
+        public string Comunidad6 { get; set; } = string.Empty;
 
         public string Logo { get; set; } = string.Empty;
 

@@ -221,8 +221,180 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <!-- Filas de juegos (construidas en code-behind) -->
-                    <Grid x:Name="GridPremiados" Grid.Row="0"/>
+                    <!-- Filas de juegos -->
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="155"/>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Cabeceras -->
+                        <TextBlock Grid.Row="0" Grid.Column="3" Text="NUMEROS PREMIADOS"
+                                   FontWeight="Bold" FontSize="10" HorizontalAlignment="Center"
+                                   Foreground="{StaticResource BrushTextPrimary}" Margin="0,0,0,4"/>
+                        <TextBlock Grid.Row="0" Grid.Column="4" Text="OTROS"
+                                   FontWeight="Bold" FontSize="10" HorizontalAlignment="Center"
+                                   Foreground="{StaticResource BrushTextPrimary}" Margin="0,0,0,4"/>
+                        <TextBlock Grid.Row="0" Grid.Column="5" Text="FECHA"
+                                   FontWeight="Bold" FontSize="10" HorizontalAlignment="Center"
+                                   Foreground="{StaticResource BrushTextPrimary}" Margin="0,0,0,4"/>
+
+                        <!-- BONOLOTO — 6 números + complementario + reintegro -->
+                        <RadioButton x:Name="RdbP0" Grid.Row="1" Grid.Column="0"
+                                     GroupName="PremiadoGame" VerticalAlignment="Center"
+                                     Foreground="{StaticResource BrushTextPrimary}" Margin="0,2,4,2"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="BONOLOTO"
+                                   FontWeight="SemiBold" Foreground="{StaticResource BrushTextPrimary}"
+                                   VerticalAlignment="Center" Margin="0,2,8,2"/>
+                        <CheckBox x:Name="ChkBoteP0" Grid.Row="1" Grid.Column="2"
+                                  Content="BOTE" FontSize="10" VerticalAlignment="Center" Margin="0,2,4,2"
+                                  Foreground="{StaticResource BrushTextPrimary}"
+                                  Tag="BONOLOTO" Checked="BotePremiado_Checked"/>
+                        <StackPanel Grid.Row="1" Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox x:Name="TxtP0N0" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="1" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP0N1" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="2" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP0N2" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="3" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP0N3" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="4" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP0N4" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="5" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP0N5" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="6" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox x:Name="TxtP0O0" Width="44" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="7" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP0O1" Width="44" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="8" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                        </StackPanel>
+                        <TextBox x:Name="TxtFechaP0" Grid.Row="1" Grid.Column="5" Margin="0,2,4,2" VerticalAlignment="Center"/>
+
+                        <!-- EUROMILLONES M — 5 números + 2 estrellas -->
+                        <RadioButton x:Name="RdbP1" Grid.Row="2" Grid.Column="0"
+                                     GroupName="PremiadoGame" VerticalAlignment="Center"
+                                     Foreground="{StaticResource BrushTextPrimary}" Margin="0,2,4,2"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="EUROMILLONES M"
+                                   FontWeight="SemiBold" Foreground="{StaticResource BrushTextPrimary}"
+                                   VerticalAlignment="Center" Margin="0,2,8,2"/>
+                        <CheckBox x:Name="ChkBoteP1" Grid.Row="2" Grid.Column="2"
+                                  Content="BOTE" FontSize="10" VerticalAlignment="Center" Margin="0,2,4,2"
+                                  Foreground="{StaticResource BrushTextPrimary}"
+                                  Tag="EUROMILLONES M" Checked="BotePremiado_Checked"/>
+                        <StackPanel Grid.Row="2" Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox x:Name="TxtP1N0" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="1" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP1N1" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="2" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP1N2" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="3" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP1N3" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="4" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP1N4" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="5" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="2" Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox x:Name="TxtP1O0" Width="44" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="6" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP1O1" Width="44" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="7" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                        </StackPanel>
+                        <TextBox x:Name="TxtFechaP1" Grid.Row="2" Grid.Column="5" Margin="0,2,4,2" VerticalAlignment="Center"/>
+
+                        <!-- PRIMITIVA — 6 números + complementario + reintegro -->
+                        <RadioButton x:Name="RdbP2" Grid.Row="3" Grid.Column="0"
+                                     GroupName="PremiadoGame" VerticalAlignment="Center"
+                                     Foreground="{StaticResource BrushTextPrimary}" Margin="0,2,4,2"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" Text="PRIMITIVA"
+                                   FontWeight="SemiBold" Foreground="{StaticResource BrushTextPrimary}"
+                                   VerticalAlignment="Center" Margin="0,2,8,2"/>
+                        <CheckBox x:Name="ChkBoteP2" Grid.Row="3" Grid.Column="2"
+                                  Content="BOTE" FontSize="10" VerticalAlignment="Center" Margin="0,2,4,2"
+                                  Foreground="{StaticResource BrushTextPrimary}"
+                                  Tag="PRIMITIVA" Checked="BotePremiado_Checked"/>
+                        <StackPanel Grid.Row="3" Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox x:Name="TxtP2N0" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="1" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP2N1" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="2" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP2N2" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="3" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP2N3" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="4" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP2N4" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="5" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP2N5" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="6" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="3" Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox x:Name="TxtP2O0" Width="44" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="7" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP2O1" Width="44" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="8" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                        </StackPanel>
+                        <TextBox x:Name="TxtFechaP2" Grid.Row="3" Grid.Column="5" Margin="0,2,4,2" VerticalAlignment="Center"/>
+
+                        <!-- EL GORDO — 5 números + 1 clave -->
+                        <RadioButton x:Name="RdbP3" Grid.Row="4" Grid.Column="0"
+                                     GroupName="PremiadoGame" VerticalAlignment="Center"
+                                     Foreground="{StaticResource BrushTextPrimary}" Margin="0,2,4,2"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1" Text="EL GORDO"
+                                   FontWeight="SemiBold" Foreground="{StaticResource BrushTextPrimary}"
+                                   VerticalAlignment="Center" Margin="0,2,8,2"/>
+                        <CheckBox x:Name="ChkBoteP3" Grid.Row="4" Grid.Column="2"
+                                  Content="BOTE" FontSize="10" VerticalAlignment="Center" Margin="0,2,4,2"
+                                  Foreground="{StaticResource BrushTextPrimary}"
+                                  Tag="EL GORDO" Checked="BotePremiado_Checked"/>
+                        <StackPanel Grid.Row="4" Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox x:Name="TxtP3N0" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="1" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP3N1" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="2" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP3N2" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="3" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP3N3" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="4" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP3N4" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="5" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="4" Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox x:Name="TxtP3O0" Width="44" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="6" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                        </StackPanel>
+                        <TextBox x:Name="TxtFechaP3" Grid.Row="4" Grid.Column="5" Margin="0,2,4,2" VerticalAlignment="Center"/>
+
+                        <!-- LOTOTURF — 7 números -->
+                        <RadioButton x:Name="RdbP4" Grid.Row="5" Grid.Column="0"
+                                     GroupName="PremiadoGame" VerticalAlignment="Center"
+                                     Foreground="{StaticResource BrushTextPrimary}" Margin="0,2,4,2"/>
+                        <TextBlock Grid.Row="5" Grid.Column="1" Text="LOTOTURF"
+                                   FontWeight="SemiBold" Foreground="{StaticResource BrushTextPrimary}"
+                                   VerticalAlignment="Center" Margin="0,2,8,2"/>
+                        <CheckBox x:Name="ChkBoteP4" Grid.Row="5" Grid.Column="2"
+                                  Content="BOTE" FontSize="10" VerticalAlignment="Center" Margin="0,2,4,2"
+                                  Foreground="{StaticResource BrushTextPrimary}"
+                                  Tag="LOTOTURF" Checked="BotePremiado_Checked"/>
+                        <StackPanel Grid.Row="5" Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox x:Name="TxtP4N0" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="1" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP4N1" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="2" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP4N2" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="3" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP4N3" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="4" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP4N4" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="5" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP4N5" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="6" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP4N6" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="7" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                        </StackPanel>
+                        <TextBox x:Name="TxtFechaP4" Grid.Row="5" Grid.Column="5" Margin="0,2,4,2" VerticalAlignment="Center"/>
+
+                        <!-- EURODREAMS — 6 números + 1 dream -->
+                        <RadioButton x:Name="RdbP5" Grid.Row="6" Grid.Column="0"
+                                     GroupName="PremiadoGame" VerticalAlignment="Center"
+                                     Foreground="{StaticResource BrushTextPrimary}" Margin="0,2,4,2"/>
+                        <TextBlock Grid.Row="6" Grid.Column="1" Text="EURODREAMS"
+                                   FontWeight="SemiBold" Foreground="{StaticResource BrushTextPrimary}"
+                                   VerticalAlignment="Center" Margin="0,2,8,2"/>
+                        <CheckBox x:Name="ChkBoteP5" Grid.Row="6" Grid.Column="2"
+                                  Content="BOTE" FontSize="10" VerticalAlignment="Center" Margin="0,2,4,2"
+                                  Foreground="{StaticResource BrushTextPrimary}"
+                                  Tag="EURODREAMS" Checked="BotePremiado_Checked"/>
+                        <StackPanel Grid.Row="6" Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox x:Name="TxtP5N0" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="1" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP5N1" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="2" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP5N2" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="3" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP5N3" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="4" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP5N4" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="5" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP5N5" Width="40" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="6" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="6" Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox x:Name="TxtP5O0" Width="44" MaxLength="2" HorizontalContentAlignment="Center" Margin="0,2,3,2" Tag="7" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                        </StackPanel>
+                        <TextBox x:Name="TxtFechaP5" Grid.Row="6" Grid.Column="5" Margin="0,2,4,2" VerticalAlignment="Center"/>
+                    </Grid>
 
                     <!-- Botones de acción -->
                     <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,6">

@@ -11,22 +11,16 @@ namespace LoteriaTwo.Views
 {
     public partial class SorteosBotesView : UserControl
     {
-        // Configuración de cada juego en PREMIADOS: nombre, bolas principales, bolas extra
-        private static readonly (string Nombre, int Bolas, int Extras)[] JuegosPremiados =
+        private static readonly string[] NombresPremiados =
         {
-            ("BONOLOTO",       6, 2),  // 6 números + complementario + reintegro
-            ("EUROMILLONES M", 5, 2),  // 5 números + 2 estrellas
-            ("PRIMITIVA",      6, 2),  // 6 números + complementario + reintegro
-            ("EL GORDO",       5, 1),  // 5 números + 1 clave
-            ("LOTOTURF",       7, 0),  // 7 números
-            ("EURODREAMS",     6, 1),  // 6 números + 1 dream
+            "BONOLOTO", "EUROMILLONES M", "PRIMITIVA", "EL GORDO", "LOTOTURF", "EURODREAMS"
         };
 
-        private readonly RadioButton[] _rdbPremiado    = new RadioButton[6];
-        private readonly CheckBox[]    _chkBotePremiado = new CheckBox[6];
-        private readonly TextBox[][]   _txtNumeros      = new TextBox[6][];
-        private readonly TextBox[][]   _txtOtros        = new TextBox[6][];
-        private readonly TextBox[]     _txtFechaPremiado = new TextBox[6];
+        private RadioButton[] _rdbPremiado     = new RadioButton[6];
+        private CheckBox[]    _chkBotePremiado  = new CheckBox[6];
+        private TextBox[][]   _txtNumeros       = new TextBox[6][];
+        private TextBox[][]   _txtOtros         = new TextBox[6][];
+        private TextBox[]     _txtFechaPremiado = new TextBox[6];
         private string _eurodreamsDia = string.Empty;
 
         public Elemento? UltimoElemento { get; private set; }
@@ -34,7 +28,7 @@ namespace LoteriaTwo.Views
         public SorteosBotesView()
         {
             InitializeComponent();
-            BuildPremiados();
+            InitArraysFromXaml();
             RegistrarLiveData();
             RegistrarFormState();
         }
@@ -78,7 +72,7 @@ namespace LoteriaTwo.Views
                         ["ChkSeguridad"]       = (ChkSeguridad.IsChecked    == true).ToString(),
                         ["ChkPasarGanador"]    = (ChkPasarGanador.IsChecked == true).ToString(),
                     };
-                    for (int i = 0; i < JuegosPremiados.Length; i++)
+                    for (int i = 0; i < NombresPremiados.Length; i++)
                     {
                         var pre = $"P{i}_";
                         d[$"{pre}Sel"]   = (_rdbPremiado[i].IsChecked    == true).ToString();
@@ -124,7 +118,7 @@ namespace LoteriaTwo.Views
                     _eurodreamsDia             = d.Gv("EurodreamsDiaField");
                     ChkSeguridad.IsChecked    = d.Gv("ChkSeguridad")    == "True";
                     ChkPasarGanador.IsChecked = d.Gv("ChkPasarGanador") == "True";
-                    for (int i = 0; i < JuegosPremiados.Length; i++)
+                    for (int i = 0; i < NombresPremiados.Length; i++)
                     {
                         var pre = $"P{i}_";
                         _rdbPremiado[i].IsChecked     = d.Gv($"{pre}Sel")  == "True";
@@ -164,7 +158,7 @@ namespace LoteriaTwo.Views
             {
                 int idx = Array.FindIndex(_rdbPremiado, r => r.IsChecked == true);
                 if (idx < 0) return "sin selección";
-                return $"Juego: {JuegosPremiados[idx].Nombre}  " +
+                return $"Juego: {NombresPremiados[idx]}  " +
                        $"Nums: {string.Join("-", _txtNumeros[idx].Select(t => t.Text))}  " +
                        $"Extras: {string.Join("-", _txtOtros[idx].Select(t => t.Text))}  " +
                        $"Fecha: {_txtFechaPremiado[idx].Text}";
@@ -177,141 +171,42 @@ namespace LoteriaTwo.Views
                 () => $"Número: {TxtEuromillonesMillon.Text}");
         }
 
-        // ── Construcción programática de filas PREMIADOS ─────────────────────
+        // ── Inicialización de arrays desde controles XAML ────────────────────
 
-        private void BuildPremiados()
+        private void InitArraysFromXaml()
         {
-            var primary   = (Brush)Application.Current.Resources["BrushTextPrimary"];
-            var secondary = (Brush)Application.Current.Resources["BrushTextSecondary"];
-
-            GridPremiados.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(30) });                          // radio
-            GridPremiados.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(155) });                         // nombre
-            GridPremiados.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(60) });                          // BOTE
-            GridPremiados.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) });        // números
-            GridPremiados.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });                             // otros
-            GridPremiados.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });        // fecha
-
-            // Fila de cabeceras
-            GridPremiados.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            PlaceP(MakeHeader("NUMEROS PREMIADOS", primary), 0, 3);
-            PlaceP(MakeHeader("OTROS",             primary), 0, 4);
-            PlaceP(MakeHeader("FECHA",             primary), 0, 5);
-
-            // Filas de juegos
-            for (int i = 0; i < JuegosPremiados.Length; i++)
-            {
-                var (nombre, bolas, extras) = JuegosPremiados[i];
-                GridPremiados.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                int row = i + 1;
-                int idx = i;
-
-                // Radio button de selección
-                _rdbPremiado[i] = new RadioButton
-                {
-                    GroupName = "PremiadoGame",
-                    Margin = new Thickness(0, 2, 4, 2),
-                    VerticalAlignment = VerticalAlignment.Center,
-                    Foreground = primary
-                };
-                PlaceP(_rdbPremiado[i], row, 0);
-
-                // Nombre del juego
-                PlaceP(new TextBlock
-                {
-                    Text = nombre,
-                    FontWeight = FontWeights.SemiBold,
-                    Foreground = primary,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    Margin = new Thickness(0, 2, 8, 2)
-                }, row, 1);
-
-                // Checkbox BOTE
-                _chkBotePremiado[i] = new CheckBox
-                {
-                    Content = "BOTE",
-                    Foreground = primary,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    Margin = new Thickness(0, 2, 4, 2),
-                    FontSize = 10
-                };
-                _chkBotePremiado[i].Checked += (_, _) =>
-                {
-                    var juego   = JuegosPremiados[idx].Nombre;
-                    var cantidad = GetCantidadBoteParaJuego(juego);
-                    Debug.WriteLine($"[Bote] Checked — juego={juego}  cantidad='{cantidad}'");
-                    BrainstormService.Instancia.SetBoteCantidad(cantidad);
-                };
-                PlaceP(_chkBotePremiado[i], row, 2);
-
-                // Cajas de números premiados
-                var spNums = new StackPanel { Orientation = Orientation.Horizontal, VerticalAlignment = VerticalAlignment.Center };
-                _txtNumeros[i] = new TextBox[bolas];
-                for (int j = 0; j < bolas; j++)
-                {
-                    var tb = new TextBox
-                    {
-                        Width = 40,
-                        MaxLength = 2,
-                        HorizontalContentAlignment = HorizontalAlignment.Center,
-                        Margin = new Thickness(0, 2, 3, 2)
-                    };
-                    int pos = j + 1;
-                    tb.PreviewKeyDown += (_, args) =>
-                    {
-                        if (args.Key == Key.Tab && ChkPasarGanador.IsChecked == true)
-                            BrainstormService.Instancia.EntraFaldonCifra(pos, tb.Text);
-                    };
-                    _txtNumeros[i][j] = tb;
-                    spNums.Children.Add(tb);
-                }
-                PlaceP(spNums, row, 3);
-
-                // Cajas de números extra (estrellas, complementario, etc.)
-                var spOtros = new StackPanel { Orientation = Orientation.Horizontal, VerticalAlignment = VerticalAlignment.Center };
-                _txtOtros[i] = new TextBox[extras];
-                for (int j = 0; j < extras; j++)
-                {
-                    var tb = new TextBox
-                    {
-                        Width = 44,
-                        MaxLength = 2,
-                        HorizontalContentAlignment = HorizontalAlignment.Center,
-                        Margin = new Thickness(0, 2, 3, 2)
-                    };
-                    int posExtra = bolas + j + 1;
-                    tb.PreviewKeyDown += (_, args) =>
-                    {
-                        if (args.Key == Key.Tab && ChkPasarGanador.IsChecked == true)
-                            BrainstormService.Instancia.EntraFaldonCifra(posExtra, tb.Text);
-                    };
-                    _txtOtros[i][j] = tb;
-                    spOtros.Children.Add(tb);
-                }
-                PlaceP(spOtros, row, 4);
-
-                // Fecha
-                _txtFechaPremiado[i] = new TextBox { Margin = new Thickness(0, 2, 4, 2), VerticalAlignment = VerticalAlignment.Center };
-                PlaceP(_txtFechaPremiado[i], row, 5);
-            }
+            _rdbPremiado[0]     = RdbP0; _rdbPremiado[1]     = RdbP1; _rdbPremiado[2]     = RdbP2;
+            _rdbPremiado[3]     = RdbP3; _rdbPremiado[4]     = RdbP4; _rdbPremiado[5]     = RdbP5;
+            _chkBotePremiado[0] = ChkBoteP0; _chkBotePremiado[1] = ChkBoteP1; _chkBotePremiado[2] = ChkBoteP2;
+            _chkBotePremiado[3] = ChkBoteP3; _chkBotePremiado[4] = ChkBoteP4; _chkBotePremiado[5] = ChkBoteP5;
+            _txtNumeros[0] = new[] { TxtP0N0, TxtP0N1, TxtP0N2, TxtP0N3, TxtP0N4, TxtP0N5 };
+            _txtNumeros[1] = new[] { TxtP1N0, TxtP1N1, TxtP1N2, TxtP1N3, TxtP1N4 };
+            _txtNumeros[2] = new[] { TxtP2N0, TxtP2N1, TxtP2N2, TxtP2N3, TxtP2N4, TxtP2N5 };
+            _txtNumeros[3] = new[] { TxtP3N0, TxtP3N1, TxtP3N2, TxtP3N3, TxtP3N4 };
+            _txtNumeros[4] = new[] { TxtP4N0, TxtP4N1, TxtP4N2, TxtP4N3, TxtP4N4, TxtP4N5, TxtP4N6 };
+            _txtNumeros[5] = new[] { TxtP5N0, TxtP5N1, TxtP5N2, TxtP5N3, TxtP5N4, TxtP5N5 };
+            _txtOtros[0]   = new[] { TxtP0O0, TxtP0O1 };
+            _txtOtros[1]   = new[] { TxtP1O0, TxtP1O1 };
+            _txtOtros[2]   = new[] { TxtP2O0, TxtP2O1 };
+            _txtOtros[3]   = new[] { TxtP3O0 };
+            _txtOtros[4]   = Array.Empty<TextBox>();
+            _txtOtros[5]   = new[] { TxtP5O0 };
+            _txtFechaPremiado[0] = TxtFechaP0; _txtFechaPremiado[1] = TxtFechaP1; _txtFechaPremiado[2] = TxtFechaP2;
+            _txtFechaPremiado[3] = TxtFechaP3; _txtFechaPremiado[4] = TxtFechaP4; _txtFechaPremiado[5] = TxtFechaP5;
         }
 
-        private void PlaceP(UIElement el, int row, int col)
+        private void BotePremiado_Checked(object sender, RoutedEventArgs e)
         {
-            Grid.SetRow(el, row);
-            Grid.SetColumn(el, col);
-            GridPremiados.Children.Add(el);
+            if (sender is CheckBox cb && cb.Tag is string juego)
+                BrainstormService.Instancia.SetBoteCantidad(GetCantidadBoteParaJuego(juego));
         }
 
-        private static TextBlock MakeHeader(string text, Brush foreground) =>
-            new TextBlock
-            {
-                Text = text,
-                FontWeight = FontWeights.Bold,
-                FontSize = 10,
-                Foreground = foreground,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                Margin = new Thickness(0, 0, 0, 4)
-            };
+        private void NumPremiado_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Tab && ChkPasarGanador.IsChecked == true && sender is TextBox tb
+                && tb.Tag is string tag && int.TryParse(tag, out int pos))
+                BrainstormService.Instancia.EntraFaldonCifra(pos, tb.Text);
+        }
 
         // ── Handlers — LOGOS ─────────────────────────────────────────────────
 
@@ -404,11 +299,11 @@ namespace LoteriaTwo.Views
 
         private Elemento? BuildPremiadoElemento(int idx)
         {
-            if (idx < 0 || idx >= JuegosPremiados.Length) return null;
+            if (idx < 0 || idx >= NombresPremiados.Length) return null;
             var el = new Elemento { Tipo = TipoElemento.Premiado };
-            el["Juego"]         = JuegosPremiados[idx].Nombre;
+            el["Juego"]         = NombresPremiados[idx];
             el["Bote"]          = (_chkBotePremiado[idx].IsChecked == true).ToString();
-            el["BoteCantidad"]  = GetCantidadBoteParaJuego(JuegosPremiados[idx].Nombre);
+            el["BoteCantidad"]  = GetCantidadBoteParaJuego(NombresPremiados[idx]);
             el["Numeros"]       = string.Join(",", _txtNumeros[idx].Select(t => t.Text));
             el["Extras"]        = string.Join(",", _txtOtros[idx].Select(t => t.Text));
             el["Fecha"]         = _txtFechaPremiado[idx].Text;

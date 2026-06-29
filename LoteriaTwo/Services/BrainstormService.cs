@@ -62,19 +62,25 @@ namespace LoteriaTwo.Services
 
         // ── PUBLIC API ────────────────────────────────────────────────────────
 
-        public bool ModoQuiniela { get; set; }
+        public bool ModoQuiniela  { get; set; }
+        public bool FaldonActivo  => _faldonActivo;
 
         private Elemento? _elementoActivo;
         private bool      _faldonActivo;
+        private bool      _fondoActivo;
 
         public bool Entra(Elemento el)
         {
+            bool esExento = el.Tipo is TipoElemento.Rotulo or TipoElemento.EuromillonesMosca;
             var cmd = new StringBuilder();
             if (_faldonActivo)
             {
                 cmd.Append(Run("SaleFaldon"));
-                cmd.Append(Run($"Fondo/{FondoColor(el)}"));
-                cmd.Append(Run("Fondo/Entra"));
+                if (!esExento)
+                {
+                    cmd.Append(Run($"Fondo/{FondoColor(el)}"));
+                    cmd.Append(Run("Fondo/Entra"));
+                }
                 if (_elementoActivo is not null)
                     cmd.Append(BuildSale(_elementoActivo));
                 cmd.Append(BuildContenido(el));
@@ -87,7 +93,11 @@ namespace LoteriaTwo.Services
                 cmd.Append(BuildEntra(el));
             }
             var ok = Enviar(cmd.ToString());
-            if (ok) _elementoActivo = el;
+            if (ok)
+            {
+                _elementoActivo = el;
+                if (!esExento) _fondoActivo = true;
+            }
             return ok;
         }
 
@@ -103,8 +113,18 @@ namespace LoteriaTwo.Services
             if (_elementoActivo is null) return false;
             return Sale(_elementoActivo);
         }
-        public bool EntraFondo()                 => Enviar(Run("Fondo/Entra"));
-        public bool SaleFondo()                  => Enviar(Run("Fondo/Sale"));
+        public bool EntraFondo()
+        {
+            var ok = Enviar(Run("Fondo/Entra"));
+            if (ok) _fondoActivo = true;
+            return ok;
+        }
+        public bool SaleFondo()
+        {
+            var ok = Enviar(Run("Fondo/Sale"));
+            if (ok) _fondoActivo = false;
+            return ok;
+        }
         public string CambiarFondo(string color) => Run($"Fondo/{color}");
         public bool EnviarTexFile(string obj, string path)
             => Enviar($"itemset('<{_bd}>{obj}','TEX_FILE','{path}');");
@@ -112,10 +132,10 @@ namespace LoteriaTwo.Services
         public bool SetBoteCantidad(string cantidad)
             => Enviar(Set("Premiados/BoteCantidad", "TEXT_STRING", $"{cantidad}€"));
 
-        public bool EntraFaldon(Elemento el)
+        public bool EntraFaldon(Elemento el, string? jokerNumero = null)
         {
-            var ok = Enviar(BuildEntraFaldon(el));
-            if (ok) _faldonActivo = true;
+            var ok = Enviar(BuildEntraFaldon(el, jokerNumero));
+            if (ok) { _faldonActivo = true; _fondoActivo = false; }
             return ok;
         }
 
@@ -125,6 +145,27 @@ namespace LoteriaTwo.Services
             if (ok) _faldonActivo = false;
             return ok;
         }
+
+        public bool EntraJoker()
+        {
+            var sb = new StringBuilder();
+            sb.Append(Run("Faldon_Joker"));
+            sb.Append(Run("Fondo/Sale"));
+            sb.Append(Run("EntraFaldon", 0.1));
+            var ok = Enviar(sb.ToString());
+            if (ok) { _faldonActivo = true; _fondoActivo = false; }
+            return ok;
+        }
+        public bool MostrarJoker(string numero)
+        {
+            var sb = new StringBuilder();
+            sb.Append(Set("HD/Premiados/Joker",               "OBJ_CULL",    false));
+            sb.Append(Set("HD_PantallaPlato/Premiados/Joker", "OBJ_CULL",    false));
+            sb.Append(Set("Premiados/JokerNumero",            "TEXT_STRING", numero));
+            sb.Append(Run("Premiados/Tipos/Primitiva"));
+            return Enviar(sb.ToString());
+        }
+
         public bool EntraFaldonCifra(int pos, string valor)
         {
             var sb = new StringBuilder();
@@ -171,6 +212,8 @@ namespace LoteriaTwo.Services
         {
             if (el.Tipo is TipoElemento.Quiniela or TipoElemento.Pleno15)
                 ModoQuiniela = true;
+            if (el.Tipo is TipoElemento.Rotulo or TipoElemento.EuromillonesMosca)
+                return BuildContenido(el);
             return Run($"Fondo/{FondoColor(el)}") + BuildContenido(el);
         }
 
@@ -223,7 +266,7 @@ namespace LoteriaTwo.Services
 
         // ── FALDÓN ────────────────────────────────────────────────────────────
 
-        private string BuildEntraFaldon(Elemento el)
+        private string BuildEntraFaldon(Elemento el, string? jokerNumero = null)
         {
             var juego = el["Juego"].ToUpperInvariant();
             var nums  = el["Numeros"].Split(',');
@@ -260,6 +303,14 @@ namespace LoteriaTwo.Services
                 _                => string.Empty
             };
             if (string.IsNullOrEmpty(tipoEvento)) return string.Empty;
+
+            if (jokerNumero is not null)
+            {
+                sb.Append(Set("HD/Premiados/Joker",               "OBJ_CULL",    false));
+                sb.Append(Set("HD_PantallaPlato/Premiados/Joker", "OBJ_CULL",    false));
+                sb.Append(Set("Premiados/JokerNumero",            "TEXT_STRING", jokerNumero));
+                sb.Append(Run("Premiados/Tipos/Primitiva"));
+            }
 
             sb.Append(Run("Fondo/Sale"));
             sb.Append(Run(tipoEvento));
@@ -371,12 +422,15 @@ namespace LoteriaTwo.Services
                 sb.Append(Set("Premiados/FechaPremiado", "TEXT_STRING", fecha, D));
             }
 
-            if (juegoBajo == "euromillones m")
-                sb.Append(Run("Premiados/Tipos/Euromillones", D));
-            else if (juegoBajo == "el gordo")
-                sb.Append(Run("Premiados/Tipos/ElGordo", D));
-            else
-                sb.Append(Run("Premiados/Tipos/Premiados", D));
+            var tipoPremiados = juegoBajo switch
+            {
+                "euromillones m" => "Premiados/Tipos/Euromillones",
+                "el gordo"       => "Premiados/Tipos/ElGordo",
+                "primitiva"      => "Premiados/Tipos/Primitiva",
+                "eurodreams"     => "Premiados/Tipos/Eurodreams",
+                _                => "Premiados/Tipos/Premiados",
+            };
+            sb.Append(Run(tipoPremiados, D));
 
             sb.Append(Set("Premiados/BoteCantidad", "TEXT_STRING", bote ? $"{el["BoteCantidad"]}€" : "", D));
 
@@ -391,9 +445,18 @@ namespace LoteriaTwo.Services
 
         private string EntraMillon(Elemento el)
         {
+            var fecha = el["Fecha"];
+            var fechaConDia = fecha;
+            if (DateTime.TryParseExact(fecha, "dd/MM/yyyy", CultureInfo.InvariantCulture,
+                DateTimeStyles.None, out var dt))
+            {
+                var dia = dt.ToString("dddd", new CultureInfo("es-ES"));
+                fechaConDia = $"{fecha}\\n{char.ToUpper(dia[0])}{dia[1..]}";
+            }
+
             var sb = new StringBuilder();
-            sb.Append(Set("ElMillon/TxtElMillon", "TEXT_STRING", el["Numero"].ToUpper(), D));
-            sb.Append(Set("ElMillon/Fecha",       "TEXT_STRING", el["Fecha"], D));
+            sb.Append(Set("ElMillon/TxtElMillon",   "TEXT_STRING", el["Numero"].ToUpper(), D));
+            sb.Append(Set("ElMillon/FechaElMillon", "TEXT_STRING", fechaConDia, D));
             sb.Append(Run("ElMillon/Entra", 0.3));
             return sb.ToString();
         }
@@ -555,23 +618,8 @@ namespace LoteriaTwo.Services
         private string EntraMapa(Elemento el)
         {
             var sb = new StringBuilder();
-            sb.Append(Set("Mapa/FechaMapa", "TEXT_STRING", el["Fecha"].Replace('/', '-'), 1));
-            sb.Append(Set("Mapa/Txt01Mapa", "TEXT_STRING", el["Texto1"], 1));
-            sb.Append(Set("Mapa/Txt02Mapa", "TEXT_STRING", el["Texto2"], 1));
 
-            string[] ciudades = { el["Ciudad1"], el["Ciudad2"], el["Ciudad3"], el["Ciudad4"], el["Ciudad5"] };
-            for (int i = 0; i < ciudades.Length; i++)
-                if (!string.IsNullOrEmpty(ciudades[i]))
-                    sb.Append(Set($"Mapa/Ciudades/Ciudades0{i + 1}", "TEXT_STRING", ciudades[i], 1));
-
-            string logo = el["Logo"];
-            sb.Append(Set("HD/Mapa/LogoYFecha/Logo", "OBJ_OVERMAT",
-                string.IsNullOrEmpty(logo) ? "LogoGenericoLAE" : $"Logo{logo}", 1));
-            sb.Append(Set("HD_PantallaPlato/Mapa/LogoYFecha/Logo", "OBJ_OVERMAT",
-                string.IsNullOrEmpty(logo) ? "LogoGenericoLAE" : $"Logo{logo}", 1));
-
-            string[] comunidades = { el["Comunidad1"], el["Comunidad2"], el["Comunidad3"], el["Comunidad4"], el["Comunidad5"] };
-            sb.Append(Run("Mapa/Ocultar"));
+            string[] comunidades = { el["Comunidad1"], el["Comunidad2"], el["Comunidad3"], el["Comunidad4"], el["Comunidad5"], el["Comunidad6"] };
             foreach (var c in comunidades)
             {
                 if (string.IsNullOrEmpty(c)) continue;
@@ -580,7 +628,23 @@ namespace LoteriaTwo.Services
                 sb.Append(Set($"HD/Mapa/Mapas_ComunidadesAutonomas/Mapa_{key}", "OBJ_CULL", false, 1));
                 sb.Append(Set($"HD_PantallaPlato/Mapa/Mapas_ComunidadesAutonomas/Mapa_{key}", "OBJ_CULL", false, 1));
             }
-            sb.Append(Run("Mapa/Entra"));
+
+            sb.Append(Set("Mapa/FechaMapa", "TEXT_STRING", el["Fecha"].Replace('/', '-'), 1));
+            sb.Append(Set("Mapa/Txt01Mapa", "TEXT_STRING", el["Texto1"], 1));
+            sb.Append(Set("Mapa/Txt02Mapa", "TEXT_STRING", el["Texto2"], 1));
+
+            string[] ciudades = { el["Ciudad1"], el["Ciudad2"], el["Ciudad3"], el["Ciudad4"], el["Ciudad5"], el["Ciudad6"] };
+            for (int i = 0; i < ciudades.Length; i++)
+                sb.Append(Set($"Mapa/Ciudades/Ciudades0{i + 1}", "TEXT_STRING", ciudades[i], 1));
+
+            string logo = el["Logo"];
+            sb.Append(Set("HD/Mapa/LogoYFecha/Logo", "OBJ_OVERMAT",
+                string.IsNullOrEmpty(logo) ? "LogoGenericoLAE" : $"Logo{logo}", 1));
+            sb.Append(Set("HD_PantallaPlato/Mapa/LogoYFecha/Logo", "OBJ_OVERMAT",
+                string.IsNullOrEmpty(logo) ? "LogoGenericoLAE" : $"Logo{logo}", 1));
+
+            sb.Append(Run("Mapa/Ocultar"));
+            sb.Append(Run("Mapa/Entra", 0.3));
             return sb.ToString();
         }
 
