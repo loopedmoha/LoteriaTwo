@@ -38,6 +38,12 @@ namespace LoteriaTwo.Services
             LogService.Instancia.Registrar(LogNivel.Accion, "Formulario", "Guardado → formulario.json");
         }
 
+        public void EscribirSeccion(string nombre, Dictionary<string, string> datos)
+        {
+            if (_secciones.TryGetValue(nombre, out var sec))
+                sec.Escribir(datos);
+        }
+
         public void Limpiar()
         {
             var empty = new Dictionary<string, string>();

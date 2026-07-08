@@ -39,7 +39,12 @@
                             <TextBlock Text="NÚMERO"
                                        Foreground="{StaticResource BrushTextPrimary}"
                                        FontSize="10" FontWeight="SemiBold" Margin="0,0,0,3"/>
-                            <TextBox x:Name="TxtNumeroPrimero" Width="130" MaxLength="5"/>
+                            <TextBox x:Name="TxtNumeroPrimero" Width="130" MaxLength="5"
+                                     TextChanged="TxtNumeroPrimero_TextChanged"/>
+                            <CheckBox x:Name="ChkReintegroPrimero"
+                                      Content="Reintegro y premio"
+                                      Foreground="{StaticResource BrushTextPrimary}"
+                                      Margin="0,4,0,0"/>
                         </StackPanel>
                         <StackPanel Margin="0,0,16,0">
                             <TextBlock Text="CANTIDAD"
@@ -56,18 +61,14 @@
                                        Foreground="{StaticResource BrushTextPrimary}"
                                        FontSize="10" FontWeight="SemiBold" Margin="0,0,0,3"/>
                             <StackPanel Orientation="Horizontal">
-                                <TextBox x:Name="TxtReintegro1" Width="28" MaxLength="1"
+                                <TextBox x:Name="TxtReintegro1" Width="34" MaxLength="1" Padding="1,0"
                                          HorizontalContentAlignment="Center" Margin="0,0,3,0"/>
-                                <TextBox x:Name="TxtReintegro2" Width="28" MaxLength="1"
+                                <TextBox x:Name="TxtReintegro2" Width="34" MaxLength="1" Padding="1,0"
                                          HorizontalContentAlignment="Center" Margin="0,0,3,0"/>
-                                <TextBox x:Name="TxtReintegro3" Width="28" MaxLength="1"
+                                <TextBox x:Name="TxtReintegro3" Width="34" MaxLength="1" Padding="1,0"
                                          HorizontalContentAlignment="Center"/>
                             </StackPanel>
                         </StackPanel>
-                        <CheckBox x:Name="ChkReintegroPrimero"
-                                  Content="Reintegro y premio"
-                                  Foreground="{StaticResource BrushTextPrimary}"
-                                  VerticalAlignment="Bottom" Margin="0,0,0,2"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                         <Button Content="ENTRA" Style="{StaticResource BtnEntra}"
@@ -96,7 +97,7 @@
                             <TextBlock Text="NÚMERO"
                                        Foreground="{StaticResource BrushTextPrimary}"
                                        FontSize="10" FontWeight="SemiBold" Margin="0,0,0,3"/>
-                            <TextBox x:Name="TxtNumeroEspecial" Width="130" MaxLength="5"/>
+                            <TextBox x:Name="TxtNumeroEspecial" Width="130" MaxLength="5" IsReadOnly="True"/>
                         </StackPanel>
                         <StackPanel Margin="0,0,16,0">
                             <TextBlock Text="CANTIDAD"
@@ -112,13 +113,13 @@
                             <TextBlock Text="SERIE"
                                        Foreground="{StaticResource BrushTextPrimary}"
                                        FontSize="10" FontWeight="SemiBold" Margin="0,0,0,3"/>
-                            <TextBox x:Name="TxtSerieEspecial" Width="90"/>
+                            <TextBox x:Name="TxtSerieEspecial" Width="55"/>
                         </StackPanel>
                         <StackPanel>
                             <TextBlock Text="FRACC"
                                        Foreground="{StaticResource BrushTextPrimary}"
                                        FontSize="10" FontWeight="SemiBold" Margin="0,0,0,3"/>
-                            <TextBox x:Name="TxtFraccEspecial" Width="90"/>
+                            <TextBox x:Name="TxtFraccEspecial" Width="55"/>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">

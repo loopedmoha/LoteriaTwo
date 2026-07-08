@@ -13,15 +13,19 @@ namespace LoteriaTwo.Views
     {
         private static readonly string[] NombresPremiados =
         {
-            "BONOLOTO", "EUROMILLONES M", "PRIMITIVA", "EL GORDO", "LOTOTURF", "EURODREAMS"
+            "BONOLOTO", "EUROMILLONES M", "PRIMITIVA", "EL GORDO", "LOTOTURF", "EURODREAMS", "JOKER"
         };
 
-        private RadioButton[] _rdbPremiado     = new RadioButton[6];
-        private CheckBox[]    _chkBotePremiado  = new CheckBox[6];
-        private TextBox[][]   _txtNumeros       = new TextBox[6][];
-        private TextBox[][]   _txtOtros         = new TextBox[6][];
-        private TextBox[]     _txtFechaPremiado = new TextBox[6];
+        private RadioButton[] _rdbPremiado     = new RadioButton[7];
+        private CheckBox[]    _chkBotePremiado  = new CheckBox[7];
+        private TextBox[][]   _txtNumeros       = new TextBox[7][];
+        private TextBox[][]   _txtOtros         = new TextBox[7][];
+        private TextBox[]     _txtFechaPremiado = new TextBox[7];
         private string _eurodreamsDia = string.Empty;
+
+        private Elemento? _ultimoLogo;
+        private Elemento? _ultimoBote;
+        private Elemento? _ultimoPremiado;
 
         public Elemento? UltimoElemento { get; private set; }
 
@@ -64,7 +68,6 @@ namespace LoteriaTwo.Views
                         ["FechaEurodreams"]    = TxtFechaBoteEurodreams.Text,
                         ["MillonFecha"]        = TxtMillonFecha.Text,
                         ["MillonMartes"]       = TxtMillonMartes.Text,
-                        ["JokerJueves"]        = TxtJokerJueves.Text,
                         ["EuromillonesMillon"] = TxtEuromillonesMillon.Text,
                         ["EurodreamsDia"]      = TxtEurodreamsDia.Text,
                         ["EurodreamsMes"]      = TxtEurodreamsMes.Text,
@@ -111,7 +114,6 @@ namespace LoteriaTwo.Views
                     TxtFechaBoteEurodreams.Text   = d.Gv("FechaEurodreams");
                     TxtMillonFecha.Text        = d.Gv("MillonFecha");
                     TxtMillonMartes.Text       = d.Gv("MillonMartes");
-                    TxtJokerJueves.Text        = d.Gv("JokerJueves");
                     TxtEuromillonesMillon.Text = d.Gv("EuromillonesMillon");
                     TxtEurodreamsDia.Text      = d.Gv("EurodreamsDia");
                     TxtEurodreamsMes.Text      = d.Gv("EurodreamsMes");
@@ -183,16 +185,20 @@ namespace LoteriaTwo.Views
             _txtNumeros[1] = new[] { TxtP1N0, TxtP1N1, TxtP1N2, TxtP1N3, TxtP1N4 };
             _txtNumeros[2] = new[] { TxtP2N0, TxtP2N1, TxtP2N2, TxtP2N3, TxtP2N4, TxtP2N5 };
             _txtNumeros[3] = new[] { TxtP3N0, TxtP3N1, TxtP3N2, TxtP3N3, TxtP3N4 };
-            _txtNumeros[4] = new[] { TxtP4N0, TxtP4N1, TxtP4N2, TxtP4N3, TxtP4N4, TxtP4N5, TxtP4N6 };
+            _txtNumeros[4] = new[] { TxtP4N0, TxtP4N1, TxtP4N2, TxtP4N3, TxtP4N4, TxtP4N5 };
             _txtNumeros[5] = new[] { TxtP5N0, TxtP5N1, TxtP5N2, TxtP5N3, TxtP5N4, TxtP5N5 };
             _txtOtros[0]   = new[] { TxtP0O0, TxtP0O1 };
             _txtOtros[1]   = new[] { TxtP1O0, TxtP1O1 };
             _txtOtros[2]   = new[] { TxtP2O0, TxtP2O1 };
             _txtOtros[3]   = new[] { TxtP3O0 };
-            _txtOtros[4]   = Array.Empty<TextBox>();
+            _txtOtros[4]   = new[] { TxtP4O0, TxtP4O1 };
             _txtOtros[5]   = new[] { TxtP5O0 };
             _txtFechaPremiado[0] = TxtFechaP0; _txtFechaPremiado[1] = TxtFechaP1; _txtFechaPremiado[2] = TxtFechaP2;
             _txtFechaPremiado[3] = TxtFechaP3; _txtFechaPremiado[4] = TxtFechaP4; _txtFechaPremiado[5] = TxtFechaP5;
+            _txtFechaPremiado[6] = TxtFechaP6;
+            _rdbPremiado[6]     = RdbP6; _chkBotePremiado[6] = ChkBoteP6;
+            _txtNumeros[6] = new[] { TxtP6N0, TxtP6N1, TxtP6N2, TxtP6N3, TxtP6N4, TxtP6N5, TxtP6N6 };
+            _txtOtros[6]   = Array.Empty<TextBox>();
         }
 
         private void BotePremiado_Checked(object sender, RoutedEventArgs e)
@@ -211,10 +217,20 @@ namespace LoteriaTwo.Views
         // ── Handlers — LOGOS ─────────────────────────────────────────────────
 
         private void LogoEntra_Click(object sender, RoutedEventArgs e)
-            => BrainstormService.Instancia.Entra(BuildLogoElemento());
+        {
+            var el = BuildLogoElemento();
+            BrainstormService.Instancia.Entra(el);
+            _ultimoLogo = el;
+        }
         private void LogoSale_Click(object sender, RoutedEventArgs e)
             => BrainstormService.Instancia.Sale(BuildLogoElemento());
-        private void LogoEncadena_Click(object sender, RoutedEventArgs e) { }
+        private void LogoEncadena_Click(object sender, RoutedEventArgs e)
+        {
+            if (_ultimoLogo is not null) BrainstormService.Instancia.Sale(_ultimoLogo);
+            var el = BuildLogoElemento();
+            BrainstormService.Instancia.Entra(el);
+            _ultimoLogo = el;
+        }
         private void LogoP_Click(object sender, RoutedEventArgs e)
             => Previsualizar(BuildLogoElemento(), BuildLogoElemento);
 
@@ -228,10 +244,20 @@ namespace LoteriaTwo.Views
         // ── Handlers — BOTES ─────────────────────────────────────────────────
 
         private void BoteEntra_Click(object sender, RoutedEventArgs e)
-            => BrainstormService.Instancia.Entra(BuildBoteElemento());
+        {
+            var el = BuildBoteElemento();
+            BrainstormService.Instancia.Entra(el);
+            _ultimoBote = el;
+        }
         private void BoteSale_Click(object sender, RoutedEventArgs e)
             => BrainstormService.Instancia.Sale(BuildBoteElemento());
-        private void BoteEncadena_Click(object sender, RoutedEventArgs e) { }
+        private void BoteEncadena_Click(object sender, RoutedEventArgs e)
+        {
+            if (_ultimoBote is not null) BrainstormService.Instancia.Sale(_ultimoBote);
+            var el = BuildBoteElemento();
+            BrainstormService.Instancia.Entra(el);
+            _ultimoBote = el;
+        }
         private void BoteP_Click(object sender, RoutedEventArgs e)
         {
             var el    = BuildBoteElemento();
@@ -312,14 +338,23 @@ namespace LoteriaTwo.Views
         private void PremiadosEntra_Click(object sender, RoutedEventArgs e)
         {
             var el = BuildPremiadoElemento();
-            if (el is not null) BrainstormService.Instancia.Entra(el);
+            if (el is null) return;
+            BrainstormService.Instancia.Entra(el);
+            _ultimoPremiado = el;
         }
         private void PremiadosSale_Click(object sender, RoutedEventArgs e)
         {
             var el = BuildPremiadoElemento();
             if (el is not null) BrainstormService.Instancia.Sale(el);
         }
-        private void PremiadosEncadena_Click(object sender, RoutedEventArgs e) { }
+        private void PremiadosEncadena_Click(object sender, RoutedEventArgs e)
+        {
+            if (_ultimoPremiado is not null) BrainstormService.Instancia.Sale(_ultimoPremiado);
+            var el = BuildPremiadoElemento();
+            if (el is null) return;
+            BrainstormService.Instancia.Entra(el);
+            _ultimoPremiado = el;
+        }
         private void PremiadosOrdenar_Click(object sender, RoutedEventArgs e) { }
 
         // ── Handlers — FALDONES ──────────────────────────────────────────────
@@ -456,6 +491,7 @@ namespace LoteriaTwo.Views
             "EL GORDO"       => "El Gordo",
             "LOTOTURF"       => "LotoTurf",
             "EURODREAMS"     => "Eurodreams",
+            "JOKER"          => "Joker",
             _                => juego,
         };
 

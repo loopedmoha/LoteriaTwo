@@ -148,6 +148,114 @@ namespace LoteriaTwo.Views
 
         private void RefrescarLog_Click(object sender, RoutedEventArgs e) => CargarLog();
 
+        // ── Pestaña DATOS DE PRUEBA ───────────────────────────────────────────
+
+        private void RellenarPrueba_Click(object sender, RoutedEventArgs e)
+        {
+            const string fecha = "22/12/2024";
+
+            // ── Décimos ──────────────────────────────────────────────────────
+            FormStateService.Instancia.EscribirSeccion("Decimos", new()
+            {
+                ["Fecha"]            = fecha,
+                ["NumeroPrimero"]    = "72480",
+                ["CantidadPrimero"]  = "400.000",
+                ["Reintegro1"]       = "0", ["Reintegro2"] = "0", ["Reintegro3"] = "0",
+                ["ReintegroPrimero"] = "False",
+                ["NumeroEspecial"]   = "72480",
+                ["CantidadEspecial"] = "400.000",
+                ["SerieEspecial"]    = "001",
+                ["FraccEspecial"]    = "10",
+                ["NumeroSegundo"]    = "35291",
+                ["CantidadSegundo"]  = "120.000",
+                ["NumeroTercero"]    = "48763",
+                ["CantidadTercero"]  = "40.000",
+            });
+
+            // ── Sorteos y Botes ──────────────────────────────────────────────
+            FormStateService.Instancia.EscribirSeccion("SorteosBotes", new()
+            {
+                ["CantBonoloto"]      = "4.200.000",   ["FechaBonoloto"]     = "20/06/2024",
+                ["CantEuromillones"]  = "45.000.000",  ["FechaEuromillones"] = "21/06/2024",
+                ["CantPrimitiva"]     = "8.500.000",   ["FechaPrimitiva"]    = "22/06/2024",
+                ["CantElGordo"]       = "3.000.000",   ["FechaElGordo"]      = "23/06/2024",
+                ["CantLototurf"]      = "250.000",     ["FechaLototurf"]     = "22/06/2024",
+                ["CantJoker"]         = "600.000",     ["FechaJoker"]        = "21/06/2024",
+                ["CantEurodreams"]    = "2.000.000",   ["FechaEurodreams"]   = "20/06/2024",
+                ["CantQuiniela"]      = "1.800.000",   ["FechaQuiniela"]     = "23/06/2024",
+                ["CantQuinigol"]      = "150.000",     ["FechaQuinigol"]     = "22/06/2024",
+                ["CantLoteria"]       = "5.000.000",   ["FechaLoteria"]      = "22/12/2024",
+                ["MillonFecha"]       = "21/06/2024",  ["MillonMartes"]      = "ABC123",
+                ["EuromillonesMillon"]= "XYZ789",
+                ["EurodreamsDia"]     = "Jueves",      ["EurodreamsMes"]     = "Junio",
+                // PREMIADOS — BONOLOTO (P0)
+                ["P0_Sel"]="True",  ["P0_Bote"]="False", ["P0_Fecha"]=fecha,
+                ["P0_N0"]="05", ["P0_N1"]="14", ["P0_N2"]="23", ["P0_N3"]="31", ["P0_N4"]="38", ["P0_N5"]="42",
+                ["P0_O0"]="7",
+                // EUROMILLONES M (P1)
+                ["P1_Sel"]="False", ["P1_Bote"]="False", ["P1_Fecha"]=fecha,
+                ["P1_N0"]="03", ["P1_N1"]="11", ["P1_N2"]="27", ["P1_N3"]="34", ["P1_N4"]="49",
+                ["P1_O0"]="02", ["P1_O1"]="10",
+                // PRIMITIVA (P2)
+                ["P2_Sel"]="False", ["P2_Bote"]="True", ["P2_Fecha"]=fecha,
+                ["P2_N0"]="08", ["P2_N1"]="15", ["P2_N2"]="22", ["P2_N3"]="30", ["P2_N4"]="37", ["P2_N5"]="43",
+                ["P2_O0"]="9",
+                // EL GORDO (P3)
+                ["P3_Sel"]="False", ["P3_Bote"]="False", ["P3_Fecha"]=fecha,
+                ["P3_N0"]="04", ["P3_N1"]="12", ["P3_N2"]="25", ["P3_N3"]="33", ["P3_N4"]="47",
+                ["P3_O0"]="2",
+                // LOTOTURF (P4)
+                ["P4_Sel"]="False", ["P4_Bote"]="False", ["P4_Fecha"]=fecha,
+                ["P4_N0"]="01", ["P4_N1"]="06", ["P4_N2"]="11", ["P4_N3"]="16", ["P4_N4"]="21", ["P4_N5"]="26",
+                // EURODREAMS (P5)
+                ["P5_Sel"]="False", ["P5_Bote"]="False", ["P5_Fecha"]=fecha,
+                ["P5_N0"]="07", ["P5_N1"]="13", ["P5_N2"]="20", ["P5_N3"]="28", ["P5_N4"]="36", ["P5_N5"]="41",
+                ["P5_O0"]="3",
+                // JOKER (P6)
+                ["P6_Sel"]="False", ["P6_Bote"]="False", ["P6_Fecha"]=fecha,
+                ["P6_N0"]="4", ["P6_N1"]="7", ["P6_N2"]="2", ["P6_N3"]="9", ["P6_N4"]="1", ["P6_N5"]="6", ["P6_N6"]="3",
+            });
+
+            // ── Quiniela ─────────────────────────────────────────────────────
+            string[] locales    = { "Real Madrid",   "FC Barcelona",  "Atlético Madrid", "Sevilla FC",
+                                    "Valencia CF",   "Athletic Club", "Real Sociedad",   "Villarreal CF",
+                                    "Real Betis",    "Celta de Vigo", "Getafe CF",       "Osasuna",
+                                    "Rayo Vallecano","UD Almería",    "Deportivo Alavés" };
+            string[] visitantes = { "Girona FC",     "Rayo Vallecano","Getafe CF",       "Real Betis",
+                                    "Osasuna",       "Celta de Vigo", "Villarreal CF",   "UD Las Palmas",
+                                    "Mallorca",      "Alavés",        "Granada CF",      "Cádiz CF",
+                                    "Mallorca",      "Athletic Club", "Espanyol" };
+            string[] resultados = { "1","2","X","1","1","X","2","1","X","1","1","X","1","2","1" };
+
+            var quiniela = new Dictionary<string, string>
+            {
+                ["Fecha"]           = fecha,
+                ["Jornada"]         = "17",
+                ["AcertantesPleno"] = "2",
+                ["BotePleno"]       = "458320",
+            };
+            for (int i = 0; i < 15; i++)
+            {
+                quiniela[$"Local{i}"]     = locales[i];
+                quiniela[$"Visitante{i}"] = visitantes[i];
+                quiniela[$"Resultado{i}"] = resultados[i];
+                quiniela[$"Jugado{i}"]    = "True";
+            }
+            FormStateService.Instancia.EscribirSeccion("Quiniela", quiniela);
+
+            // ── Lotería y Rótulos ────────────────────────────────────────────
+            FormStateService.Instancia.EscribirSeccion("LoteriayRotulos", new()
+            {
+                ["Linea1Primera"] = "LOTERÍA NACIONAL",
+                ["Linea1Segunda"] = "EN DIRECTO",
+                ["Linea2"]        = "WWW.LOTERIASYAPUESTAS.ES",
+            });
+
+            LogService.Instancia.Registrar(LogNivel.Accion, "Debug", "Formulario rellenado con datos de prueba");
+            MessageBox.Show("Campos rellenados con datos de prueba.", "Datos de prueba",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
         // ── Formateo ─────────────────────────────────────────────────────────
 
         private static string BuildResumen(Elemento e)

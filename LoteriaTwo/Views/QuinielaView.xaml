@@ -8,12 +8,12 @@
         </Grid.ColumnDefinitions>
 
         <!-- ── Partidos (columna principal) ─────────────────────────── -->
-        <DockPanel Grid.Column="0" Margin="10,8,6,8">
+        <DockPanel Grid.Column="0" Margin="10,4,6,4">
             <CheckBox DockPanel.Dock="Bottom"
                       x:Name="ChkModoQuiniela"
                       Content="MODO QUINIELA"
                       Foreground="{StaticResource BrushTextPrimary}"
-                      Margin="28,8,0,0"
+                      Margin="28,4,0,0"
                       Checked="ChkModoQuiniela_Checked"
                       Unchecked="ChkModoQuiniela_Unchecked"/>
             <Grid x:Name="GridPartidos"/>
@@ -85,7 +85,7 @@
                            Foreground="{StaticResource BrushTextPrimary}"
                            VerticalAlignment="Center" Margin="0,0,8,0"/>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBox x:Name="TxtBotePleno"/>
+                    <TextBox x:Name="TxtBotePleno" Width="100"/>
                     <TextBlock Text=" €" VerticalAlignment="Center"
                                Foreground="{StaticResource BrushTextSecondary}" FontSize="12"/>
                 </StackPanel>

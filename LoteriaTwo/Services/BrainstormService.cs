@@ -126,6 +126,7 @@ namespace LoteriaTwo.Services
             return ok;
         }
         public string CambiarFondo(string color) => Run($"Fondo/{color}");
+        public bool EnviarEvento(string obj) => Enviar(Run(obj));
         public bool EnviarTexFile(string obj, string path)
             => Enviar($"itemset('<{_bd}>{obj}','TEX_FILE','{path}');");
 
@@ -178,7 +179,7 @@ namespace LoteriaTwo.Services
         {
             var sb = new StringBuilder();
             sb.Append(Set("HD/SorteosYBotes/LogoSorteo",               "OBJ_OVERMAT", $"Logo{logoNombre}"));
-            sb.Append(Set("HD_PantallaPlato/SorteosYBotes/LogoSorteo", "OBJ_OVERMAT", "LogoLoteriaNacional"));
+            sb.Append(Set("HD_PantallaPlato/SorteosYBotes/LogoSorteo", "OBJ_OVERMAT", $"Logo{logoNombre}"));
             sb.Append(Run("SorteosYBotes/LogoSorteo/Entra"));
             return Enviar(sb.ToString());
         }
@@ -344,7 +345,7 @@ namespace LoteriaTwo.Services
             var logo = el["Logo"];
             var sb = new StringBuilder();
             sb.Append(Set("HD/SorteosYBotes/LogoSorteo",               "OBJ_OVERMAT", $"Logo{logo}"));
-            sb.Append(Set("HD_PantallaPlato/SorteosYBotes/LogoSorteo", "OBJ_OVERMAT", "LogoLoteriaNacional"));
+            sb.Append(Set("HD_PantallaPlato/SorteosYBotes/LogoSorteo", "OBJ_OVERMAT", $"Logo{logo}"));
             sb.Append(Run("SorteosYBotes/LogoSorteo/Entra"));
             return sb.ToString();
         }
@@ -502,15 +503,22 @@ namespace LoteriaTwo.Services
             sb.Append(Set("LoteriaPremio/CantidadPremio", "TEXT_STRING", $"{el["Cantidad"]}€", D));
             sb.Append(Set("LoteriaPremio/FechaPremio",  "TEXT_STRING", el["Fecha"].Replace('/', '-'), D));
 
-            if (el.Tipo is TipoElemento.PrimerPremio or TipoElemento.PremioEspecial)
+            if (el.Tipo == TipoElemento.PremioEspecial)
             {
                 sb.Append(Set("LoteriaPremio/SeriePremio",    "TEXT_STRING", el["Serie"], D));
                 sb.Append(Set("LoteriaPremio/FraccionPremio", "TEXT_STRING", el["Fraccion"], D));
+                sb.Append(Set("LoteriaPremio/ReintegroPremio", "TEXT_STRING", "", D));
+                sb.Append(Set("LoteriaPremio/R", "TEXT_STRING", "", D));
+            }
+            else if (el.Tipo == TipoElemento.PrimerPremio)
+            {
+                sb.Append(Set("LoteriaPremio/SeriePremio",    "TEXT_STRING", "", D));
+                sb.Append(Set("LoteriaPremio/FraccionPremio", "TEXT_STRING", "", D));
 
                 bool reintegro = el["ReintegroPremio"] == "True";
                 if (reintegro)
                 {
-                    string rein = $"R {el["Reintegro1"]} - {el["Reintegro2"]} - {el["Reintegro3"]}";
+                    string rein = $"{el["Reintegro1"]} - {el["Reintegro2"]} - {el["Reintegro3"]}";
                     sb.Append(Set("LoteriaPremio/ReintegroPremio", "TEXT_STRING", rein, D));
                     sb.Append(Set("LoteriaPremio/R", "TEXT_STRING", "R", D));
                 }
@@ -522,6 +530,8 @@ namespace LoteriaTwo.Services
             }
             else
             {
+                sb.Append(Set("LoteriaPremio/SeriePremio",    "TEXT_STRING", "", D));
+                sb.Append(Set("LoteriaPremio/FraccionPremio", "TEXT_STRING", "", D));
                 sb.Append(Set("LoteriaPremio/ReintegroPremio", "TEXT_STRING", "", D));
                 sb.Append(Set("LoteriaPremio/R", "TEXT_STRING", "", D));
             }

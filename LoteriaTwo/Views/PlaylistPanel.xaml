@@ -25,6 +25,13 @@
                     <RadioButton x:Name="RbPl4" Content="4" GroupName="PLSel" Tag="3"
                                  VerticalAlignment="Center"
                                  Checked="PlSel_Checked"/>
+                    <CheckBox x:Name="ChkControlTeclado"
+                              Content="Control teclado"
+                              IsChecked="False"
+                              VerticalAlignment="Center"
+                              Margin="18,0,0,0"
+                              FontSize="11"
+                              Foreground="{StaticResource BrushTextSecondary}"/>
             </StackPanel>
         </Border>
 

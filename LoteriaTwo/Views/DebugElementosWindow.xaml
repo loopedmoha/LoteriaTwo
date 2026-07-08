@@ -210,5 +210,18 @@
             </Grid>
         </TabItem>
 
+        <!-- ══ PESTAÑA DATOS DE PRUEBA ═══════════════════════════════════ -->
+        <TabItem Header="Datos de prueba">
+            <StackPanel Margin="12" Orientation="Vertical">
+                <TextBlock Text="Rellena todos los campos del formulario con datos coherentes de prueba."
+                           Foreground="{StaticResource BrushTextSecondary}"
+                           FontSize="11" TextWrapping="Wrap" Margin="0,0,0,12"/>
+                <Button Content="Rellenar todos los campos"
+                        Style="{StaticResource BtnBlue}"
+                        Width="220" HorizontalAlignment="Left"
+                        Click="RellenarPrueba_Click"/>
+            </StackPanel>
+        </TabItem>
+
     </TabControl>
 </Window>

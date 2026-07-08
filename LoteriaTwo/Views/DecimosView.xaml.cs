@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -163,7 +164,7 @@ namespace LoteriaTwo.Views
 
         // ── DÉCIMOS ──────────────────────────────────────────────────────────
 
-        private void BuscarDecimo_Click(object sender, RoutedEventArgs e)
+        private async void BuscarDecimo_Click(object sender, RoutedEventArgs e)
         {
             var dlg = new Microsoft.Win32.OpenFileDialog
             {
@@ -177,28 +178,37 @@ namespace LoteriaTwo.Views
             ImgDecimo.Visibility = Visibility.Visible;
             TxtDecimoPlaceholder.Visibility = Visibility.Collapsed;
 
-            string path = dlg.FileName;
             if (RemoteShareService.Instancia.Configurado)
             {
                 try
                 {
-                    path = RemoteShareService.Instancia.CopiarDecimo(dlg.FileName);
+                    RemoteShareService.Instancia.CopiarDecimo(dlg.FileName);
                 }
                 catch (Exception ex)
                 {
                     LogService.Instancia.Registrar(LogNivel.Error, "Décimos",
                         $"Error al copiar a carpeta remota: {ex.Message}");
+                    MessageBox.Show($"Error al copiar el décimo a la carpeta remota:\n{ex.Message}",
+                        "Error de copia", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
 
-            BrainstormService.Instancia.EnviarTexFile("LoteriaDecimo", path);
+            string remotePath = RemoteShareService.Instancia.RutaDecimoBrainstorm;
+            BrainstormService.Instancia.EnviarTexFile("LoteriaDecimo", string.Empty);
+            await Task.Delay(100);
+            BrainstormService.Instancia.EnviarTexFile("LoteriaDecimo", remotePath);
 
             LogService.Instancia.Registrar(LogNivel.Cambio, "Décimos",
-                $"Décimo cargado: {System.IO.Path.GetFileName(dlg.FileName)} → {path}");
+                $"Décimo cargado: {System.IO.Path.GetFileName(dlg.FileName)} → {remotePath}");
         }
 
-        private void PosicionJueves_Click(object sender, RoutedEventArgs e) { }
-        private void PosicionSabado_Click(object sender, RoutedEventArgs e) { }
+        private void TxtNumeroPrimero_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+            => TxtNumeroEspecial.Text = TxtNumeroPrimero.Text;
+
+        private void PosicionJueves_Click(object sender, RoutedEventArgs e)
+            => BrainstormService.Instancia.EnviarEvento("LoteriaPremio/Jueves");
+        private void PosicionSabado_Click(object sender, RoutedEventArgs e)
+            => BrainstormService.Instancia.EnviarEvento("LoteriaPremio/Sabado");
 
         private void Previsualizar(Elemento el, Func<Elemento?>? buildActual = null)
         {

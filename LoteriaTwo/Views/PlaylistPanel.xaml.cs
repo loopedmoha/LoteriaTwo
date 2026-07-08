@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using LoteriaTwo.Models;
 using LoteriaTwo.Services;
 
@@ -10,13 +11,48 @@ namespace LoteriaTwo.Views
 {
     public partial class PlaylistPanel : UserControl
     {
+        private Window? _hostWindow;
+
         public PlaylistPanel()
         {
             InitializeComponent();
-            Loaded += (_, _) => BindListas();
+            Loaded   += OnPanelLoaded;
+            Unloaded += OnPanelUnloaded;
+        }
+
+        private void OnPanelLoaded(object sender, RoutedEventArgs e)
+        {
+            BindListas();
+            _hostWindow = Window.GetWindow(this);
+            if (_hostWindow is not null)
+                _hostWindow.PreviewKeyDown += OnWindowPreviewKeyDown;
+        }
+
+        private void OnPanelUnloaded(object sender, RoutedEventArgs e)
+        {
+            if (_hostWindow is not null)
+                _hostWindow.PreviewKeyDown -= OnWindowPreviewKeyDown;
+            _hostWindow = null;
+        }
+
+        private void OnWindowPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (ChkControlTeclado.IsChecked != true) return;
+            if (e.Key == Key.Right)
+            {
+                ElemSig_Click(this, new RoutedEventArgs());
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Down)
+            {
+                BtnPantalla_Click(this, new RoutedEventArgs());
+                e.Handled = true;
+            }
         }
 
         // ── Binding ───────────────────────────────────────────────────────────
+
+        public void RecargarUI() => BindListas();
 
         private void BindListas()
         {

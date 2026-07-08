@@ -58,7 +58,7 @@ namespace LoteriaTwo.Views
                         _localBoxes[i].Text        = d.Gv($"Local{i}");
                         _visitanteBoxes[i].Text    = d.Gv($"Visitante{i}");
                         _resultadoBoxes[i].Text    = d.Gv($"Resultado{i}");
-                        _jugadoChecks[i].IsChecked = d.Gv($"Jugado{i}") == "True";
+                        _jugadoChecks[i].IsChecked = d.Gv($"Jugado{i}") != "False";
                     }
                 });
         }
@@ -89,7 +89,7 @@ namespace LoteriaTwo.Views
                 GridPartidos.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
                 int gridRow = i + 1;
                 int idx = i;
-                double topM = (i == 14) ? 10.0 : 2.0; // separación visual antes del partido 15
+                double topM = (i == 14) ? 5.0 : 1.0;
 
                 // Número
                 var numTb = new TextBlock
@@ -97,24 +97,24 @@ namespace LoteriaTwo.Views
                     Text = (i + 1).ToString(),
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Right,
-                    Margin = new Thickness(0, topM, 6, 2),
+                    Margin = new Thickness(0, topM, 6, 1),
                     Foreground = secondary,
                     FontWeight = (i == 14) ? FontWeights.Bold : FontWeights.Normal
                 };
                 Place(numTb, gridRow, 0);
 
                 // Equipo local
-                _localBoxes[i] = new TextBox { Margin = new Thickness(0, topM, 4, 2) };
+                _localBoxes[i] = new TextBox { Margin = new Thickness(0, topM, 4, 1) };
                 Place(_localBoxes[i], gridRow, 1);
 
                 // Equipo visitante
-                _visitanteBoxes[i] = new TextBox { Margin = new Thickness(0, topM, 4, 2) };
+                _visitanteBoxes[i] = new TextBox { Margin = new Thickness(0, topM, 4, 1) };
                 Place(_visitanteBoxes[i], gridRow, 2);
 
                 // Resultado
                 _resultadoBoxes[i] = new TextBox
                 {
-                    Margin = new Thickness(0, topM, 4, 2),
+                    Margin = new Thickness(0, topM, 4, 1),
                     MaxLength = 6,
                     HorizontalContentAlignment = HorizontalAlignment.Center
                 };
@@ -128,7 +128,7 @@ namespace LoteriaTwo.Views
                     HorizontalAlignment = HorizontalAlignment.Center,
                     FontWeight = FontWeights.Bold,
                     FontSize = 14,
-                    Margin = new Thickness(2, topM, 2, 2),
+                    Margin = new Thickness(2, topM, 2, 1),
                     Foreground = secondary
                 };
                 Place(_signoBlocks[i], gridRow, 4);
@@ -139,7 +139,7 @@ namespace LoteriaTwo.Views
                     Content = "Jugado",
                     IsChecked = true,
                     VerticalAlignment = VerticalAlignment.Center,
-                    Margin = new Thickness(4, topM, 0, 2),
+                    Margin = new Thickness(4, topM, 0, 1),
                     FontSize = 10,
                     Foreground = primary
                 };

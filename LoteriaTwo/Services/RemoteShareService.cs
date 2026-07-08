@@ -24,9 +24,11 @@ namespace LoteriaTwo.Services
         public string CopiarImagen(string localPath)
             => Copiar(localPath, Path.GetFileName(localPath));
 
-        // Copia una imagen de décimo renombrandola a "Decimo.ext".
-        public string CopiarDecimo(string localPath)
-            => Copiar(localPath, "Decimo" + Path.GetExtension(localPath));
+        public string RutaDecimoBrainstorm
+            => Path.Combine(_share, "Decimo.jpg").Replace('\\', '/');
+
+        public void CopiarDecimo(string localPath)
+            => Copiar(localPath, "Decimo.jpg");
 
         private string Copiar(string localPath, string destFileName)
         {

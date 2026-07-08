@@ -200,19 +200,59 @@ namespace LoteriaTwo
             ViewControlMundo.Visibility = NavControlMundo.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        // ── Menú Playlist ─────────────────────────────────────────────────────
+        // ── Playlist ──────────────────────────────────────────────────────────
+
+        private PlaylistWindow? _playlistWindow;
+
+        private void AbrirPlaylist_Click(object sender, RoutedEventArgs e)
+        {
+            if (_playlistWindow == null || !_playlistWindow.IsLoaded)
+                _playlistWindow = new PlaylistWindow { Owner = this };
+            _playlistWindow.Show();
+            _playlistWindow.Activate();
+        }
 
         private void GuardarPlaylist_Click(object sender, RoutedEventArgs e)
-            => ThePlaylist.GuardarPlaylist();
+        {
+            try
+            {
+                PlaylistService.Instancia.Guardar();
+                LogService.Instancia.Registrar(LogNivel.Accion, "Playlist", "Guardada → Playlist.json");
+            }
+            catch
+            {
+                MessageBox.Show("Error al guardar la playlist.", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
         private void CargarPlaylist_Click(object sender, RoutedEventArgs e)
-            => ThePlaylist.CargarPlaylist();
+        {
+            try
+            {
+                if (PlaylistService.Instancia.Cargar())
+                {
+                    _playlistWindow?.RecargarUI();
+                    LogService.Instancia.Registrar(LogNivel.Accion, "Playlist", "Cargada ← Playlist.json");
+                }
+                else
+                    MessageBox.Show("No se encontró el fichero Playlist.json.", "Cargar playlist",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch
+            {
+                MessageBox.Show("Error al cargar la playlist.", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
         private void LimpiarPlaylist_Click(object sender, RoutedEventArgs e)
         {
             if (MessageBox.Show("¿Limpiar la playlist activa?", "Confirmar",
                     MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
-            ThePlaylist.LimpiarPlaylist();
+            var activa = PlaylistService.Instancia.Activa;
+            activa.Logos.Clear();
+            activa.Elementos.Clear();
         }
 
         // ── Debug ─────────────────────────────────────────────────────────────
@@ -223,7 +263,48 @@ namespace LoteriaTwo
 
         private void DebugElementos_Click(object sender, RoutedEventArgs e)
         {
+            if (!PedirContrasenaDebug()) return;
             new DebugElementosWindow { Owner = this }.Show();
+        }
+
+        private bool PedirContrasenaDebug()
+        {
+            var pwd = new PasswordBox { Margin = new Thickness(10, 0, 10, 0) };
+            var btn = new Button
+            {
+                Content = "Aceptar", Width = 80,
+                HorizontalAlignment = HorizontalAlignment.Right,
+                Margin = new Thickness(0, 10, 10, 0)
+            };
+            var panel = new StackPanel { Margin = new Thickness(0, 16, 0, 0) };
+            panel.Children.Add(new TextBlock
+            {
+                Text = "Contraseña:", Foreground = Brushes.White,
+                Margin = new Thickness(10, 0, 10, 6)
+            });
+            panel.Children.Add(pwd);
+            panel.Children.Add(btn);
+
+            var dlg = new Window
+            {
+                Title = "Acceso restringido",
+                Width = 280, Height = 145,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                Owner = this, ResizeMode = ResizeMode.NoResize,
+                ShowInTaskbar = false,
+                Content = panel
+            };
+
+            bool ok = false;
+            btn.Click  += (_, _) => { ok = pwd.Password == "auto1041"; dlg.Close(); };
+            pwd.KeyDown += (s, e) =>
+            {
+                if (e.Key == System.Windows.Input.Key.Enter)
+                    btn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            };
+
+            dlg.ShowDialog();
+            return ok;
         }
 
         // ── GENERAL ───────────────────────────────────────────────────────────
@@ -244,7 +325,6 @@ namespace LoteriaTwo
             => BrainstormService.Instancia.EntraFondo();
         private void SaleFondo_Click(object sender, RoutedEventArgs e)
             => BrainstormService.Instancia.SaleFondo();
-        private void AbrirPlaylist_Click(object sender, RoutedEventArgs e) { }
         private void Reset_Click(object sender, RoutedEventArgs e) { }
     }
 }

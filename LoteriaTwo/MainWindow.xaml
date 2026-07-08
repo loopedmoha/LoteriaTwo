@@ -76,6 +76,11 @@
                             Click="SaleFondo_Click"/>
                 </StackPanel>
 
+                <!-- ABRIR PLAYLIST -->
+                <Button Content="ABRIR PLAYLIST" Style="{StaticResource BtnBlue}"
+                        Grid.Column="4" Margin="0,0,8,0"
+                        Click="AbrirPlaylist_Click"/>
+
                 <!-- RESET -->
                 <Button Content="RESET" Style="{StaticResource BtnReset}"
                         Grid.Column="5" MinWidth="52" MinHeight="34"
@@ -87,8 +92,7 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="SidebarColumn" Width="145"/>   <!-- Sidebar -->
-                <ColumnDefinition Width="*"/>     <!-- Contenido -->
-                <ColumnDefinition Width="330"/>   <!-- Playlist -->
+                <ColumnDefinition Width="*"/>                             <!-- Contenido -->
             </Grid.ColumnDefinitions>
 
             <!-- ── Sidebar nav ── -->
@@ -165,9 +169,6 @@
                 <views:SorteosBotesView    x:Name="ViewSorteos"      Visibility="Collapsed"/>
                 <views:ControlMundoView    x:Name="ViewControlMundo" Visibility="Collapsed"/>
             </Grid>
-
-            <!-- ── Panel playlist ── -->
-            <views:PlaylistPanel x:Name="ThePlaylist" Grid.Column="2"/>
         </Grid>
 
     </DockPanel>
