@@ -274,7 +274,11 @@ namespace LoteriaTwo.Views
         }
 
         private void ImagenesPreview_Click(object sender, RoutedEventArgs e)
-            => Previsualizar(BuildImagenElemento(), BuildImagenElemento);
+        {
+            var el   = BuildImagenElemento();
+            var foto = el["Foto"];
+            Previsualizar(el, () => { var s = BuildImagenElemento(); s["Foto"] = foto; return s; });
+        }
         private void ImagenesEntra_Click(object sender, RoutedEventArgs e)
         {
             var fotoActiva = GetCheckedRadio(this, "Imagenes");

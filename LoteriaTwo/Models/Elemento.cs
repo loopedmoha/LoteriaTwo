@@ -64,7 +64,15 @@ namespace LoteriaTwo.Models
                 case TipoElemento.Eurodreams:     { var v = this["DiaSemana"]; return v.Length > 0 ? $"Eurodreams – {v}" : "Eurodreams"; }
 
                 case TipoElemento.Imagen:
-                    var logoKey = this["Foto"] switch
+                    var fotoVal = this["Foto"];
+                    if (fotoVal == "Colas") return "Cola Video";
+                    var imgNum = fotoVal switch
+                    {
+                        "Foto 1" => "1", "Foto 2" => "2", "Foto 3" => "3",
+                        "Foto 4" => "4", "Foto 5" => "5",
+                        _        => string.Empty,
+                    };
+                    var logoKey = fotoVal switch
                     {
                         "Foto 1"     => "LogoFoto1",
                         "Foto 2"     => "LogoFoto2",
@@ -75,7 +83,9 @@ namespace LoteriaTwo.Models
                         _            => string.Empty,
                     };
                     var logoNombre = logoKey.Length > 0 ? this[logoKey] : string.Empty;
-                    return logoNombre.Length > 0 ? $"Imagen – {logoNombre}" : "Imagen";
+                    if (imgNum.Length > 0)
+                        return logoNombre.Length > 0 ? $"Imagen {imgNum} – {logoNombre}" : $"Imagen {imgNum}";
+                    return "Imagen";
 
                 default: return Tipo.ToString();
             }

@@ -484,6 +484,25 @@ namespace LoteriaTwo.Services
             return sb.ToString();
         }
 
+        public bool ProximoSorteoEurodreams(string dia, string mes)
+        {
+            var sb = new StringBuilder();
+            sb.Append(Set("Eurodreams/Dia", "TEXT_STRING", dia, D));
+            sb.Append(Set("Eurodreams/Mes", "TEXT_STRING", mes, D));
+            sb.Append(Run("Eurodreams/ProximoSorteo"));
+            return Enviar(sb.ToString());
+        }
+
+        public bool EnviarPremiadosEurodreams(string[] numeros, string otro)
+        {
+            var sb = new StringBuilder();
+            for (int i = 0; i < numeros.Length; i++)
+                sb.Append(Set($"Premiados/NumerosPremiado/{(i + 1):D2}", "TEXT_STRING", numeros[i], D));
+            sb.Append(Set("Premiados/Txt/Txt01Num1", "TEXT_STRING", otro, D));
+            sb.Append(Run("Eurodreams/EntraNumeros"));
+            return Enviar(sb.ToString());
+        }
+
         // ── DÉCIMOS / PREMIOS LOTERÍA ─────────────────────────────────────────
 
         private string EntraPremioLoteria(Elemento el)

@@ -409,20 +409,20 @@ namespace LoteriaTwo.Views
 
         // ── Handlers — EURODREAMS ────────────────────────────────────────────
 
-        private void EurodreamsLunes_Click(object sender, RoutedEventArgs e)  { _eurodreamsDia = "LUNES"; }
-        private void EurodreamsJueves_Click(object sender, RoutedEventArgs e) { _eurodreamsDia = "JUEVES"; }
+        private void EurodreamsLunes_Click(object sender, RoutedEventArgs e)
+        {
+            _eurodreamsDia = "LUNES";
+            BrainstormService.Instancia.EnviarEvento("Eurodreams/Lunes");
+        }
+        private void EurodreamsJueves_Click(object sender, RoutedEventArgs e)
+        {
+            _eurodreamsDia = "JUEVES";
+            BrainstormService.Instancia.EnviarEvento("Eurodreams/Jueves");
+        }
         private void EurodreamsEntra_Click(object sender, RoutedEventArgs e)
-        {
-            var el = new Elemento { Tipo = TipoElemento.Eurodreams };
-            el["DiaSemana"] = _eurodreamsDia;
-            el["Dia"]       = TxtEurodreamsDia.Text;
-            el["Mes"]       = TxtEurodreamsMes.Text;
-            BrainstormService.Instancia.Entra(el);
-        }
+            => BrainstormService.Instancia.EnviarEvento("Eurodreams/Entra");
         private void EurodreamsSale_Click(object sender, RoutedEventArgs e)
-        {
-            BrainstormService.Instancia.Sale(new Elemento { Tipo = TipoElemento.Eurodreams });
-        }
+            => BrainstormService.Instancia.EnviarEvento("Eurodreams/Sale");
         private void EurodreamsP_Click(object sender, RoutedEventArgs e)
         {
             var el = new Elemento { Tipo = TipoElemento.Eurodreams };
@@ -431,8 +431,14 @@ namespace LoteriaTwo.Views
             el["Mes"]       = TxtEurodreamsMes.Text;
             Previsualizar(el, () => { var e2 = new Elemento { Tipo = TipoElemento.Eurodreams }; e2["DiaSemana"] = _eurodreamsDia; e2["Dia"] = TxtEurodreamsDia.Text; e2["Mes"] = TxtEurodreamsMes.Text; return e2; });
         }
-        private void EurodreamsPremiado_Click(object sender, RoutedEventArgs e) { }
-        private void EurodreamsProximo_Click(object sender, RoutedEventArgs e) { }
+        private void EurodreamsPremiado_Click(object sender, RoutedEventArgs e)
+        {
+            var numeros = new[] { TxtP5N0.Text, TxtP5N1.Text, TxtP5N2.Text,
+                                  TxtP5N3.Text, TxtP5N4.Text, TxtP5N5.Text };
+            BrainstormService.Instancia.EnviarPremiadosEurodreams(numeros, TxtP5O0.Text);
+        }
+        private void EurodreamsProximo_Click(object sender, RoutedEventArgs e)
+            => BrainstormService.Instancia.ProximoSorteoEurodreams(TxtEurodreamsDia.Text, TxtEurodreamsMes.Text);
 
         // ── Helpers ──────────────────────────────────────────────────────────
 
