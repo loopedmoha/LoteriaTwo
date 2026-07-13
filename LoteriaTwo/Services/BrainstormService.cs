@@ -133,6 +133,14 @@ namespace LoteriaTwo.Services
         public bool SetBoteCantidad(string cantidad)
             => Enviar(Set("Premiados/BoteCantidad", "TEXT_STRING", $"{cantidad}€"));
 
+        public bool EnviarCifrasFaldones(string[] numeros)
+        {
+            var sb = new StringBuilder();
+            for (int i = 0; i < numeros.Length; i++)
+                sb.Append(Set($"cifra_Faldones_{(i + 1):D2}", "TEXT_STRING", numeros[i], D));
+            return Enviar(sb.ToString());
+        }
+
         public bool EntraFaldon(Elemento el, string? jokerNumero = null)
         {
             var ok = Enviar(BuildEntraFaldon(el, jokerNumero));

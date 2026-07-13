@@ -355,7 +355,33 @@ namespace LoteriaTwo.Views
             BrainstormService.Instancia.Entra(el);
             _ultimoPremiado = el;
         }
-        private void PremiadosOrdenar_Click(object sender, RoutedEventArgs e) { }
+        private async void PremiadosOrdenar_Click(object sender, RoutedEventArgs e)
+        {
+            int idx = Array.FindIndex(_rdbPremiado, r => r.IsChecked == true);
+            if (idx < 0) return;
+
+            BrainstormService.Instancia.EnviarEvento("SacoBolas");
+
+            var cajas = _txtNumeros[idx];
+            var ordenados = cajas
+                .Select(t => t.Text.Trim())
+                .Where(s => int.TryParse(s, out _))
+                .Select(int.Parse)
+                .OrderBy(n => n)
+                .Select(n => n.ToString())
+                .ToArray();
+
+            var textos = new string[cajas.Length];
+            for (int j = 0; j < cajas.Length; j++)
+            {
+                textos[j] = j < ordenados.Length ? ordenados[j] : string.Empty;
+                cajas[j].Text = textos[j];
+            }
+
+            BrainstormService.Instancia.EnviarCifrasFaldones(textos);
+            await Task.Delay(200);
+            BrainstormService.Instancia.EnviarEvento("MetoBolas");
+        }
 
         // ── Handlers — FALDONES ──────────────────────────────────────────────
 
