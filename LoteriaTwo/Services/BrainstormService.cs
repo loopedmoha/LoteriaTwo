@@ -141,6 +141,14 @@ namespace LoteriaTwo.Services
             return Enviar(sb.ToString());
         }
 
+        public bool EnviarNumerosPremiado(string[] numeros)
+        {
+            var sb = new StringBuilder();
+            for (int i = 0; i < numeros.Length; i++)
+                sb.Append(Set($"Premiados/NumerosPremiado/{(i + 1):D2}", "TEXT_STRING", numeros[i], D));
+            return Enviar(sb.ToString());
+        }
+
         public bool EntraFaldon(Elemento el, string? jokerNumero = null)
         {
             var ok = Enviar(BuildEntraFaldon(el, jokerNumero));
@@ -277,30 +285,10 @@ namespace LoteriaTwo.Services
 
         private string BuildEntraFaldon(Elemento el, string? jokerNumero = null)
         {
-            var juego = el["Juego"].ToUpperInvariant();
-            var nums  = el["Numeros"].Split(',');
-            var extras = el["Extras"].Split(',', StringSplitOptions.RemoveEmptyEntries);
+            var juego  = el["Juego"].ToUpperInvariant();
+            var nums   = el["Numeros"].Split(',');
+            var extras = el["Extras"].Split(','); // sin RemoveEmptyEntries para preservar índices
             var sb = new StringBuilder();
-
-            for (int i = 0; i < nums.Length; i++)
-                if (!string.IsNullOrWhiteSpace(nums[i]))
-                    sb.Append(Set($"cifra_Faldones_0{i + 1}", "TEXT_STRING", nums[i]));
-
-            switch (juego)
-            {
-                case "BONOLOTO":
-                case "PRIMITIVA":
-                    if (extras.Length > 0) sb.Append(Set("cifra_Faldones_07", "TEXT_STRING", $"C{extras[0]}"));
-                    if (extras.Length > 1) sb.Append(Set("cifra_Faldones_08", "TEXT_STRING", $"R{extras[1]}"));
-                    break;
-                case "EL GORDO":
-                    if (extras.Length > 0) sb.Append(Set("cifra_Faldones_06", "TEXT_STRING", extras[0]));
-                    break;
-                case "EUROMILLONES M":
-                    if (extras.Length > 0) sb.Append(Set("cifra_Faldones_06", "TEXT_STRING", extras[0]));
-                    if (extras.Length > 1) sb.Append(Set("cifra_Faldones_07", "TEXT_STRING", extras[1]));
-                    break;
-            }
 
             var tipoEvento = juego switch
             {
@@ -323,6 +311,35 @@ namespace LoteriaTwo.Services
 
             sb.Append(Run("Fondo/Sale"));
             sb.Append(Run(tipoEvento));
+
+            // Números principales — después del evento para que no los sobreescriba
+            for (int i = 0; i < nums.Length; i++)
+                if (!string.IsNullOrWhiteSpace(nums[i]))
+                    sb.Append(Set($"cifra_Faldones_0{i + 1}", "TEXT_STRING", nums[i].Trim()));
+
+            // Extras con C/R
+            switch (juego)
+            {
+                case "BONOLOTO":
+                case "PRIMITIVA":
+                case "LOTOTURF":
+                    var e0 = extras.Length > 0 ? extras[0].Trim() : string.Empty;
+                    var e1 = extras.Length > 1 ? extras[1].Trim() : string.Empty;
+                    if (e0.Length > 0) sb.Append(Set("cifra_Faldones_07", "TEXT_STRING", $"C{e0}"));
+                    if (e1.Length > 0) sb.Append(Set("cifra_Faldones_08", "TEXT_STRING", $"R{e1}"));
+                    break;
+                case "EL GORDO":
+                    var eg0 = extras.Length > 0 ? extras[0].Trim() : string.Empty;
+                    if (eg0.Length > 0) sb.Append(Set("cifra_Faldones_06", "TEXT_STRING", eg0));
+                    break;
+                case "EUROMILLONES M":
+                    var em0 = extras.Length > 0 ? extras[0].Trim() : string.Empty;
+                    var em1 = extras.Length > 1 ? extras[1].Trim() : string.Empty;
+                    if (em0.Length > 0) sb.Append(Set("cifra_Faldones_06", "TEXT_STRING", em0));
+                    if (em1.Length > 0) sb.Append(Set("cifra_Faldones_07", "TEXT_STRING", em1));
+                    break;
+            }
+
             sb.Append(Run("EntraFaldon", 0.1));
             return sb.ToString();
         }
@@ -466,6 +483,7 @@ namespace LoteriaTwo.Services
             var sb = new StringBuilder();
             sb.Append(Set("ElMillon/TxtElMillon",   "TEXT_STRING", el["Numero"].ToUpper(), D));
             sb.Append(Set("ElMillon/FechaElMillon", "TEXT_STRING", fechaConDia, D));
+            sb.Append(Run("Fondo/Entra", D));
             sb.Append(Run("ElMillon/Entra", 0.3));
             return sb.ToString();
         }

@@ -13,14 +13,14 @@ namespace LoteriaTwo.Views
     {
         private static readonly string[] NombresPremiados =
         {
-            "BONOLOTO", "EUROMILLONES M", "PRIMITIVA", "EL GORDO", "LOTOTURF", "EURODREAMS", "JOKER"
+            "BONOLOTO", "EUROMILLONES M", "PRIMITIVA", "EL GORDO", "LOTOTURF", "EURODREAMS"
         };
 
-        private RadioButton[] _rdbPremiado     = new RadioButton[7];
-        private CheckBox[]    _chkBotePremiado  = new CheckBox[7];
-        private TextBox[][]   _txtNumeros       = new TextBox[7][];
-        private TextBox[][]   _txtOtros         = new TextBox[7][];
-        private TextBox[]     _txtFechaPremiado = new TextBox[7];
+        private RadioButton[] _rdbPremiado     = new RadioButton[6];
+        private CheckBox[]    _chkBotePremiado  = new CheckBox[6];
+        private TextBox[][]   _txtNumeros       = new TextBox[6][];
+        private TextBox[][]   _txtOtros         = new TextBox[6][];
+        private TextBox[]     _txtFechaPremiado = new TextBox[6];
         private string _eurodreamsDia = string.Empty;
 
         private Elemento? _ultimoLogo;
@@ -195,10 +195,6 @@ namespace LoteriaTwo.Views
             _txtOtros[5]   = new[] { TxtP5O0 };
             _txtFechaPremiado[0] = TxtFechaP0; _txtFechaPremiado[1] = TxtFechaP1; _txtFechaPremiado[2] = TxtFechaP2;
             _txtFechaPremiado[3] = TxtFechaP3; _txtFechaPremiado[4] = TxtFechaP4; _txtFechaPremiado[5] = TxtFechaP5;
-            _txtFechaPremiado[6] = TxtFechaP6;
-            _rdbPremiado[6]     = RdbP6; _chkBotePremiado[6] = ChkBoteP6;
-            _txtNumeros[6] = new[] { TxtP6N0, TxtP6N1, TxtP6N2, TxtP6N3, TxtP6N4, TxtP6N5, TxtP6N6 };
-            _txtOtros[6]   = Array.Empty<TextBox>();
         }
 
         private void BotePremiado_Checked(object sender, RoutedEventArgs e)
@@ -379,6 +375,7 @@ namespace LoteriaTwo.Views
             }
 
             BrainstormService.Instancia.EnviarCifrasFaldones(textos);
+            BrainstormService.Instancia.EnviarNumerosPremiado(textos);
             await Task.Delay(200);
             BrainstormService.Instancia.EnviarEvento("MetoBolas");
         }
@@ -411,8 +408,10 @@ namespace LoteriaTwo.Views
         {
             BrainstormService.Instancia.Sale(new Elemento { Tipo = TipoElemento.ElMillon });
         }
-        private void JokerEntra_Click(object sender, RoutedEventArgs e) { }
-        private void JokerSale_Click(object sender, RoutedEventArgs e) { }
+        private void JokerEntra_Click(object sender, RoutedEventArgs e)
+            => BrainstormService.Instancia.EntraJoker();
+        private void JokerSale_Click(object sender, RoutedEventArgs e)
+            => BrainstormService.Instancia.SaleFaldon();
 
         // ── Handlers — EUROMILLONES ──────────────────────────────────────────
 
