@@ -503,13 +503,13 @@
                 <GroupBox Header="JOKER" Margin="0,0,0,5">
                     <StackPanel Margin="5">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,6" HorizontalAlignment="Center">
-                            <TextBox x:Name="TxtP6N0" Width="20" Height="28" MaxLength="1" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,0,2,0"/>
-                            <TextBox x:Name="TxtP6N1" Width="20" Height="28" MaxLength="1" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,0,2,0"/>
-                            <TextBox x:Name="TxtP6N2" Width="20" Height="28" MaxLength="1" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,0,2,0"/>
-                            <TextBox x:Name="TxtP6N3" Width="20" Height="28" MaxLength="1" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,0,2,0"/>
-                            <TextBox x:Name="TxtP6N4" Width="20" Height="28" MaxLength="1" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,0,2,0"/>
-                            <TextBox x:Name="TxtP6N5" Width="20" Height="28" MaxLength="1" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,0,2,0"/>
-                            <TextBox x:Name="TxtP6N6" Width="20" Height="28" MaxLength="1" HorizontalContentAlignment="Center" Padding="1,0" Margin="0"/>
+                            <TextBox x:Name="TxtP6N0" Width="20" Height="28" MaxLength="1" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,0,2,0" Tag="1" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP6N1" Width="20" Height="28" MaxLength="1" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,0,2,0" Tag="2" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP6N2" Width="20" Height="28" MaxLength="1" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,0,2,0" Tag="3" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP6N3" Width="20" Height="28" MaxLength="1" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,0,2,0" Tag="4" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP6N4" Width="20" Height="28" MaxLength="1" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,0,2,0" Tag="5" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP6N5" Width="20" Height="28" MaxLength="1" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,0,2,0" Tag="6" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP6N6" Width="20" Height="28" MaxLength="1" HorizontalContentAlignment="Center" Padding="1,0" Margin="0"     Tag="7" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
                         </StackPanel>
                         <Grid>
                             <Grid.ColumnDefinitions>
