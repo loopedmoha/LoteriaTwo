@@ -517,9 +517,9 @@ namespace LoteriaTwo.Services
 
         public bool ProximoSorteoEurodreams(string dia, string mes)
         {
+            var fecha = $@"\f<Montserrat>{dia}   \f<Eurodreams> {mes}";
             var sb = new StringBuilder();
-            sb.Append(Set("Eurodreams/Dia", "TEXT_STRING", dia, D));
-            sb.Append(Set("Eurodreams/Mes", "TEXT_STRING", mes, D));
+            sb.Append(Set("Eurodreams/Fecha", "TEXT_STRING", fecha, D));
             sb.Append(Run("Eurodreams/ProximoSorteo"));
             return Enviar(sb.ToString());
         }
