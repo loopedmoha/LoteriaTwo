@@ -448,6 +448,12 @@ namespace LoteriaTwo.Services
                 sb.Append(Set("Premiados/FechaPremiado", "TEXT_STRING", fecha, D));
             }
 
+            sb.Append(Set("Premiados/BoteCantidad", "TEXT_STRING", bote ? $"{el["BoteCantidad"]}€" : "", D));
+
+            sb.Append(Set("HD/Premiados/Bote",              "OBJ_CULL", !bote, D));
+            sb.Append(Set("HD_PantallaPlato/Premiados/Bote","OBJ_CULL", !bote, D));
+            sb.Append(Set("9_16/Premiados/Bote",            "OBJ_CULL", !bote, D));
+
             var tipoPremiados = juegoBajo switch
             {
                 "euromillones m" => "Premiados/Tipos/Euromillones",
@@ -457,12 +463,6 @@ namespace LoteriaTwo.Services
                 _                => "Premiados/Tipos/Premiados",
             };
             sb.Append(Run(tipoPremiados, D));
-
-            sb.Append(Set("Premiados/BoteCantidad", "TEXT_STRING", bote ? $"{el["BoteCantidad"]}€" : "", D));
-
-            sb.Append(Set("HD/Premiados/Bote",              "OBJ_CULL", !bote, D));
-            sb.Append(Set("HD_PantallaPlato/Premiados/Bote","OBJ_CULL", !bote, D));
-            sb.Append(Set("9_16/Premiados/Bote",            "OBJ_CULL", !bote, D));
             sb.Append(Run("Premiados/Entra", 0.3));
             return sb.ToString();
         }

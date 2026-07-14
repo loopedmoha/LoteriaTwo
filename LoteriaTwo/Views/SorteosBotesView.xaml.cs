@@ -337,6 +337,14 @@ namespace LoteriaTwo.Views
             if (el is null) return;
             BrainstormService.Instancia.Entra(el);
             _ultimoPremiado = el;
+
+            if (el["Juego"] == "PRIMITIVA")
+            {
+                var digits = new[] { TxtP6N0.Text, TxtP6N1.Text, TxtP6N2.Text,
+                                     TxtP6N3.Text, TxtP6N4.Text, TxtP6N5.Text, TxtP6N6.Text };
+                if (digits.All(d => !string.IsNullOrWhiteSpace(d)))
+                    BrainstormService.Instancia.MostrarJoker(string.Concat(digits));
+            }
         }
         private void PremiadosSale_Click(object sender, RoutedEventArgs e)
         {
