@@ -9,6 +9,7 @@
     <AssemblyName>ControlLoterias</AssemblyName>
     <RootNamespace>LoteriaTwo</RootNamespace>
     <Product>Control de Loterías</Product>
+    <ApplicationIcon>Sin-título-1.ico</ApplicationIcon>
   </PropertyGroup>
 
 
@@ -16,6 +17,7 @@
     <Content Include="config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Sin-título-1.ico" />
     <Content Include="unreal_prado.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
