@@ -9,5 +9,15 @@
         Background="{StaticResource BrushBg}"
         Foreground="{StaticResource BrushTextPrimary}"
         FontFamily="Segoe UI">
-    <views:PlaylistPanel x:Name="ThePanel"/>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Playlist">
+                <MenuItem Header="Guardar playlist"        Click="GuardarPlaylist_Click"/>
+                <MenuItem Header="Cargar playlist"         Click="CargarPlaylist_Click"/>
+                <Separator/>
+                <MenuItem Header="Limpiar playlist activa" Click="LimpiarPlaylist_Click"/>
+            </MenuItem>
+        </Menu>
+        <views:PlaylistPanel x:Name="ThePanel"/>
+    </DockPanel>
 </Window>

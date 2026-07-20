@@ -15,7 +15,7 @@
 
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="40,30">
 
-            <TextBlock Text="LOTERÍA DOS"
+            <TextBlock Text="CONTROL DE LOTERÍA"
                        FontFamily="Segoe UI" FontSize="28" FontWeight="Bold"
                        Foreground="#111827"
                        HorizontalAlignment="Center"

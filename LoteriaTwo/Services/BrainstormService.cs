@@ -124,6 +124,17 @@ namespace LoteriaTwo.Services
         }
         public string CambiarFondo(string color) => Run($"Fondo/{color}");
         public bool EnviarEvento(string obj) => Enviar(Run(obj));
+
+        public bool Reset()
+        {
+            var sb = new StringBuilder();
+            if (_faldonActivo)   sb.Append(Run("SaleFaldon"));
+            if (_elementoActivo is not null) sb.Append(BuildSale(_elementoActivo));
+            sb.Append(Run("Reset"));
+            var ok = Enviar(sb.ToString());
+            if (ok) { _elementoActivo = null; _faldonActivo = false; }
+            return ok;
+        }
         public bool EnviarTexFile(string obj, string path)
             => Enviar($"itemset('<{_bd}>{obj}','TEX_FILE','{path}');");
 

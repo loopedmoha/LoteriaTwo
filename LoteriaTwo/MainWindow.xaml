@@ -19,12 +19,6 @@
             <MenuItem Header="Ayuda">
                 <MenuItem Header="Calendario de Soporte" Click="CalendarioSoporte_Click"/>
             </MenuItem>
-            <MenuItem Header="Playlist">
-                <MenuItem Header="Guardar playlist" Click="GuardarPlaylist_Click"/>
-                <MenuItem Header="Cargar playlist"  Click="CargarPlaylist_Click"/>
-                <Separator/>
-                <MenuItem Header="Limpiar playlist activa" Click="LimpiarPlaylist_Click"/>
-            </MenuItem>
             <MenuItem Header="Debug">
                 <MenuItem Header="Repositorio de Elementos" Click="DebugElementos_Click"/>
             </MenuItem>
