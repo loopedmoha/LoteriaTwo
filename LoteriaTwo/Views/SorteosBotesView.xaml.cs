@@ -25,7 +25,6 @@ namespace LoteriaTwo.Views
 
         private Elemento? _ultimoLogo;
         private Elemento? _ultimoBote;
-        private Elemento? _ultimoPremiado;
 
         public Elemento? UltimoElemento { get; private set; }
 
@@ -205,9 +204,15 @@ namespace LoteriaTwo.Views
 
         private void NumPremiado_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Tab && ChkPasarGanador.IsChecked == true && sender is TextBox tb
-                && tb.Tag is string tag && int.TryParse(tag, out int pos))
-                BrainstormService.Instancia.EntraFaldonCifra(pos, tb.Text);
+            if (e.Key != Key.Tab || ChkPasarGanador.IsChecked != true || sender is not TextBox tb
+                || tb.Tag is not string tag)
+                return;
+            string prefix = "";
+            int digitStart = 0;
+            while (digitStart < tag.Length && !char.IsDigit(tag[digitStart])) digitStart++;
+            if (digitStart > 0 && digitStart < tag.Length) { prefix = tag[..digitStart]; tag = tag[digitStart..]; }
+            if (int.TryParse(tag, out int pos))
+                BrainstormService.Instancia.EntraFaldonCifra(pos, prefix + tb.Text);
         }
 
         // ── Handlers — LOGOS ─────────────────────────────────────────────────
@@ -344,7 +349,6 @@ namespace LoteriaTwo.Views
         }
         private void PremiadosEncadena_Click(object sender, RoutedEventArgs e)
         {
-            if (_ultimoPremiado is not null) BrainstormService.Instancia.Sale(_ultimoPremiado);
             var el = BuildPremiadoElemento();
             if (el is null) return;
             EntrarPremiado(el);
@@ -353,7 +357,6 @@ namespace LoteriaTwo.Views
         private void EntrarPremiado(Elemento el)
         {
             BrainstormService.Instancia.Entra(el);
-            _ultimoPremiado = el;
 
             if (el["Juego"] == "PRIMITIVA")
             {

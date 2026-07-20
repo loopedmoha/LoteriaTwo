@@ -309,7 +309,8 @@ namespace LoteriaTwo
 
         // ── GENERAL ───────────────────────────────────────────────────────────
 
-        private void SaleUltimo_Click(object sender, RoutedEventArgs e) { }
+        private void SaleUltimo_Click(object sender, RoutedEventArgs e)
+            => BrainstormService.Instancia.SaleActivo();
         private void LimpiarFormulario_Click(object sender, RoutedEventArgs e)
         {
             if (MessageBox.Show("¿Limpiar todos los campos del formulario?", "Confirmar limpieza",
@@ -325,6 +326,9 @@ namespace LoteriaTwo
             => BrainstormService.Instancia.EntraFondo();
         private void SaleFondo_Click(object sender, RoutedEventArgs e)
             => BrainstormService.Instancia.SaleFondo();
-        private void Reset_Click(object sender, RoutedEventArgs e) { }
+        private void EnciendeP_Click(object sender, RoutedEventArgs e)
+            => SceneController.Instancia.PantallaNDI();
+        private void Reset_Click(object sender, RoutedEventArgs e)
+            => BrainstormService.Instancia.EnviarEvento("Reset");
     }
 }

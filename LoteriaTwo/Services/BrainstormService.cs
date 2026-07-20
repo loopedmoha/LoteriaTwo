@@ -77,13 +77,10 @@ namespace LoteriaTwo.Services
             {
                 cmd.Append(Run("SaleFaldon"));
                 if (!esExento)
-                {
-                    cmd.Append(Run($"Fondo/{FondoColor(el)}"));
                     cmd.Append(Run("Fondo/Entra"));
-                }
                 if (_elementoActivo is not null)
                     cmd.Append(BuildSale(_elementoActivo));
-                cmd.Append(BuildContenido(el));
+                cmd.Append(BuildEntra(el));
                 _faldonActivo = false;
             }
             else
@@ -115,7 +112,7 @@ namespace LoteriaTwo.Services
         }
         public bool EntraFondo()
         {
-            var ok = Enviar(Run("Fondo/Entra"));
+            var ok = Enviar(Run("Fondo/Azul") + Run("Fondo/Entra"));
             if (ok) _fondoActivo = true;
             return ok;
         }
@@ -212,11 +209,11 @@ namespace LoteriaTwo.Services
             {
                 return el["Juego"].ToUpperInvariant() switch
                 {
-                    "EL GORDO"                         => "Gordo",
-                    "PRIMITIVA"                        => "Primitiva",
                     "BONOLOTO"                         => "Bonoloto",
                     "EUROMILLONES" or "EUROMILLONES M" => "Euromillones",
                     "LOTOTURF"                         => "Lototurf",
+                    "PRIMITIVA"                        => "Primitiva",
+                    "EL GORDO"                         => "Gordo",
                     _                                  => "Azul"
                 };
             }
@@ -231,7 +228,7 @@ namespace LoteriaTwo.Services
                 ModoQuiniela = true;
             if (el.Tipo is TipoElemento.Rotulo or TipoElemento.EuromillonesMosca)
                 return BuildContenido(el);
-            return Run($"Fondo/{FondoColor(el)}") + BuildContenido(el);
+            return Run($"Fondo/{FondoColor(el)}") + Run("Fondo/Entra") + BuildContenido(el);
         }
 
         private string BuildContenido(Elemento el)
@@ -322,12 +319,21 @@ namespace LoteriaTwo.Services
             {
                 case "BONOLOTO":
                 case "PRIMITIVA":
-                case "LOTOTURF":
+                {
                     var e0 = extras.Length > 0 ? extras[0].Trim() : string.Empty;
                     var e1 = extras.Length > 1 ? extras[1].Trim() : string.Empty;
                     if (e0.Length > 0) sb.Append(Set("cifra_Faldones_07", "TEXT_STRING", $"C{e0}"));
                     if (e1.Length > 0) sb.Append(Set("cifra_Faldones_08", "TEXT_STRING", $"R{e1}"));
                     break;
+                }
+                case "LOTOTURF":
+                {
+                    var e0 = extras.Length > 0 ? extras[0].Trim() : string.Empty;
+                    var e1 = extras.Length > 1 ? extras[1].Trim() : string.Empty;
+                    if (e0.Length > 0) sb.Append(Set("cifra_Faldones_07", "TEXT_STRING", $"CG{e0}"));
+                    if (e1.Length > 0) sb.Append(Set("cifra_Faldones_08", "TEXT_STRING", $"R{e1}"));
+                    break;
+                }
                 case "EL GORDO":
                     var eg0 = extras.Length > 0 ? extras[0].Trim() : string.Empty;
                     if (eg0.Length > 0) sb.Append(Set("cifra_Faldones_06", "TEXT_STRING", eg0));
@@ -426,14 +432,18 @@ namespace LoteriaTwo.Services
             string juegoBajo = juego.ToLower();
             if (juegoBajo == "eurodreams")
             {
-                sb.Append(Set("Premiados/FechaPremiado", "TEXT_STRING", fecha, D));
+                string sueño = extras.Length > 0 ? extras[0].Trim() : "";
+                sb.Append(Set("Premiados/Txt/Txt01",     "TEXT_STRING", "Sueño", D));
+                sb.Append(Set("Premiados/Txt/Txt01Num1", "TEXT_STRING", sueño,   D));
+                sb.Append(Set("Premiados/FechaPremiado", "TEXT_STRING", fecha,   D));
             }
             else
             {
                 string c = extras.Length > 0 ? extras[0].Trim() : "";
                 string r = extras.Length > 1 ? extras[1].Trim() : "";
 
-                sb.Append(Set("Premiados/Txt/Txt01", "TEXT_STRING", juegoBajo == "el gordo" ? "Nº Clave " : "C", D));
+                string txt01 = juegoBajo switch { "el gordo" => "Nº Clave ", "lototurf" => "CG", _ => "C" };
+                sb.Append(Set("Premiados/Txt/Txt01", "TEXT_STRING", txt01, D));
                 sb.Append(Set("Premiados/Txt/Txt01Num1", "TEXT_STRING", c, D));
                 if (juegoBajo != "el gordo")
                 {
@@ -455,6 +465,7 @@ namespace LoteriaTwo.Services
                 "euromillones m" => "Premiados/Tipos/Euromillones",
                 "el gordo"       => "Premiados/Tipos/ElGordo",
                 "primitiva"      => "Premiados/Tipos/Primitiva",
+                "lototurf"       => "Premiados/Tipos/Lototurf",
                 "eurodreams"     => "Premiados/Tipos/Eurodreams",
                 _                => "Premiados/Tipos/Premiados",
             };
@@ -488,7 +499,6 @@ namespace LoteriaTwo.Services
             var sb = new StringBuilder();
             sb.Append(Set("ElMillon/TxtElMillon",   "TEXT_STRING", el["Numero"].ToUpper(), D));
             sb.Append(Set("ElMillon/FechaElMillon", "TEXT_STRING", fechaConDia, D));
-            sb.Append(Run("Fondo/Entra", D));
             sb.Append(Run("ElMillon/Entra", 0.3));
             return sb.ToString();
         }
@@ -517,7 +527,7 @@ namespace LoteriaTwo.Services
 
         public bool ProximoSorteoEurodreams(string dia, string mes)
         {
-            var fecha = $@"\f<Montserrat>{dia}   \f<Eurodreams> {mes}";
+            var fecha = $@"\\f<Montserrat>{dia}   \\f<Eurodreams>{mes}";
             var sb = new StringBuilder();
             sb.Append(Set("Eurodreams/Fecha", "TEXT_STRING", fecha, D));
             sb.Append(Run("Eurodreams/ProximoSorteo"));

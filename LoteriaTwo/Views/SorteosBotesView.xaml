@@ -262,8 +262,8 @@
                             <TextBox x:Name="TxtP0N5" Width="36" Height="31" MaxLength="2" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,2,2,2" Tag="6" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
                         </StackPanel>
                         <StackPanel Grid.Row="1" Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBox x:Name="TxtP0O0" Width="31" Height="31" MaxLength="2" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,2,2,2" Tag="7" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
-                            <TextBox x:Name="TxtP0O1" Width="31" Height="31" MaxLength="2" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,2,2,2" Tag="8" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP0O0" Width="31" Height="31" MaxLength="2" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,2,2,2" Tag="C7" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP0O1" Width="31" Height="31" MaxLength="2" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,2,2,2" Tag="R8" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
                         </StackPanel>
                         <TextBox x:Name="TxtFechaP0" Grid.Row="1" Grid.Column="5" Margin="0,2,4,2" VerticalAlignment="Center"/>
 
@@ -311,8 +311,8 @@
                             <TextBox x:Name="TxtP2N5" Width="36" Height="31" MaxLength="2" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,2,2,2" Tag="6" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
                         </StackPanel>
                         <StackPanel Grid.Row="3" Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBox x:Name="TxtP2O0" Width="31" Height="31" MaxLength="2" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,2,2,2" Tag="7" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
-                            <TextBox x:Name="TxtP2O1" Width="31" Height="31" MaxLength="2" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,2,2,2" Tag="8" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP2O0" Width="31" Height="31" MaxLength="2" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,2,2,2" Tag="C7" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP2O1" Width="31" Height="31" MaxLength="2" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,2,2,2" Tag="R8" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
                         </StackPanel>
                         <TextBox x:Name="TxtFechaP2" Grid.Row="3" Grid.Column="5" Margin="0,2,4,2" VerticalAlignment="Center"/>
 
@@ -359,8 +359,8 @@
                             <TextBox x:Name="TxtP4N5" Width="36" Height="31" MaxLength="2" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,2,2,2" Tag="6" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
                         </StackPanel>
                         <StackPanel Grid.Row="5" Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBox x:Name="TxtP4O0" Width="31" Height="31" MaxLength="2" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,2,2,2"/>
-                            <TextBox x:Name="TxtP4O1" Width="31" Height="31" MaxLength="2" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,2,2,2"/>
+                            <TextBox x:Name="TxtP4O0" Width="31" Height="31" MaxLength="2" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,2,2,2" Tag="CG7" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
+                            <TextBox x:Name="TxtP4O1" Width="31" Height="31" MaxLength="2" HorizontalContentAlignment="Center" Padding="1,0" Margin="0,2,2,2" Tag="R8" PreviewKeyDown="NumPremiado_PreviewKeyDown"/>
                         </StackPanel>
                         <TextBox x:Name="TxtFechaP4" Grid.Row="5" Grid.Column="5" Margin="0,2,4,2" VerticalAlignment="Center"/>
 
@@ -581,7 +581,7 @@
                                 <TextBlock Text="Mes" FontSize="10"
                                            Foreground="{StaticResource BrushTextPrimary}"
                                            Margin="0,0,0,2"/>
-                                <TextBox x:Name="TxtEurodreamsMes" MaxLength="2"/>
+                                <TextBox x:Name="TxtEurodreamsMes" MaxLength="20"/>
                             </StackPanel>
                         </Grid>
                     </StackPanel>

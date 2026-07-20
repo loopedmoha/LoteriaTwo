@@ -44,6 +44,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- SALE ULTIMO -->
@@ -81,9 +82,14 @@
                         Grid.Column="4" Margin="0,0,8,0"
                         Click="AbrirPlaylist_Click"/>
 
+                <!-- ENCIENDE PANTALLAS -->
+                <Button Content="ENCIENDE PANTALLAS" Style="{StaticResource BtnEntra}"
+                        Grid.Column="5" Margin="0,0,8,0" MinWidth="140"
+                        Click="EnciendeP_Click"/>
+
                 <!-- RESET -->
                 <Button Content="RESET" Style="{StaticResource BtnReset}"
-                        Grid.Column="5" MinWidth="52" MinHeight="34"
+                        Grid.Column="6" MinWidth="52" MinHeight="34"
                         Click="Reset_Click"/>
             </Grid>
         </Border>
